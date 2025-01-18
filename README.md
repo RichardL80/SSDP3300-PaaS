@@ -1,2 +1,2 @@
 # SSDP3300-PaaS
- Pizza as a Service website
+ This repository contains the code for the Pizza as a Service website.
