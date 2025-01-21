@@ -29,18 +29,10 @@ public class UserRepo
         return users;
     }
 
-    public UserVM GetUser(string email)
+    public User GetUser(string email)
     {
-        UserVM? user = _db.User
-            .Where(u => u.Email == email)
-            .Select(u => new UserVM
-            {
-                Email = u.Email,
-                FirstName = u.FirstName,
-                LastName = u.LastName
-            })
-            .FirstOrDefault();
-        return user ?? new UserVM();
+        User? user = _db.User.FirstOrDefault(u => u.Email == email);
+        return user ?? new User();
     }
 
     public SelectList GetUserSelectList(string? email)

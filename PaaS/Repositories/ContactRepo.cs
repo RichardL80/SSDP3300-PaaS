@@ -15,6 +15,27 @@ namespace PaaS.Repositories
             _db = db;
         }
 
+        public IEnumerable<ContactInfoVM> GetContactInfo(int userId)
+        {
+            IEnumerable<ContactInfoVM> contactInfo = _db.ContactInfo.Join(_db.User,
+                c => c.UserId,
+                u => u.UserId,
+                (c, u) => new ContactInfoVM
+                {
+                    FirstName = u.FirstName,
+                    LastName = u.LastName,
+                    Email = u.Email,
+                    Phone = c.Phone,
+                    Address1 = c.Address1,
+                    Address2 = c.Address2,
+                    CityId = c.CityId,
+                    ProvinceId = c.ProvinceId,
+                    UserId = c.UserId
+                }).Where(c => c.UserId == userId).ToList();
+
+            return contactInfo;
+        }
+
         public void AddContactInfo(int userId)
         {
             ContactInfo contactInfo = new ContactInfo
