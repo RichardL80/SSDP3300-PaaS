@@ -1,6 +1,7 @@
 using PaaS.Data;
 using PaaS.ViewModels;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using PaaS.Models;
 
 public class UserRepo
 {
@@ -26,5 +27,20 @@ public class UserRepo
         SelectList roleSelectList =
         new SelectList(users, "Value", "Text", email);
         return roleSelectList;
+    }
+
+    public void AddUser(string firstName, string LastName, string email, string password)
+    {
+        var newUser = new User
+        {
+            FirstName = firstName,
+            LastName = LastName,
+            Email = email,
+            Password = password,
+            IsVerified = false,
+            RoleId = 3
+        };
+        _db.User.Add(newUser);
+        _db.SaveChanges();
     }
 }

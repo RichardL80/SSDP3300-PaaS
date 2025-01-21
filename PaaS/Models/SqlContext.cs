@@ -327,7 +327,9 @@ public partial class SqlContext : DbContext
         {
             entity.ToTable("User");
 
-            entity.Property(e => e.UserId).HasColumnName("userId");
+            entity.Property(e => e.UserId)
+                .HasColumnName("userId")
+                .ValueGeneratedOnAdd();
             entity.Property(e => e.Email)
                 .HasColumnType("VARCHAR(255)")
                 .HasColumnName("email");

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using PaaS.Models;
 
 
 namespace PaaS.Data;
@@ -11,6 +12,8 @@ public class ApplicationDbContext : IdentityDbContext
         : base(options)
     {
     }
+
+    public DbSet<User> User { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
@@ -25,6 +28,12 @@ public class ApplicationDbContext : IdentityDbContext
             new IdentityRole { Id = "1", Name = "Admin", NormalizedName = "ADMIN" },
             new IdentityRole { Id = "2", Name = "Manager", NormalizedName = "MANAGER" },
             new IdentityRole { Id = "3", Name = "Customer", NormalizedName = "CUSTOMER" }
+        );
+
+        builder.Entity<Role>().HasData(
+            new Role { RoleId = 1, Description = "Admin" },
+            new Role { RoleId = 2, Description = "Manager" },
+            new Role { RoleId = 3, Description = "Customer" }
         );
     }
 }
