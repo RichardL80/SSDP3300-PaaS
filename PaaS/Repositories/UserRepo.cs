@@ -12,8 +12,16 @@ public class UserRepo
     }
     public IEnumerable<UserVM> GetAllUsers()
     {
-        IEnumerable<UserVM> users = _db.Users.Select(u =>
-        new UserVM { Email = u.Email }).ToList();
+        // IEnumerable<UserVM> users = _db.Users.Select(u =>
+        // new UserVM { Email = u.Email }).ToList();
+        IEnumerable<UserVM> users = _db.User.Select(u =>
+        new UserVM
+        {
+            Email = u.Email,
+            FirstName = u.FirstName,
+            LastName = u.LastName
+        }).ToList();
+
         return users;
     }
     public SelectList GetUserSelectList(string? email)

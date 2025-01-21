@@ -15,14 +15,19 @@
 	<thead>
 		<tr>
 			<th>@Html.DisplayNameFor(model => model.First().Email)</th>
+			<th>@Html.DisplayNameFor(model => model.First().FirstName)</th>
+			<th>@Html.DisplayNameFor(model => model.First().LastName)</th>
 			<th>Actions</th>
 		</tr>
+		
 	</thead>
 	<tbody>
 		@foreach (var user in Model)
 		{
 			<tr>
 				<td>@user.Email</td>
+				<td>@user.FirstName</td>
+				<td>@user.LastName</td>
 				<td>
 					<a asp-action="Detail" asp-route-userName="@user.Email"
 					   class="btn btn-sm btn-primary">
