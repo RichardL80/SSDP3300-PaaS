@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace PaaS.Models;
 
 public partial class OrderItem
 {
+    [Key]
     public int OrderId { get; set; }
 
     public int ItemId { get; set; }

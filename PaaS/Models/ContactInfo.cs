@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace PaaS.Models;
 
 public partial class ContactInfo
 {
+    [Key]
     public int ContactId { get; set; }
 
     public string Phone { get; set; } = null!;
