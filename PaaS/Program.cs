@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using PaaS.Data;
+using PaaS.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,8 +13,13 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddScoped<UserRepo>();
+builder.Services.AddScoped<UserRoleRepo>();
+builder.Services.AddScoped<RoleRepo>();
 
 var app = builder.Build();
 
