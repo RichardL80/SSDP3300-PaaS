@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace PaaS.Migrations
 {
     /// <inheritdoc />
-    public partial class RoleGenerate : Migration
+    public partial class LocationGenerate2 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -443,6 +443,16 @@ namespace PaaS.Migrations
                 });
 
             migrationBuilder.InsertData(
+                table: "Province",
+                columns: new[] { "ProvinceId", "Name" },
+                values: new object[,]
+                {
+                    { -1, "" },
+                    { 1, "British Columbia" },
+                    { 2, "Ontario" }
+                });
+
+            migrationBuilder.InsertData(
                 table: "Role",
                 columns: new[] { "RoleId", "Description" },
                 values: new object[,]
@@ -450,6 +460,16 @@ namespace PaaS.Migrations
                     { 1, "Admin" },
                     { 2, "Manager" },
                     { 3, "Customer" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "City",
+                columns: new[] { "CityId", "Name", "ProvinceId" },
+                values: new object[,]
+                {
+                    { -1, "", -1 },
+                    { 1, "Vancouver", 1 },
+                    { 2, "Toronto", 2 }
                 });
 
             migrationBuilder.CreateIndex(

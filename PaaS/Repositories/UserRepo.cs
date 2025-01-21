@@ -2,13 +2,17 @@ using PaaS.Data;
 using PaaS.ViewModels;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using PaaS.Models;
+using PaaS.Repositories;
 
 public class UserRepo
 {
     private readonly ApplicationDbContext _db;
-    public UserRepo(ApplicationDbContext db)
+    private readonly ContactRepo _contactRepo;
+
+    public UserRepo(ApplicationDbContext db, ContactRepo contactRepo)
     {
         _db = db;
+        _contactRepo = contactRepo;
     }
     public IEnumerable<UserVM> GetAllUsers()
     {
@@ -24,6 +28,21 @@ public class UserRepo
 
         return users;
     }
+
+    public UserVM GetUser(string email)
+    {
+        UserVM? user = _db.User
+            .Where(u => u.Email == email)
+            .Select(u => new UserVM
+            {
+                Email = u.Email,
+                FirstName = u.FirstName,
+                LastName = u.LastName
+            })
+            .FirstOrDefault();
+        return user ?? new UserVM();
+    }
+
     public SelectList GetUserSelectList(string? email)
     {
         IEnumerable<SelectListItem> users =
@@ -39,7 +58,8 @@ public class UserRepo
 
     public void AddUser(string firstName, string LastName, string email, string password)
     {
-        var newUser = new User
+
+        User newUser = new User
         {
             FirstName = firstName,
             LastName = LastName,
@@ -50,5 +70,8 @@ public class UserRepo
         };
         _db.User.Add(newUser);
         _db.SaveChanges();
+        int userId = newUser.UserId;
+        _contactRepo.AddContactInfo(userId);
+
     }
 }
