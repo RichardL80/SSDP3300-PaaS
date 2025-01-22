@@ -156,9 +156,9 @@ public partial class SqlContext : DbContext
                 .HasColumnType("VARCHAR(255)")
                 .HasColumnName("address2");
             entity.Property(e => e.CityId).HasColumnName("cityId");
-            entity.Property(e => e.Phone)
-                .HasColumnType("VARCHAR(15)")
-                .HasColumnName("phone");
+            // entity.Property(e => e.Phone)
+            //     .HasColumnType("VARCHAR(15)")
+            //     .HasColumnName("phone");
             entity.Property(e => e.ProvinceId).HasColumnName("provinceId");
             entity.Property(e => e.UserId).HasColumnName("userId");
 
@@ -345,6 +345,9 @@ public partial class SqlContext : DbContext
             entity.Property(e => e.Password)
                 .HasColumnType("VARCHAR(255)")
                 .HasColumnName("password");
+            entity.Property(e => e.Phone)
+                .HasColumnType("VARCHAR(15)")
+                .HasColumnName("phone");
             entity.Property(e => e.RoleId).HasColumnName("roleId");
 
             entity.HasOne(d => d.Role).WithMany(p => p.Users)

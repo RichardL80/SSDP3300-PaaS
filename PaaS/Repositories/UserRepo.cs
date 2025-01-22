@@ -35,6 +35,12 @@ public class UserRepo
         return user ?? new User();
     }
 
+    public User GetById(int id)
+    {
+        User? user = _db.User.FirstOrDefault(u => u.UserId == id);
+        return user ?? new User();
+    }
+
     public SelectList GetUserSelectList(string? email)
     {
         IEnumerable<SelectListItem> users =
@@ -58,6 +64,7 @@ public class UserRepo
             Email = email,
             Password = password,
             IsVerified = false,
+            Phone = "",
             RoleId = 3
         };
         _db.User.Add(newUser);

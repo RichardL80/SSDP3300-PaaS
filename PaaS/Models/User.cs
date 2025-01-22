@@ -18,6 +18,7 @@ public partial class User
     public string Password { get; set; } = null!;
 
     public bool IsVerified { get; set; }
+    public string Phone { get; set; } = null!;
 
     public int RoleId { get; set; }
 

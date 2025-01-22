@@ -33,5 +33,7 @@ namespace PaaS.ViewModels
 
         [Display(Name = "User")]
         public int UserId { get; set; }
+
+        public string? Orders { get; set; } //TODO
     }
 }
