@@ -3,6 +3,7 @@
 @{
 	ViewData["Title"] = "My Account";
 	Layout = "~/Views/Shared/_Layout.cshtml";
+	
 }
 
 <br />
@@ -29,7 +30,7 @@
 			</div>
 			<div class="details-content">
 				<ul>
-					<li><span>Name:</span> <span>@Model.FirstOrDefault()?.FirstName</span><span>@Model.FirstOrDefault()?.LastName</span></li>
+					<li><span>Name:</span> <span>@Model.FirstOrDefault()?.FirstName</span> <span>@Model.FirstOrDefault()?.LastName</span></li>
 					<li><span>Email:</span> @Model.FirstOrDefault()?.Email</li>
 					<li><span>Phone:</span> @Model.FirstOrDefault()?.Phone</li>
 				</ul>

@@ -16,8 +16,6 @@ public class UserRepo
     }
     public IEnumerable<UserVM> GetAllUsers()
     {
-        // IEnumerable<UserVM> users = _db.Users.Select(u =>
-        // new UserVM { Email = u.Email }).ToList();
         IEnumerable<UserVM> users = _db.User.Select(u =>
         new UserVM
         {
@@ -72,5 +70,16 @@ public class UserRepo
         int userId = newUser.UserId;
         _contactRepo.AddContactInfo(userId);
 
+    }
+
+    // There is a potential issue here with updating the user's email, but not the AspNetUser's email
+    public void UpdateUserContactInfo(UserVM userVM)
+    {
+        User user = GetById(userVM.UserId);
+        user.FirstName = userVM.FirstName;
+        user.LastName = userVM.LastName;
+        user.Email = userVM.Email;
+        user.Phone = userVM.Phone;
+        _db.SaveChanges();
     }
 }

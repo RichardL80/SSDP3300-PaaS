@@ -15,6 +15,8 @@ public class ApplicationDbContext : IdentityDbContext
 
     public DbSet<User> User { get; set; }
     public DbSet<ContactInfo> ContactInfo { get; set; }
+    public DbSet<City> City { get; set; }
+    public DbSet<Province> Province { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

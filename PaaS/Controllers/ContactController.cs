@@ -51,12 +51,13 @@ public class ContactController : Controller
     }
 
     [HttpPost]
-    public IActionResult EditDetails(int userId, string firstName, string lastName, string email, string phone)
+    public IActionResult EditDetails(UserVM userVM)
     {
 
         if (ModelState.IsValid)
         {
-            //_contactRepo.UpdateContactInfo(userId, firstName, lastName, email, phone);
+
+            _userRepo.UpdateUserContactInfo(userVM);
             return RedirectToAction(nameof(MyAccount));
         }
         return View();

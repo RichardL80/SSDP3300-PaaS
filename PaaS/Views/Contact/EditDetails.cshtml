@@ -14,8 +14,7 @@
     Edit Account Details
 </h1>
 
-<form asp-action="EditDetails" asp-route-userId="@phone" asp-route-firstName="@firstName" 
-    asp-route-lastName="@lastName" asp-route-email="@email" asp-route-phone="@phone" method="post">
+<form asp-action="EditDetails" asp-route-model="@Model" method="post">
     <div class="form-group">
         <label asp-for="@firstName">First Name</label>
         <input asp-for="@firstName" class="form-control" placeholder="@firstName"/>

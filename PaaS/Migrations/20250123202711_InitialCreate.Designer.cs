@@ -11,8 +11,8 @@ using PaaS.Data;
 namespace PaaS.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250122023322_SwitchPhone")]
-    partial class SwitchPhone
+    [Migration("20250123202711_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

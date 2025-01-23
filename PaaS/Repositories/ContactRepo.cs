@@ -10,6 +10,7 @@ namespace PaaS.Repositories
     {
         private readonly ApplicationDbContext _db;
 
+
         public ContactRepo(ApplicationDbContext db)
         {
             _db = db;
@@ -52,6 +53,8 @@ namespace PaaS.Repositories
             _db.ContactInfo.Add(contactInfo);
             _db.SaveChanges();
         }
+
+
 
     }
 }
