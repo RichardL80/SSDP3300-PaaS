@@ -7,21 +7,22 @@ namespace PaaS.Services
 {
     public class EmailService : IEmailService
     {
-        private readonly IConfiguration _configuration;
+        private readonly string _apiKey;
 
         public EmailService(IConfiguration configuration)
         {
-            _configuration = configuration;
+            _apiKey = configuration["SendGrid:ApiKey"];
         }
 
         public async Task<Response> SendSingleEmail(ComposeEmailModel payload)
         {
-            var apiKey = _configuration["SendGrid:ApiKey"];
-            var client = new SendGridClient(apiKey);
+            var client = new SendGridClient(_apiKey);
             var from = new EmailAddress("griguta.vladmihai1@gmail.com", "Vlad Griguta");
             var to = new EmailAddress(payload.Email);
+
             var msg = MailHelper.CreateSingleEmail(from, to, payload.Subject, payload.Body, payload.Body);
             return await client.SendEmailAsync(msg);
         }
     }
 }
+
