@@ -11,7 +11,6 @@ namespace PaaS.Repositories
         public RoleRepo(ApplicationDbContext db)
         {
             _db = db;
-            // CreateInitialRole();
         }
 
         public IEnumerable<IdentityRole> GetAllRoles()
@@ -58,63 +57,6 @@ namespace PaaS.Repositories
             _db.UserRoles.Any(r => r.RoleId == role.Id);
         }
 
-        // public bool CreateRole(string roleName)
-        // {
-        //     if (GetRole(roleName) != null)
-        //     {
-        //         return false;
-        //     }
-        //     try
-        //     {
-        //         _db.Roles.Add(new IdentityRole
-        //         {
-        //             Name = roleName,
-        //             NormalizedName = roleName.ToUpper()
-        //         });
-        //         _db.SaveChanges();
-        //         return true;
-        //     }
-        //     catch (Exception ex)
-        //     {
-        //         Console.WriteLine("Error creating role '" +
-        //         roleName + "' : " +
-        //         ex.Message);
-        //     }
-        //     return false;
-        // }
-
-        // public bool DeleteRole(string roleName)
-        // {
-        //     try
-        //     {
-        //         IdentityRole? role = GetRole(roleName);
-        //         if (role == null)
-        //         {
-        //             Console.WriteLine("Role not found.");
-        //             return false;
-        //         }
-        //         if (DoesRoleHaveUsers(roleName))
-        //         {
-        //             Console.WriteLine("Role '" + roleName +
-        //             "' cannot be deleted " +
-        //             " because it has " +
-        //             "associated users.");
-        //             return false;
-        //         }
-        //         _db.Roles.Remove(role);
-        //         _db.SaveChanges();
-        //         return true;
-        //     }
-
-        //     catch (Exception ex)
-        //     {
-        //         Console.WriteLine("Error deleting role '" +
-        //         roleName + "' : " +
-        //         ex.Message);
-        //     }
-        //     return false;
-        // }
-
         public SelectList GetRoleSelectList()
         {
             var roles = GetAllRoles().Select(r =>
@@ -128,14 +70,5 @@ namespace PaaS.Repositories
             return roleSelectList;
         }
 
-        // public void CreateInitialRole()
-        // {
-        //     const string ADMIN = "Admin";
-        //     var role = GetRole(ADMIN);
-        //     if (role == null)
-        //     {
-        //         CreateRole(ADMIN);
-        //     }
-        // }
     }
 }

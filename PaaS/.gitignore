@@ -236,3 +236,8 @@ _Pvt_Extensions
 # JetBrains Rider
 .idea/
 *.sln.iml
+
+# Testing removing db files
+*.db
+*.db-shm
+*.db-wal
