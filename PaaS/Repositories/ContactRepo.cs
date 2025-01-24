@@ -23,6 +23,7 @@ namespace PaaS.Repositories
                 u => u.UserId,
                 (c, u) => new ContactInfoVM
                 {
+                    ContactId = c.ContactId,
                     FirstName = u.FirstName,
                     LastName = u.LastName,
                     Email = u.Email,
@@ -37,6 +38,30 @@ namespace PaaS.Repositories
                 }).Where(c => c.UserId == userId).ToList();
 
             return contactInfo;
+        }
+
+        public ContactInfoVM GetContactInfoById(int contactId)
+        {
+            ContactInfoVM? contanctInfoVM = _db.ContactInfo.Join(_db.User,
+                c => c.UserId,
+                u => u.UserId,
+                (c, u) => new ContactInfoVM
+                {
+                    ContactId = c.ContactId,
+                    FirstName = u.FirstName,
+                    LastName = u.LastName,
+                    Email = u.Email,
+                    //Phone = c.Phone,
+                    Phone = u.Phone,
+                    Address1 = c.Address1,
+                    Address2 = c.Address2,
+                    CityId = c.CityId,
+                    ProvinceId = c.ProvinceId,
+                    UserId = c.UserId,
+                    Orders = "test" //TODO
+                }).FirstOrDefault(c => c.ContactId == contactId);
+
+            return contanctInfoVM ?? new ContactInfoVM();
         }
 
         public void AddContactInfo(int userId)
@@ -54,7 +79,17 @@ namespace PaaS.Repositories
             _db.SaveChanges();
         }
 
-
-
+        public void UpdateContactInfo(ContactInfoVM contactInfo)
+        {
+            ContactInfo? contact = _db.ContactInfo.Find(contactInfo.ContactId);
+            if (contact != null)
+            {
+                contact.Address1 = contactInfo.Address1;
+                contact.Address2 = contactInfo.Address2;
+                contact.CityId = contactInfo.CityId;
+                contact.ProvinceId = contactInfo.ProvinceId;
+                _db.SaveChanges();
+            }
+        }
     }
 }

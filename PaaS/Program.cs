@@ -21,6 +21,7 @@ builder.Services.AddScoped<UserRepo>();
 builder.Services.AddScoped<UserRoleRepo>();
 builder.Services.AddScoped<RoleRepo>();
 builder.Services.AddScoped<ContactRepo>();
+builder.Services.AddScoped<LocationRepo>();
 
 var app = builder.Build();
 

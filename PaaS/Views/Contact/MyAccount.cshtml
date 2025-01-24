@@ -49,10 +49,10 @@
 						<ul>
 							<li>@item.Address1</li>
 							<li>@item.Address2</li>
-							<li><span>@item.CityId</span><span>@item.ProvinceId</span></li>
+							<li><span>@item.CityName</span>, <span>@item.ProvinceName</span></li>
 						</ul>
-						<button>Edit</button>
-						<button>Delete</button>
+						<a asp-action="EditAddress" asp-route-contactId="@item.ContactId">Edit</a>
+						<a asp-action="DeleteAddress" asp-route-contactId="@item.ContactId">Delete</a>
 					</div>
 				}
 				

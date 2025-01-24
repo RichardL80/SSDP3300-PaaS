@@ -5,6 +5,7 @@ using PaaS.ViewModels;
 using PaaS.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.CodeAnalysis;
 
 namespace PaaS.Controllers;
 
@@ -13,11 +14,13 @@ public class ContactController : Controller
 
     private readonly ContactRepo _contactRepo;
     private readonly UserRepo _userRepo;
+    private readonly LocationRepo _locationRepo;
 
-    public ContactController(ContactRepo contactRepo, UserRepo userRepo)
+    public ContactController(ContactRepo contactRepo, UserRepo userRepo, LocationRepo locationRepo)
     {
         _contactRepo = contactRepo;
         _userRepo = userRepo;
+        _locationRepo = locationRepo;
     }
 
     [Authorize]
@@ -25,15 +28,35 @@ public class ContactController : Controller
     {
         User user = _userRepo.GetUser(User.Identity.Name);
         IEnumerable<ContactInfoVM> contactInfoVM = _contactRepo.GetContactInfo(user.UserId);
+        foreach (var contact in contactInfoVM)
+        {
+            contact.CityName = _locationRepo.GetCityName(contact.CityId);
+            contact.ProvinceName = _locationRepo.GetProvinceName(contact.ProvinceId);
+        }
         return View(contactInfoVM);
     }
 
     [HttpGet]
-    public IActionResult EditAddress(int userId)
+    public IActionResult EditAddress(int contactId)
     {
-        IEnumerable<ContactInfoVM> contactInfoVM = _contactRepo.GetContactInfo(userId);
-        return View(contactInfoVM);
+        ContactInfoVM contactInfo = _contactRepo.GetContactInfoById(contactId);
+        ViewBag.CitySelectList = _locationRepo.GetCitySelectList();
+        ViewBag.ProvinceSelectList = _locationRepo.GetProvinceSelectList();
+        return View(contactInfo);
     }
+
+    [HttpPost]
+    public IActionResult EditAddress(ContactInfoVM contactInfo)
+    {
+        if (ModelState.IsValid)
+        {
+            _contactRepo.UpdateContactInfo(contactInfo);
+            return RedirectToAction(nameof(MyAccount));
+        }
+        return View();
+    }
+
+
 
     [HttpGet]
     public IActionResult EditDetails(int userId)
@@ -62,6 +85,7 @@ public class ContactController : Controller
         }
         return View();
     }
+
 
 
 }

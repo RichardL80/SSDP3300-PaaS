@@ -4,6 +4,8 @@ namespace PaaS.ViewModels
 {
     public class ContactInfoVM
     {
+        [Display(Name = "Contact ID")]
+        public int? ContactId { get; set; }
         [Display(Name = "User")]
         public int UserId { get; set; }
 
@@ -26,8 +28,13 @@ namespace PaaS.ViewModels
         public string? Address2 { get; set; }
 
         [Display(Name = "City")]
-        public int CityId { get; set; }
+        public string? CityName { get; set; }
 
+        [Display(Name = "Province")]
+        public string? ProvinceName { get; set; }
+
+        [Display(Name = "City")]
+        public int CityId { get; set; }
 
         [Display(Name = "Province")]
         public int ProvinceId { get; set; }
