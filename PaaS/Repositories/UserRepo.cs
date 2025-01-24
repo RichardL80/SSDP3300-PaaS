@@ -68,7 +68,7 @@ public class UserRepo
         _db.User.Add(newUser);
         _db.SaveChanges();
         int userId = newUser.UserId;
-        _contactRepo.AddContactInfo(userId);
+        _ = _contactRepo.AddContactInfo(userId);
 
     }
 

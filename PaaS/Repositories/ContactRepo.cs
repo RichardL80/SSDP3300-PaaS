@@ -64,7 +64,22 @@ namespace PaaS.Repositories
             return contanctInfoVM ?? new ContactInfoVM();
         }
 
-        public void AddContactInfo(int userId)
+        // public void AddContactInfo(int userId)
+        // {
+        //     ContactInfo contactInfo = new ContactInfo
+        //     {
+        //         //Phone = "",
+        //         Address1 = "",
+        //         CityId = -1,
+        //         ProvinceId = -1,
+        //         UserId = userId
+
+        //     };
+        //     _db.ContactInfo.Add(contactInfo);
+        //     _db.SaveChanges();
+        // }
+
+        public ContactInfo AddContactInfo(int userId)
         {
             ContactInfo contactInfo = new ContactInfo
             {
@@ -77,6 +92,7 @@ namespace PaaS.Repositories
             };
             _db.ContactInfo.Add(contactInfo);
             _db.SaveChanges();
+            return contactInfo;
         }
 
         public void UpdateContactInfo(ContactInfoVM contactInfo)

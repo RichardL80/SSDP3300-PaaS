@@ -37,6 +37,14 @@ public class ContactController : Controller
     }
 
     [HttpGet]
+    public IActionResult AddAddress(int userId)
+    {
+        ContactInfo contactInfo = _contactRepo.AddContactInfo(userId);
+
+        return RedirectToAction(nameof(EditAddress), new { contactId = contactInfo.ContactId });
+    }
+
+    [HttpGet]
     public IActionResult EditAddress(int contactId)
     {
         ContactInfoVM contactInfo = _contactRepo.GetContactInfoById(contactId);

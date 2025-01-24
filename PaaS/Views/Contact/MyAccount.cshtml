@@ -39,8 +39,7 @@
 		<section id="addresses">
 			<div class="section-header">
 				<h2>Addresses</h2>
-				@* <a asp-action="EditAddress" asp-route-userId="@Model.FirstOrDefault()?.UserId">Edit</a> *@
-				<button>+ Add New</button>
+				<a asp-action="AddAddress" asp-route-userId="@Model.FirstOrDefault()?.UserId">+ Add New</a>
 			</div>
 			<div class="addresses-content">
 				@foreach (var item in Model)
