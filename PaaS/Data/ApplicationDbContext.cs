@@ -44,7 +44,7 @@ public class ApplicationDbContext : IdentityDbContext
     {
         builder.Entity<ItemType>().HasData(
             new ItemType { ItemTypeId = 1, Description = "Pizza" },
-            new ItemType { ItemTypeId = 2, Description = "Slide" }, // Typo? Should this be "Side"?
+            new ItemType { ItemTypeId = 2, Description = "Slide" }, 
             new ItemType { ItemTypeId = 3, Description = "Drink" }
         );
         builder.Entity<Category>().HasData(
