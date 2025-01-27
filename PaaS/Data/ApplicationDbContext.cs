@@ -26,7 +26,6 @@ public class ApplicationDbContext : IdentityDbContext
         SeedRoles(builder);
         SeedProvinces(builder);
         SeedCities(builder);
-        // SeedOrders(builder);
     }
 
     private void SeedRoles(ModelBuilder builder)
@@ -61,12 +60,4 @@ public class ApplicationDbContext : IdentityDbContext
             new Province { ProvinceId = 2, Name = "Ontario" }
         );
     }
-
-    // private void SeedOrders(ModelBuilder builder)
-    // {
-    //     builder.Entity<Order>().HasData(
-    //         new Order { OrderId = 1, UserId = 1, OrderDate = new DateTime(2025, 1, 26), TotalAmount = 100, DeliveryMethodId = 1, PaymentMethodId = 1, StatusId = 1 },
-    //         new Order { OrderId = 2, UserId = 1, OrderDate = new DateTime(2025, 1, 27), TotalAmount = 200, DeliveryMethodId = 2, PaymentMethodId = 2, StatusId = 2 }
-    //     );
-    // }
 }
