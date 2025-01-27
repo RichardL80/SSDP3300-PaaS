@@ -38,7 +38,5 @@ namespace PaaS.ViewModels
 
         [Display(Name = "Province")]
         public int ProvinceId { get; set; }
-
-        public string? Orders { get; set; } //TODO
     }
 }

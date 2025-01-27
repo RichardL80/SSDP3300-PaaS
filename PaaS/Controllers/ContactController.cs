@@ -28,22 +28,18 @@ public class ContactController : Controller
     [Authorize]
     public IActionResult MyAccount(string userEmail = null)
     {
-        userEmail ??= User.Identity?.Name;
+        userEmail ??= User.Identity?.Name; // If userEmail isn't specified, use the logged in user's email
 
         User user = _userRepo.GetUser(userEmail);
-        if (user == null)
-        {
-            // Handle the case where user is not found
-            return RedirectToAction("Error", "Home");
-        }
-
-        IEnumerable<ContactInfoVM> contactInfoVM = _contactRepo.GetContactInfo(user.UserId);
+        IEnumerable<ContactInfoVM> contactInfoVM = _contactRepo.GetContactInfo(user.UserId); // Get contact info for the user
         foreach (var contact in contactInfoVM)
         {
+            // Get the city and province names for each contact
             contact.CityName = _locationRepo.GetCityName(contact.CityId);
             contact.ProvinceName = _locationRepo.GetProvinceName(contact.ProvinceId);
         }
 
+        // Using a composite view model to pass both contact info and orders to the view
         var myAccountVM = new MyAccountVM
         {
             ContactInfo = contactInfoVM,
@@ -57,7 +53,6 @@ public class ContactController : Controller
     public IActionResult AddAddress(int userId)
     {
         ContactInfo contactInfo = _contactRepo.AddContactInfo(userId);
-
         return RedirectToAction(nameof(EditAddress), new { contactId = contactInfo.ContactId });
     }
 
@@ -65,6 +60,7 @@ public class ContactController : Controller
     public IActionResult EditAddress(int contactId)
     {
         ContactInfoVM contactInfo = _contactRepo.GetContactInfoById(contactId);
+        // Populate the select lists for the city and province
         ViewBag.CitySelectList = _locationRepo.GetCitySelectList();
         ViewBag.ProvinceSelectList = _locationRepo.GetProvinceSelectList();
         return View(contactInfo);
@@ -116,13 +112,13 @@ public class ContactController : Controller
 
         if (ModelState.IsValid)
         {
-
             _userRepo.UpdateUserContactInfo(userVM);
             return RedirectToAction(nameof(MyAccount), new { userVM.Email });
         }
         return View();
     }
 
+    // Admin search for user details
     public IActionResult AdminUserDetails(string userEmail)
     {
         return RedirectToAction(nameof(MyAccount), new { userEmail });

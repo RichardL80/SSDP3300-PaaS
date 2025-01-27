@@ -61,9 +61,9 @@ public class UserRepo
             LastName = LastName,
             Email = email,
             Password = password,
-            IsVerified = false,
-            Phone = "",
-            RoleId = 3
+            IsVerified = false, // TODO: Implement email verification
+            Phone = "", // Changed from the ERD, needed for non-nullable
+            RoleId = 3 // All new users are customers by default
         };
         _db.User.Add(newUser);
         _db.SaveChanges();

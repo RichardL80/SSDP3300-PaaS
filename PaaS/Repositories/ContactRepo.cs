@@ -34,7 +34,6 @@ namespace PaaS.Repositories
                     CityId = c.CityId,
                     ProvinceId = c.ProvinceId,
                     UserId = c.UserId,
-                    Orders = "test" //TODO
                 }).Where(c => c.UserId == userId).ToList();
 
             return contactInfo;
@@ -58,32 +57,17 @@ namespace PaaS.Repositories
                     CityId = c.CityId,
                     ProvinceId = c.ProvinceId,
                     UserId = c.UserId,
-                    Orders = "test" //TODO
                 }).FirstOrDefault(c => c.ContactId == contactId);
 
             return contanctInfoVM ?? new ContactInfoVM();
         }
 
-        // public void AddContactInfo(int userId)
-        // {
-        //     ContactInfo contactInfo = new ContactInfo
-        //     {
-        //         //Phone = "",
-        //         Address1 = "",
-        //         CityId = -1,
-        //         ProvinceId = -1,
-        //         UserId = userId
-
-        //     };
-        //     _db.ContactInfo.Add(contactInfo);
-        //     _db.SaveChanges();
-        // }
-
         public ContactInfo AddContactInfo(int userId)
         {
+            // Add a new contact info record, default values because of non-nullable requirements
             ContactInfo contactInfo = new ContactInfo
             {
-                //Phone = "",
+                //Phone = "", // Changed from the ERD
                 Address1 = "",
                 CityId = -1,
                 ProvinceId = -1,

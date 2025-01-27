@@ -23,6 +23,7 @@ public class ApplicationDbContext : IdentityDbContext
     {
         base.OnModelCreating(builder);
 
+        // Seed some static data into the database
         SeedRoles(builder);
         SeedProvinces(builder);
         SeedCities(builder);
@@ -46,7 +47,7 @@ public class ApplicationDbContext : IdentityDbContext
     private void SeedCities(ModelBuilder builder)
     {
         builder.Entity<City>().HasData(
-            new City { CityId = -1, Name = "", ProvinceId = -1 },
+            new City { CityId = -1, Name = "", ProvinceId = -1 }, // Needed for non-nullable foreign key
             new City { CityId = 1, Name = "Vancouver", ProvinceId = 1 },
             new City { CityId = 2, Name = "Toronto", ProvinceId = 2 }
         );
@@ -55,7 +56,7 @@ public class ApplicationDbContext : IdentityDbContext
     private void SeedProvinces(ModelBuilder builder)
     {
         builder.Entity<Province>().HasData(
-            new Province { ProvinceId = -1, Name = "" },
+            new Province { ProvinceId = -1, Name = "" }, // Needed for non-nullable foreign key
             new Province { ProvinceId = 1, Name = "British Columbia" },
             new Province { ProvinceId = 2, Name = "Ontario" }
         );
