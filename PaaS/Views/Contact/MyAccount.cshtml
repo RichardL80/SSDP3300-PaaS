@@ -12,17 +12,17 @@
 <div class="account-wrapper">
 	<div class="left-nav">
 		<ul class="account-nav">
-			<li><a href="/Contact/Personal Details">Personal Details</a></li>
-			<li><a href="/Contact/MyOrders">Addressess</a></li>
-			<li><a href="/Contact/MyWishlist">Order History</a></li>
-			<li><a href="/Contact/MyProfile">Settings?</a></li>
+			<li><button id="personal-details-nav">Personal Details</button></li>
+			<li><button id="address-nav">Addressess</button></li>
+			<li><button id="order-history-nav">Order History</button></li>
+			<li><button id="settings-nav">Settings</button></li>
 			<li><form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
                 <button type="submit" class="nav-link btn btn-link text-dark">Logout</button>
             </form></li>
 		</ul>
 	</div>
 	<div class="account-content">
-		<section id="personal-details">
+		<section id="personal-details" class="my-account-section">
 			<div class="section-header">
 				<h2>Personal Details</h2>
 				<a asp-action="EditDetails" asp-route-userId="@Model.ContactInfo.FirstOrDefault()?.UserId">Edit</a>
@@ -35,7 +35,7 @@
 				</ul>
 			</div>
 		</section>
-		<section id="addresses">
+		<section id="addresses" class="my-account-section">
 			<div class="section-header">
 				<h2>Addresses</h2>
 				<a asp-action="AddAddress" asp-route-userId="@Model.ContactInfo.FirstOrDefault()?.UserId">+ Add New</a>
@@ -56,7 +56,7 @@
 				
 			</div>
 		</section>
-		<section id="order-history">
+		<section id="order-history" class="my-account-section">
 			<div class="section-header">
 				<h2>Order History</h2>
 				@foreach (var item in Model.Orders)
@@ -72,5 +72,42 @@
 				}
 			</div>
 		</section>
+		<section id="settings" class="my-account-section">
+			<div class="section-header">
+				<h2>Settings</h2>
+				
+			</div>
+			<div class="settings-content">
+				<ul>
+					@*Todo*@
+					<li><a asp-action="ChangePassword">Change Password</a></li>
+				</ul>
+			</div>
 	</div>
 </div>
+
+
+@section Scripts {
+	<script>
+		$(document).ready(function () {
+			$(".my-account-section").hide();
+			$("#personal-details").show();
+			$("#personal-details-nav").click(function () {
+				$(".my-account-section").hide();
+				$("#personal-details").show();
+			});
+			$("#address-nav").click(function () {
+				$(".my-account-section").hide();
+				$("#addresses").show();
+			});
+			$("#order-history-nav").click(function () {
+				$(".my-account-section").hide();
+				$("#order-history").show();
+			});
+			$("#settings-nav").click(function () {
+				$(".my-account-section").hide();
+				$("#settings").show();
+			});
+		});
+	</script>
+}

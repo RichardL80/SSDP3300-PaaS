@@ -26,20 +26,30 @@ public class ContactController : Controller
     }
 
     [Authorize]
-    public IActionResult MyAccount()
+    public IActionResult MyAccount(string userEmail = null)
     {
-        User user = _userRepo.GetUser(User.Identity.Name);
+        userEmail ??= User.Identity?.Name;
+
+        User user = _userRepo.GetUser(userEmail);
+        if (user == null)
+        {
+            // Handle the case where user is not found
+            return RedirectToAction("Error", "Home");
+        }
+
         IEnumerable<ContactInfoVM> contactInfoVM = _contactRepo.GetContactInfo(user.UserId);
         foreach (var contact in contactInfoVM)
         {
             contact.CityName = _locationRepo.GetCityName(contact.CityId);
             contact.ProvinceName = _locationRepo.GetProvinceName(contact.ProvinceId);
         }
-        MyAccountVM myAccountVM = new MyAccountVM
+
+        var myAccountVM = new MyAccountVM
         {
             ContactInfo = contactInfoVM,
             Orders = _orderRepo.GetOrderByUserId(user.UserId)
         };
+
         return View(myAccountVM);
     }
 
@@ -66,7 +76,7 @@ public class ContactController : Controller
         if (ModelState.IsValid)
         {
             _contactRepo.UpdateContactInfo(contactInfo);
-            return RedirectToAction(nameof(MyAccount));
+            return RedirectToAction(nameof(MyAccount), new { contactInfo.Email });
         }
         return View();
     }
@@ -82,7 +92,7 @@ public class ContactController : Controller
     {
         int contactId = contactInfo.ContactId ?? -1; // Fixing nullable error
         _contactRepo.DeleteContactInfo(contactId);
-        return RedirectToAction(nameof(MyAccount));
+        return RedirectToAction(nameof(MyAccount), new { contactInfo.Email });
     }
 
     [HttpGet]
@@ -108,11 +118,14 @@ public class ContactController : Controller
         {
 
             _userRepo.UpdateUserContactInfo(userVM);
-            return RedirectToAction(nameof(MyAccount));
+            return RedirectToAction(nameof(MyAccount), new { userVM.Email });
         }
         return View();
     }
 
-
+    public IActionResult AdminUserDetails(string userEmail)
+    {
+        return RedirectToAction(nameof(MyAccount), new { userEmail });
+    }
 
 }
