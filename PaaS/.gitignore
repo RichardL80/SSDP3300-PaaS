@@ -236,3 +236,9 @@ _Pvt_Extensions
 # JetBrains Rider
 .idea/
 *.sln.iml
+
+app.db
+app.db-shm
+app.db-wal
+
+../.idea/

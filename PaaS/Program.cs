@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using PaaS.Data;
+using PaaS.RepoInterfaces;
 using PaaS.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -20,6 +21,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<UserRepo>();
 builder.Services.AddScoped<UserRoleRepo>();
 builder.Services.AddScoped<RoleRepo>();
+builder.Services.AddScoped<IMenuRepository, MenuRepo>();
 
 var app = builder.Build();
 

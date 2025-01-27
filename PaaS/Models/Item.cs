@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PaaS.Models;
 
-public partial class Item
+public class Item
 {
     [Key]
     public int ItemId { get; set; }
@@ -17,13 +18,14 @@ public partial class Item
 
     public string? ImgUrl { get; set; }
 
-    public int IdItemType { get; set; }
+    public int ItemTypeId { get; set; }
 
     public int IdCategory { get; set; }
-
-    public virtual Category IdCategoryNavigation { get; set; } = null!;
-
-    public virtual ItemType IdItemTypeNavigation { get; set; } = null!;
-
-    public virtual ICollection<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
+    
+    [ForeignKey("ItemTypeId")]
+    public ItemType ItemType { get; set; } = null!;
+    
+    [ForeignKey("IdCategory")]
+    public Category Category { get; set; } = null!;
+    
 }
