@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PaaS.Data;
 
@@ -10,9 +11,11 @@ using PaaS.Data;
 namespace PaaS.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250127194752_SeedOrders")]
+    partial class SeedOrders
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.1");
@@ -433,7 +436,7 @@ namespace PaaS.Migrations
                         {
                             OrderId = 1,
                             DeliveryMethodId = 1,
-                            OrderDate = new DateTime(2025, 1, 26, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            OrderDate = new DateTime(2025, 1, 27, 11, 47, 50, 646, DateTimeKind.Local).AddTicks(7736),
                             PaymentMethodId = 1,
                             StatusId = 1,
                             TotalAmount = 100m,
@@ -443,7 +446,7 @@ namespace PaaS.Migrations
                         {
                             OrderId = 2,
                             DeliveryMethodId = 2,
-                            OrderDate = new DateTime(2025, 1, 27, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            OrderDate = new DateTime(2025, 1, 27, 11, 47, 50, 651, DateTimeKind.Local).AddTicks(1878),
                             PaymentMethodId = 2,
                             StatusId = 2,
                             TotalAmount = 200m,

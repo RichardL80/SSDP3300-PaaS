@@ -107,5 +107,15 @@ namespace PaaS.Repositories
                 _db.SaveChanges();
             }
         }
+
+        public void DeleteContactInfo(int contactId)
+        {
+            ContactInfo? contact = _db.ContactInfo.Find(contactId);
+            if (contact != null)
+            {
+                _db.ContactInfo.Remove(contact);
+                _db.SaveChanges();
+            }
+        }
     }
 }

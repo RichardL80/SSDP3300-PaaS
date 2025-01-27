@@ -1,4 +1,4 @@
-@model IEnumerable<PaaS.ViewModels.ContactInfoVM>
+@model PaaS.ViewModels.MyAccountVM
 
 @{
 	ViewData["Title"] = "My Account";
@@ -14,7 +14,6 @@
 		<ul class="account-nav">
 			<li><a href="/Contact/Personal Details">Personal Details</a></li>
 			<li><a href="/Contact/MyOrders">Addressess</a></li>
-			<li><a href="/Contact/MyCart">Payment Methods?</a></li>
 			<li><a href="/Contact/MyWishlist">Order History</a></li>
 			<li><a href="/Contact/MyProfile">Settings?</a></li>
 			<li><form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
@@ -26,23 +25,23 @@
 		<section id="personal-details">
 			<div class="section-header">
 				<h2>Personal Details</h2>
-				<a asp-action="EditDetails" asp-route-userId="@Model.FirstOrDefault()?.UserId">Edit</a>
+				<a asp-action="EditDetails" asp-route-userId="@Model.ContactInfo.FirstOrDefault()?.UserId">Edit</a>
 			</div>
 			<div class="details-content">
 				<ul>
-					<li><span>Name:</span> <span>@Model.FirstOrDefault()?.FirstName</span> <span>@Model.FirstOrDefault()?.LastName</span></li>
-					<li><span>Email:</span> @Model.FirstOrDefault()?.Email</li>
-					<li><span>Phone:</span> @Model.FirstOrDefault()?.Phone</li>
+					<li><span>Name:</span> <span>@Model.ContactInfo.FirstOrDefault()?.FirstName</span> <span>@Model.ContactInfo.FirstOrDefault()?.LastName</span></li>
+					<li><span>Email:</span> @Model.ContactInfo.FirstOrDefault()?.Email</li>
+					<li><span>Phone:</span> @Model.ContactInfo.FirstOrDefault()?.Phone</li>
 				</ul>
 			</div>
 		</section>
 		<section id="addresses">
 			<div class="section-header">
 				<h2>Addresses</h2>
-				<a asp-action="AddAddress" asp-route-userId="@Model.FirstOrDefault()?.UserId">+ Add New</a>
+				<a asp-action="AddAddress" asp-route-userId="@Model.ContactInfo.FirstOrDefault()?.UserId">+ Add New</a>
 			</div>
 			<div class="addresses-content">
-				@foreach (var item in Model)
+				@foreach (var item in Model.ContactInfo)
 				{
 					<div class="address">
 						<ul>
@@ -60,7 +59,17 @@
 		<section id="order-history">
 			<div class="section-header">
 				<h2>Order History</h2>
-				
+				@foreach (var item in Model.Orders)
+				{
+					<div class="order">
+						<ul>
+							<li><span>Order ID:</span> @item.OrderId</li>
+							<li><span>Order Date:</span> @item.OrderDate</li>
+							<li><span>Order Total:</span> @item.TotalAmount</li>
+						</ul>
+						<a asp-action="OrderDetails" asp-route-orderId="@item.OrderId">View Details</a>
+					</div>
+				}
 			</div>
 		</section>
 	</div>

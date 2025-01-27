@@ -15,12 +15,14 @@ public class ContactController : Controller
     private readonly ContactRepo _contactRepo;
     private readonly UserRepo _userRepo;
     private readonly LocationRepo _locationRepo;
+    private readonly OrderRepo _orderRepo;
 
-    public ContactController(ContactRepo contactRepo, UserRepo userRepo, LocationRepo locationRepo)
+    public ContactController(ContactRepo contactRepo, UserRepo userRepo, LocationRepo locationRepo, OrderRepo orderRepo)
     {
         _contactRepo = contactRepo;
         _userRepo = userRepo;
         _locationRepo = locationRepo;
+        _orderRepo = orderRepo;
     }
 
     [Authorize]
@@ -33,7 +35,12 @@ public class ContactController : Controller
             contact.CityName = _locationRepo.GetCityName(contact.CityId);
             contact.ProvinceName = _locationRepo.GetProvinceName(contact.ProvinceId);
         }
-        return View(contactInfoVM);
+        MyAccountVM myAccountVM = new MyAccountVM
+        {
+            ContactInfo = contactInfoVM,
+            Orders = _orderRepo.GetOrderByUserId(user.UserId)
+        };
+        return View(myAccountVM);
     }
 
     [HttpGet]
@@ -64,7 +71,19 @@ public class ContactController : Controller
         return View();
     }
 
+    [HttpGet]
+    public IActionResult DeleteAddress(int contactId)
+    {
+        return View(_contactRepo.GetContactInfoById(contactId));
+    }
 
+    [HttpPost]
+    public IActionResult DeleteAddress(ContactInfoVM contactInfo)
+    {
+        int contactId = contactInfo.ContactId ?? -1; // Fixing nullable error
+        _contactRepo.DeleteContactInfo(contactId);
+        return RedirectToAction(nameof(MyAccount));
+    }
 
     [HttpGet]
     public IActionResult EditDetails(int userId)
