@@ -26,6 +26,7 @@ namespace PaaS.Repositories
                     ContactId = c.ContactId,
                     FirstName = u.FirstName,
                     LastName = u.LastName,
+                    Password = u.Password,
                     Email = u.Email,
                     //Phone = c.Phone,
                     Phone = u.Phone,

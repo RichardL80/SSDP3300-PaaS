@@ -15,6 +15,9 @@ namespace PaaS.ViewModels
         [Display(Name = "Last Name")]
         public string? LastName { get; set; }
 
+        [Display(Name = "Password")]
+        public string? Password { get; set; }
+
         [Display(Name = "Email")]
         public string? Email { get; set; }
 
