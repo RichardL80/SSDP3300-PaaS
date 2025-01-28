@@ -1,15 +1,16 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace PaaS.Models
+namespace PaaS.ViewModels
 {
-    public class PayPalConfirmationModel
+    public class PayPalTransactionVM
     {
-        [Key]
-        public int ID { get; set; }
         public string TransactionId { get; set; }
         public decimal Amount { get; set; }
         public string PayerName { get; set; }
-        public DateTime CreatedDate { get; set; }
+
         public string Email { get; set; }
+
+        public DateTime CreatedDate { get; set; }
+        public string MOP { get; set; }
     }
 }

@@ -18,14 +18,4 @@ public class OrderSummaryController : Controller
         return View();
     }
 
-    public IActionResult PayPal()
-    {
-        return View();
-    }
-
-    public IActionResult PayPalConfirmation(PayPalConfirmationModel payPalConfirmationModel)
-    {
-        return View(payPalConfirmationModel);
-    }
-
 }

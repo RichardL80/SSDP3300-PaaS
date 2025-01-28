@@ -60,7 +60,7 @@ html {
 
 .container-fluid {
   display: flex;
-  padding: 0px 400px;
+  padding: 0px 300px;
 }
 
 .navbar-nav {
@@ -73,7 +73,7 @@ html {
   font-size: var(--icon-size);
 }
 
-.nav-link i {
+.nav-link {
   margin-right: 2px;
 }
 

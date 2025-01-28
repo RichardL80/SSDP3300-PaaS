@@ -1,4 +1,4 @@
-@model PaaS.Models.PayPalConfirmationModel
+@model PaaS.ViewModels.PayPalTransactionVM
 @{
     ViewData["Title"] = "Payment Confirmation";
 }
@@ -9,4 +9,5 @@
     <p>Transaction ID: @Model.TransactionId</p>
     <p>Amount Paid: @Model.Amount</p>
     <p>Payer Name: @Model.PayerName</p>
+    <p>Payer Email:@Model.Email</p>
 </div>

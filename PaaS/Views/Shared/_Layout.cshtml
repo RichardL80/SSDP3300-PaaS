@@ -40,10 +40,14 @@
                                 <a id="cart" class="nav-link bi bi-cart3" asp-area="" asp-controller="Home"
                                     asp-action="Privacy"></a>
                             </li>
-                            @* Test for Order Summary page *@
+                            @* Test for Order Summary page and paypal trasaction page(Admin)*@
                             <li class="nav-item">
-                                <a class="nav-link" asp-area="" asp-controller="OrderSummary" asp-action="Index">Order
-                                    Summary</a>
+                                <a class="nav-link" asp-area="" asp-controller="PayPal" asp-action="Index">PayPal
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="PayPal" asp-action="Transaction">paypal
+                                    Transaction</a>
                             </li>
                         </ul>
 
