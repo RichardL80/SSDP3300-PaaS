@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace PaaS.Migrations
 {
     /// <inheritdoc />
-    public partial class NoSqlContext : Migration
+    public partial class ResetMigrations : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

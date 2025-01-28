@@ -427,28 +427,6 @@ namespace PaaS.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Order");
-
-                    b.HasData(
-                        new
-                        {
-                            OrderId = 1,
-                            DeliveryMethodId = 1,
-                            OrderDate = new DateTime(2025, 1, 26, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            PaymentMethodId = 1,
-                            StatusId = 1,
-                            TotalAmount = 100m,
-                            UserId = 1
-                        },
-                        new
-                        {
-                            OrderId = 2,
-                            DeliveryMethodId = 2,
-                            OrderDate = new DateTime(2025, 1, 27, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            PaymentMethodId = 2,
-                            StatusId = 2,
-                            TotalAmount = 200m,
-                            UserId = 1
-                        });
                 });
 
             modelBuilder.Entity("PaaS.Models.OrderItem", b =>

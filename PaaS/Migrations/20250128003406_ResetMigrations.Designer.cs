@@ -11,8 +11,8 @@ using PaaS.Data;
 namespace PaaS.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250127195129_SeedOrders2")]
-    partial class SeedOrders2
+    [Migration("20250128003406_ResetMigrations")]
+    partial class ResetMigrations
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -430,28 +430,6 @@ namespace PaaS.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Order");
-
-                    b.HasData(
-                        new
-                        {
-                            OrderId = 1,
-                            DeliveryMethodId = 1,
-                            OrderDate = new DateTime(2025, 1, 26, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            PaymentMethodId = 1,
-                            StatusId = 1,
-                            TotalAmount = 100m,
-                            UserId = 1
-                        },
-                        new
-                        {
-                            OrderId = 2,
-                            DeliveryMethodId = 2,
-                            OrderDate = new DateTime(2025, 1, 27, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            PaymentMethodId = 2,
-                            StatusId = 2,
-                            TotalAmount = 200m,
-                            UserId = 1
-                        });
                 });
 
             modelBuilder.Entity("PaaS.Models.OrderItem", b =>
