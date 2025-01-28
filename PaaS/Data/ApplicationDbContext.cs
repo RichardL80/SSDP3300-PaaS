@@ -14,6 +14,8 @@ public class ApplicationDbContext : IdentityDbContext
     }
 
     public DbSet<User> User { get; set; }
+    public DbSet<PayPalConfirmationModel> PayPalConfirmationModel { get; set; }
+
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

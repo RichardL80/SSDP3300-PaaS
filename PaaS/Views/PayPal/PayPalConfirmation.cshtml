@@ -1,0 +1,13 @@
+@model PaaS.ViewModels.PayPalTransactionVM
+@{
+    ViewData["Title"] = "Payment Confirmation";
+}
+
+<h2 id="payment-confirmation-title">Payment Confirmation</h2>
+<div id="payment-confirmation-detail">
+    <p>Thank you for your payment!</p>
+    <p>Transaction ID: @Model.TransactionId</p>
+    <p>Amount Paid: @Model.Amount</p>
+    <p>Payer Name: @Model.PayerName</p>
+    <p>Payer Email:@Model.Email</p>
+</div>
