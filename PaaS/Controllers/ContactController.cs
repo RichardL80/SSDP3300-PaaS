@@ -6,6 +6,8 @@ using PaaS.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.CodeAnalysis;
+using Microsoft.AspNetCore.Identity;
+using System.Security.Claims;
 
 namespace PaaS.Controllers;
 
@@ -16,13 +18,18 @@ public class ContactController : Controller
     private readonly UserRepo _userRepo;
     private readonly LocationRepo _locationRepo;
     private readonly OrderRepo _orderRepo;
+    private readonly UserManager<IdentityUser> _userManager;
+    private readonly SignInManager<IdentityUser> _signInManager;
 
-    public ContactController(ContactRepo contactRepo, UserRepo userRepo, LocationRepo locationRepo, OrderRepo orderRepo)
+
+    public ContactController(ContactRepo contactRepo, UserRepo userRepo, LocationRepo locationRepo, OrderRepo orderRepo, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
     {
         _contactRepo = contactRepo;
         _userRepo = userRepo;
         _locationRepo = locationRepo;
         _orderRepo = orderRepo;
+        _userManager = userManager;
+        _signInManager = signInManager;
     }
 
     [Authorize]
@@ -107,21 +114,99 @@ public class ContactController : Controller
     }
 
     [HttpPost]
-    public IActionResult EditDetails(UserVM userVM)
+    public async Task<IActionResult> EditDetails(UserVM userVM, string oldEmail)
     {
-
         if (ModelState.IsValid)
         {
             _userRepo.UpdateUserContactInfo(userVM);
-            return RedirectToAction(nameof(MyAccount), new { userVM.Email });
+
+            // Update the AspNetUser email
+            var user = await _userManager.FindByEmailAsync(oldEmail);
+            if (user != null)
+            {
+                user.UserName = userVM.Email;
+                user.Email = userVM.Email;
+
+                var result = await _userManager.UpdateAsync(user);
+                if (result.Succeeded)
+                {
+                    // Update the user's claims
+                    var claims = await _userManager.GetClaimsAsync(user);
+                    var nameClaim = claims.FirstOrDefault(c => c.Type == ClaimTypes.Name);
+                    if (nameClaim != null)
+                    {
+                        await _userManager.RemoveClaimAsync(user, nameClaim);
+                    }
+                    await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.Name, userVM.Email));
+
+                    // Re-authenticate the user to refresh the claims
+                    await _signInManager.RefreshSignInAsync(user);
+
+                    return RedirectToAction(nameof(MyAccount), new { userVM.Email });
+                }
+                else
+                {
+                    // Handle update failure
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError(string.Empty, error.Description);
+                    }
+                }
+            }
         }
-        return View();
+        return View(userVM);
     }
 
     // Admin search for user details
     public IActionResult AdminUserDetails(string userEmail)
     {
         return RedirectToAction(nameof(MyAccount), new { userEmail });
+    }
+
+    [HttpGet]
+    public IActionResult ChangePassword(int userId)
+    {
+        User user = _userRepo.GetById(userId);
+        ChangePasswordVM changePasswordVM = new ChangePasswordVM
+        {
+            UserId = user.UserId,
+            Email = user.Email,
+            CurrentPassword = user.Password
+        };
+        return View(changePasswordVM);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> ChangePassword(ChangePasswordVM model)
+    {
+        if (!ModelState.IsValid)
+        {
+            return View(model);
+        }
+
+        var user = await _userManager.FindByEmailAsync(model.Email);
+        if (user == null)
+        {
+            // Handle user not found
+            ModelState.AddModelError(string.Empty, "User not found.");
+            return View(model);
+        }
+
+        var result = await _userManager.ChangePasswordAsync(user, model.CurrentPassword, model.NewPassword);
+        if (result.Succeeded)
+        {
+            // Re-authenticate the user to refresh the claims
+            await _signInManager.RefreshSignInAsync(user);
+            return RedirectToAction(nameof(MyAccount));
+        }
+
+        // Handle errors
+        foreach (var error in result.Errors)
+        {
+            ModelState.AddModelError(string.Empty, error.Description);
+        }
+
+        return View(model);
     }
 
 }
