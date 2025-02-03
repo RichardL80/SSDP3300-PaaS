@@ -97,8 +97,9 @@ namespace PaaS.Controllers
                 orderSummary.UserContact = contactInfo;
             }
 
-            // Logic to process the order (e.g., redirect to PayPal)
-            return Redirect("https://www.paypal.com");
+            // Logic to process the order
+            return RedirectToAction("Index", "PayPal", new { orderId = orderId });
+
         }
 
         // Helper methods for calculations

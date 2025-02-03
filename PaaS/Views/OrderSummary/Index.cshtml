@@ -37,7 +37,11 @@
             }
         </p>
     </section>
-    <button>Place Order</button>
+    <button>
+        <a asp-controller="PayPal" asp-action="Index" asp-route-orderId="@Model.Order.OrderId"
+            style="text-decoration: none; color:  black;">Place Order</a>
+    </button>
+
     <p>Estimated Delivery Time: @Model.EstimatedDeliveryTime</p>
 </div>
 
