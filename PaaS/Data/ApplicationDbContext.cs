@@ -4,6 +4,8 @@ using Microsoft.EntityFrameworkCore;
 using PaaS.Models;
 
 
+
+
 namespace PaaS.Data;
 
 public class ApplicationDbContext : IdentityDbContext
@@ -15,6 +17,17 @@ public class ApplicationDbContext : IdentityDbContext
 
     public DbSet<User> User { get; set; }
     public DbSet<PayPalConfirmationModel> PayPalConfirmationModel { get; set; }
+
+    public DbSet<ContactInfo> ContactInfos { get; set; } = null;
+
+    public DbSet<Order> Order { get; set; }
+
+    public DbSet<OrderItem> OrderItem { get; set; }
+
+    public DbSet<Item> Item { get; set; }
+
+    public DbSet<City> Cities { get; set; }
+    public DbSet<Province> Provinces { get; set; }
 
 
     protected override void OnModelCreating(ModelBuilder builder)

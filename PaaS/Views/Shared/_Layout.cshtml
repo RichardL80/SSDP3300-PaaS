@@ -40,6 +40,7 @@
                                 <a id="cart" class="nav-link bi bi-cart3" asp-area="" asp-controller="Home"
                                     asp-action="Privacy"></a>
                             </li>
+
                             @* Test for Order Summary page and paypal trasaction page(Admin)*@
                             <li class="nav-item">
                                 <a class="nav-link" asp-area="" asp-controller="PayPal" asp-action="Index">PayPal
@@ -48,6 +49,10 @@
                             <li class="nav-item">
                                 <a class="nav-link" asp-area="" asp-controller="PayPal" asp-action="Transaction">paypal
                                     Transaction</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="OrderSummary" asp-action="Index"
+                                    asp-route-orderId="1">OrderSummary</a>
                             </li>
                         </ul>
 
