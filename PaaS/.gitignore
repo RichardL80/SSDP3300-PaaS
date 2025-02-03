@@ -236,3 +236,11 @@ _Pvt_Extensions
 # JetBrains Rider
 .idea/
 *.sln.iml
+
+# Visual Studio files
+.vs/
+bin/
+obj/
+*.user
+*.suo
+*.sln.docstates
