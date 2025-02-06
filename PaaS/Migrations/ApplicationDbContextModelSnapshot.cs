@@ -499,6 +499,35 @@ namespace PaaS.Migrations
                     b.ToTable("OrderItem");
                 });
 
+            modelBuilder.Entity("PaaS.Models.PayPalConfirmationModel", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("PayerName")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("TransactionId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("PayPalConfirmationModel");
+                });
+
             modelBuilder.Entity("PaaS.Models.PaymentMethod", b =>
                 {
                     b.Property<int>("PaymentMethodId")

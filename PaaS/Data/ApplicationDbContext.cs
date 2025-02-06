@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using PaaS.Models;
@@ -17,6 +17,7 @@ public class ApplicationDbContext : IdentityDbContext
     public DbSet<ItemType> ItemType { get; set; }
     public DbSet<Category> Category { get; set; }
     public DbSet<Item> Item { get; set; }
+    public DbSet<PayPalConfirmationModel> PayPalConfirmationModel { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
