@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace PaaS.Migrations
 {
     /// <inheritdoc />
-    public partial class RoleGenerate : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -259,23 +259,21 @@ namespace PaaS.Migrations
                     Description = table.Column<string>(type: "TEXT", nullable: false),
                     Price = table.Column<decimal>(type: "TEXT", nullable: false),
                     ImgUrl = table.Column<string>(type: "TEXT", nullable: true),
-                    IdItemType = table.Column<int>(type: "INTEGER", nullable: false),
-                    IdCategory = table.Column<int>(type: "INTEGER", nullable: false),
-                    IdCategoryNavigationIdCategory = table.Column<int>(type: "INTEGER", nullable: false),
-                    IdItemTypeNavigationItemTypeId = table.Column<int>(type: "INTEGER", nullable: false)
+                    ItemTypeId = table.Column<int>(type: "INTEGER", nullable: false),
+                    IdCategory = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Item", x => x.ItemId);
                     table.ForeignKey(
-                        name: "FK_Item_Category_IdCategoryNavigationIdCategory",
-                        column: x => x.IdCategoryNavigationIdCategory,
+                        name: "FK_Item_Category_IdCategory",
+                        column: x => x.IdCategory,
                         principalTable: "Category",
                         principalColumn: "IdCategory",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Item_ItemType_IdItemTypeNavigationItemTypeId",
-                        column: x => x.IdItemTypeNavigationItemTypeId,
+                        name: "FK_Item_ItemType_ItemTypeId",
+                        column: x => x.ItemTypeId,
                         principalTable: "ItemType",
                         principalColumn: "ItemTypeId",
                         onDelete: ReferentialAction.Cascade);
@@ -407,13 +405,11 @@ namespace PaaS.Migrations
                 name: "OrderItem",
                 columns: table => new
                 {
-                    OrderId = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                    OrderId = table.Column<int>(type: "INTEGER", nullable: false),
                     ItemId = table.Column<int>(type: "INTEGER", nullable: false),
                     Details = table.Column<string>(type: "TEXT", nullable: true),
                     Size = table.Column<string>(type: "TEXT", nullable: true),
-                    Quantity = table.Column<int>(type: "INTEGER", nullable: false),
-                    OrderId1 = table.Column<int>(type: "INTEGER", nullable: false)
+                    Quantity = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -425,8 +421,8 @@ namespace PaaS.Migrations
                         principalColumn: "ItemId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_OrderItem_Order_OrderId1",
-                        column: x => x.OrderId1,
+                        name: "FK_OrderItem_Order_OrderId",
+                        column: x => x.OrderId,
                         principalTable: "Order",
                         principalColumn: "OrderId",
                         onDelete: ReferentialAction.Cascade);
@@ -443,6 +439,27 @@ namespace PaaS.Migrations
                 });
 
             migrationBuilder.InsertData(
+                table: "Category",
+                columns: new[] { "IdCategory", "Description" },
+                values: new object[,]
+                {
+                    { 1, "Specialty Pizzas" },
+                    { 2, "Vegetarian Pizzas" },
+                    { 3, "Appetizers" },
+                    { 4, "Custom" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "ItemType",
+                columns: new[] { "ItemTypeId", "Description" },
+                values: new object[,]
+                {
+                    { 1, "Pizza" },
+                    { 2, "Slide" },
+                    { 3, "Drink" }
+                });
+
+            migrationBuilder.InsertData(
                 table: "Role",
                 columns: new[] { "RoleId", "Description" },
                 values: new object[,]
@@ -450,6 +467,16 @@ namespace PaaS.Migrations
                     { 1, "Admin" },
                     { 2, "Manager" },
                     { 3, "Customer" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Item",
+                columns: new[] { "ItemId", "Description", "IdCategory", "ImgUrl", "ItemTypeId", "Name", "Price" },
+                values: new object[,]
+                {
+                    { 1, "Grilled chicken, BBQ sauce, red onions, and cilantro", 1, null, 1, "BBQ Chicken", 10m },
+                    { 2, "Plant-based cheese, mushrooms, peppers, and vegan sausage", 2, null, 1, "Vegan Delight", 18.99m },
+                    { 3, "Breaded mozzarella with marinara sauce", 3, null, 2, "Mozzarella Sticks", 6m }
                 });
 
             migrationBuilder.CreateIndex(
@@ -510,14 +537,14 @@ namespace PaaS.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Item_IdCategoryNavigationIdCategory",
+                name: "IX_Item_IdCategory",
                 table: "Item",
-                column: "IdCategoryNavigationIdCategory");
+                column: "IdCategory");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Item_IdItemTypeNavigationItemTypeId",
+                name: "IX_Item_ItemTypeId",
                 table: "Item",
-                column: "IdItemTypeNavigationItemTypeId");
+                column: "ItemTypeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Order_DeliveryMethodId",
@@ -543,11 +570,6 @@ namespace PaaS.Migrations
                 name: "IX_OrderItem_ItemId",
                 table: "OrderItem",
                 column: "ItemId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_OrderItem_OrderId1",
-                table: "OrderItem",
-                column: "OrderId1");
 
             migrationBuilder.CreateIndex(
                 name: "IX_User_RoleId",

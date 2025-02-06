@@ -16,6 +16,7 @@ public class ItemVM
 
     [Required]
     [DataType(DataType.Currency)]
+    [DisplayName ("Price CAD")]
     [RegularExpression(@"^\d+(\.\d{1,2})?$", ErrorMessage = "Please enter a valid price.")]
     public decimal Price { get; set; }
 
@@ -23,12 +24,14 @@ public class ItemVM
     public string? ImgUrl { get; set; }
 
     [Required]
+    [DisplayName ("Item Type")]
     public int ItemTypeId { get; set; }
     
     [DisplayName ("Item Type")]
     public string? ItemTypeDescription { get; set; } = null!;
 
     [Required]
+    [DisplayName ("Category")]
     public int IdCategory { get; set; }
     
     [DisplayName ("Category")]

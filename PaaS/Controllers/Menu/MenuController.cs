@@ -16,7 +16,6 @@ public class MenuController : Controller
     public ActionResult Index()
     {
         var pizzas = _menuRepo.GetPizzaCategories();
-        
         return View(new MenuVM
         {
             PizzaCategories = pizzas,
