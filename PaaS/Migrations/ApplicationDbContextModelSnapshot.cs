@@ -266,6 +266,26 @@ namespace PaaS.Migrations
                     b.HasIndex("ProvinceId");
 
                     b.ToTable("City");
+
+                    b.HasData(
+                        new
+                        {
+                            CityId = -1,
+                            Name = "",
+                            ProvinceId = -1
+                        },
+                        new
+                        {
+                            CityId = 1,
+                            Name = "Vancouver",
+                            ProvinceId = 1
+                        },
+                        new
+                        {
+                            CityId = 2,
+                            Name = "Toronto",
+                            ProvinceId = 2
+                        });
                 });
 
             modelBuilder.Entity("PaaS.Models.ContactInfo", b =>
@@ -283,10 +303,6 @@ namespace PaaS.Migrations
 
                     b.Property<int>("CityId")
                         .HasColumnType("INTEGER");
-
-                    b.Property<string>("Phone")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
 
                     b.Property<int>("ProvinceId")
                         .HasColumnType("INTEGER");
@@ -471,6 +487,23 @@ namespace PaaS.Migrations
                     b.HasKey("ProvinceId");
 
                     b.ToTable("Province");
+
+                    b.HasData(
+                        new
+                        {
+                            ProvinceId = -1,
+                            Name = ""
+                        },
+                        new
+                        {
+                            ProvinceId = 1,
+                            Name = "British Columbia"
+                        },
+                        new
+                        {
+                            ProvinceId = 2,
+                            Name = "Ontario"
+                        });
                 });
 
             modelBuilder.Entity("PaaS.Models.Role", b =>
@@ -542,6 +575,10 @@ namespace PaaS.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Phone")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
