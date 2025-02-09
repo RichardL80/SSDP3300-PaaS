@@ -1,6 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
+<<<<<<< HEAD
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35527.113 d17.12
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PaaS", "PaaS.csproj", "{762AB365-97D0-4D19-909D-DDD326A8BBA9}"
+=======
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PaaS", "PaaS\PaaS.csproj", "{211F95AA-AB55-4BDE-A8C1-9352B3933B8F}"
+>>>>>>> 10a1c2616fb5e8cae6bc2d0630319a281647cbff
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -8,9 +15,19 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+<<<<<<< HEAD
+		{762AB365-97D0-4D19-909D-DDD326A8BBA9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{762AB365-97D0-4D19-909D-DDD326A8BBA9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{762AB365-97D0-4D19-909D-DDD326A8BBA9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{762AB365-97D0-4D19-909D-DDD326A8BBA9}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+=======
 		{211F95AA-AB55-4BDE-A8C1-9352B3933B8F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{211F95AA-AB55-4BDE-A8C1-9352B3933B8F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{211F95AA-AB55-4BDE-A8C1-9352B3933B8F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{211F95AA-AB55-4BDE-A8C1-9352B3933B8F}.Release|Any CPU.Build.0 = Release|Any CPU
+>>>>>>> 10a1c2616fb5e8cae6bc2d0630319a281647cbff
 	EndGlobalSection
 EndGlobal
