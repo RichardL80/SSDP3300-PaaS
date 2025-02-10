@@ -30,10 +30,9 @@ namespace PaaS.Controllers
                     new OrderItem { Quantity = 2, Size ="Large", Item = new Item { Price = 32.50m , Name ="Meet Lover"} }
                 }
                 },
-                UserContact = new ContactInfo { Address1 = "123 Main St, Vancouver K2N 7D4" },
                 AddressBook = new List<ContactInfo>
             {
-                new ContactInfo { Address1 = "456 Oak Rd, Vancouver V1K 1P7"}
+                new ContactInfo { Address2 = "456 Oak Rd, Vancouver V1K 1P7"}
             },
                 Subtotal = 45.49m,
                 GST = 2.27m,
