@@ -44,40 +44,6 @@ namespace PaaS.Controllers
 
             return View(mockOrderSummary); // Pass mock data to the view
         }
-        // Order Summary View
-        // public IActionResult Index(int orderId)
-        // {
-        //     // Get order details by order ID
-        //     var orderSummary = _orderRepository.GetOrderSummary(orderId); // Getting the order view model (OrderSummaryVM)
-        //     if (orderSummary == null)
-        //     {
-        //         return NotFound();
-        //     }
-
-        //     // Get the user contact information to display the address
-        //     var userContact = _contactInfoRepository.GetUserContactInfo(orderSummary.UserContact.UserId);
-
-        //     // Calculate the required values
-        //     var subtotal = CalculateSubtotal(orderSummary.Order); // Calculate subtotal using the helper method
-        //     var gst = CalculateGST(subtotal); // Calculate GST
-        //     var pst = CalculatePST(subtotal); // Calculate PST
-        //     var total = CalculateTotal(subtotal); // Calculate the total
-
-        //     var viewModel = new OrderSummaryVM
-        //     {
-        //         Order = orderSummary.Order, // Pass the order
-        //         UserContact = userContact, // Pass the user's contact info
-        //         AddressBook = _contactInfoRepository.GetUserAddressBook(orderSummary.UserContact.UserId), // Get the address book
-        //         Subtotal = subtotal, // Set the subtotal
-        //         GST = gst, // Set the GST
-        //         PST = pst, // Set the PST
-        //         ShippingFee = 10.00m, // Fixed shipping fee
-        //         Total = total, // Set the total
-        //         EstimatedDeliveryTime = "30-50 mins" // Set the estimated delivery time
-        //     };
-
-        //     return View(viewModel);
-        // }
 
         // Place Order action
         [HttpPost]
