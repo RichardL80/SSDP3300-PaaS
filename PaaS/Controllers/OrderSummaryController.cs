@@ -20,7 +20,7 @@ namespace PaaS.Controllers
         public IActionResult Index(int orderId = 1) // Default to orderId=1 if not provided
         {
             // Create a mock OrderSummaryVM to test the view
-            var mockOrderSummary = new OrderSummaryVM
+            var orderSummary = new OrderSummaryVM
             {
                 Order = new Order
                 {
@@ -32,17 +32,27 @@ namespace PaaS.Controllers
                 },
                 AddressBook = new List<ContactInfo>
             {
-                new ContactInfo { Address2 = "456 Oak Rd, Vancouver V1K 1P7"}
+                new ContactInfo { Address1=" 1000 No.3 Road, Richmond A2k 3N4", Address2 = "2000 Oak Rd, Vancouver V1K 1P7"}
             },
-                Subtotal = 45.49m,
-                GST = 2.27m,
-                PST = 3.18m,
                 ShippingFee = 10.00m,
-                Total = 60.94m,
                 EstimatedDeliveryTime = "30-50 mins"
             };
 
-            return View(mockOrderSummary); // Pass mock data to the view
+
+            // Calculate the subtotal
+            orderSummary.Subtotal = orderSummary.Order.OrderItem.Sum(item => item.Quantity * item.Item.Price);
+
+            // Assume 5% GST and 7% PST
+            orderSummary.GST = Math.Round(orderSummary.Subtotal * 0.05m, 2);
+            orderSummary.PST = Math.Round(orderSummary.Subtotal * 0.07m, 2);
+
+            // Calculate the total
+            orderSummary.Total = Math.Round(orderSummary.Subtotal + orderSummary.GST + orderSummary.PST + orderSummary.ShippingFee, 2);
+
+            // Estimated delivery time (keeping it fixed)
+            orderSummary.EstimatedDeliveryTime = "30-50 mins";
+
+            return View(orderSummary); // Pass mock data to the view
         }
 
         // Place Order action
@@ -66,22 +76,5 @@ namespace PaaS.Controllers
             return RedirectToAction("Index", "PayPal", new { orderId = orderId });
 
         }
-
-        // Helper methods for calculations
-        private decimal CalculateSubtotal(Order order)
-        {
-            decimal subtotal = 0;
-            foreach (var orderItem in order.OrderItem)
-            {
-                subtotal += orderItem.Quantity * orderItem.Item.Price;
-            }
-            return subtotal;
-        }
-
-        private decimal CalculateGST(decimal subtotal) => subtotal * 0.05m;
-
-        private decimal CalculatePST(decimal subtotal) => subtotal * 0.07m;
-
-        private decimal CalculateTotal(decimal subtotal) => subtotal + CalculateGST(subtotal) + CalculatePST(subtotal) + 10.00m;
     }
 }

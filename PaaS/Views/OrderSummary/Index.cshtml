@@ -9,6 +9,7 @@
 <h1>Order Summary</h1>
 
 <div>
+    @* Items detail *@
     <section id="order-item-detail-section">
         <h3 class="mt-2">Order Details</h3>
         <ul>
@@ -25,6 +26,7 @@
         <h5>Subtotal: $@Model.Subtotal</h5>
     </section>
 
+    @* Total price  *@
     <section id="total-price-section">
         <span>GST: @Model.GST</span><br>
         <span>PST: @Model.PST</span><br>
@@ -34,6 +36,7 @@
         </div>
     </section>
 
+    @* Delivery option *@
     <section id="delivery-section">
         <h3>Delivery Method</h3>
         <div class="delivery-method-option">
@@ -43,15 +46,35 @@
             <input type="radio" id="delivery" name="deliveryMethod" value="delivery">
             <label for="delivery">Delivery</label>
         </div>
+
+        @* Delivery address hide if user choose pick-up *@
         <div id="addressSection" style="display: none;">
             <p>
-                @foreach (var address in Model.AddressBook)
-                {
-                    <span>@address.Address1</span>
-                    <span>@address.Address2</span>
-
-                }
+                @* Address1 is the default address of delivery *@
+                <input type="radio" id="selectedAddress" name="address" checked>
+                <span id="selectedAddressText">@Model.AddressBook[0].Address1</span>
+                <button type="button" id="editAddressBtn" class="btn btn-sm btn-secondary">Edit</button>
             </p>
+        </div>
+
+        @* Address Selection Modal(shows up when click "Edit") *@
+        <div id="addressModal" class="modal" style="display:none;">
+            <div class="modal-content">
+                <h4>Select Address</h4>
+                <label>
+                    <input type="radio" name="addressOption" id="address1" value="@Model.AddressBook[0].Address1"
+                        checked>
+                    @Model.AddressBook[0].Address1
+                </label>
+                <br>
+                <label>
+                    <input type="radio" name="addressOption" id="address2" value="@Model.AddressBook[0].Address2">
+                    @Model.AddressBook[0].Address2
+                </label>
+                <br>
+                <button id="confirmAddressBtn" class="btn btn-primary">Confirm</button>
+                <button id="closeModalBtn" class="btn btn-secondary">Close</button>
+            </div>
         </div>
     </section>
 
@@ -74,7 +97,15 @@
             const pickupRadio = document.getElementById("pickup");
             const deliveryRadio = document.getElementById("delivery");
             const addressSection = document.getElementById("addressSection");
+            const selectedAddressText = document.getElementById("selectedAddressText");
+            const editAddressBtn = document.getElementById("editAddressBtn");
+            const addressModal = document.getElementById("addressModal");
+            const closeModalBtn = document.getElementById("closeModalBtn");
+            const confirmAddressBtn = document.getElementById("confirmAddressBtn");
+            const address1Checkbox = document.getElementById("address1");
+            const address2Checkbox = document.getElementById("address2");
 
+            // Toggle address section based on delivery method
             pickupRadio.addEventListener("change", function () {
                 if (this.checked) {
                     addressSection.style.display = "none";
@@ -85,6 +116,26 @@
                 if (this.checked) {
                     addressSection.style.display = "block";
                 }
+            });
+
+            // Open the modal
+            editAddressBtn.addEventListener("click", function () {
+                addressModal.style.display = "block";
+            });
+
+            // Close modal
+            closeModalBtn.addEventListener("click", function () {
+                addressModal.style.display = "none";
+            });
+
+            // Handle address selection
+            confirmAddressBtn.addEventListener("click", function () {
+                if (address2Checkbox.checked) {
+                    selectedAddressText.textContent = address2Checkbox.nextSibling.textContent;
+                } else {
+                    selectedAddressText.textContent = address1Checkbox.nextSibling.textContent;
+                }
+                addressModal.style.display = "none";
             });
         });
 
