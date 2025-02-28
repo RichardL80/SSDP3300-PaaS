@@ -1,0 +1,63 @@
+﻿@using Microsoft.AspNetCore.Identity
+@model IEnumerable<IdentityUser>
+
+@{
+    ViewData["Title"] = "User Management";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["SuccessMessage"]
+    </div>
+}
+
+<h2>User Management</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Email</th>
+            <th>Roles</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model)
+        {
+            <tr>
+                <td>@user.Email</td>
+                <td>
+                    @if (ViewBag.UserRoles.ContainsKey(user.Email))
+                    {
+                        foreach (var role in ViewBag.UserRoles[user.Email])
+                        {
+                            <span class="badge bg-primary">@role</span>
+                        }
+                    }
+                    else
+                    {
+                        <span class="badge bg-secondary">No Roles</span>
+                    }
+                </td>
+                <td>
+
+                    @if (!string.IsNullOrEmpty(user.Email))
+                    {
+                        <a class="btn btn-info" href="@Url.Action("AssignRole", "UserManagement", new { email = user.Email })">
+                            Assign Role
+                        </a>
+                    }
+
+                    @if (!string.IsNullOrEmpty(user.Email))
+                    {
+                        <a href="@Url.Action("ConfirmDeleteUser", "UserManagement", new { email = user.Email })" class="btn btn-danger">
+                            Delete
+                        </a>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+
+</table>

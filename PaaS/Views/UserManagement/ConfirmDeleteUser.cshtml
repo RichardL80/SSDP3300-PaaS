@@ -1,0 +1,17 @@
+﻿@model PaaS.ViewModels.UserRoleVM
+
+@{
+    ViewData["Title"] = "Confirm Deletion";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Are you sure you want to delete this user?</h2>
+
+<p><strong>Email:</strong> @Model.Email</p>
+
+<form method="post" action="@Url.Action("DeleteUser", "UserManagement")">
+    @Html.AntiForgeryToken()
+    <input type="hidden" name="email" value="@Model.Email" />
+    <button type="submit" class="btn btn-danger">Yes, Delete</button>
+    <a href="@Url.Action("Index", "UserManagement")" class="btn btn-secondary">Cancel</a>
+</form>

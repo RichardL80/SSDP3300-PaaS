@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace PaaS.Models;
 
-public partial class Category
+public class Category
 {
     [Key]
     public int IdCategory { get; set; }

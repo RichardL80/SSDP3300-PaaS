@@ -246,6 +246,28 @@ namespace PaaS.Migrations
                     b.HasKey("IdCategory");
 
                     b.ToTable("Category");
+
+                    b.HasData(
+                        new
+                        {
+                            IdCategory = 1,
+                            Description = "Specialty Pizzas"
+                        },
+                        new
+                        {
+                            IdCategory = 2,
+                            Description = "Vegetarian Pizzas"
+                        },
+                        new
+                        {
+                            IdCategory = 3,
+                            Description = "Appetizers"
+                        },
+                        new
+                        {
+                            IdCategory = 4,
+                            Description = "Custom"
+                        });
                 });
 
             modelBuilder.Entity("PaaS.Models.City", b =>
@@ -349,17 +371,11 @@ namespace PaaS.Migrations
                     b.Property<int>("IdCategory")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("IdCategoryNavigationIdCategory")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("IdItemType")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("IdItemTypeNavigationItemTypeId")
-                        .HasColumnType("INTEGER");
-
                     b.Property<string>("ImgUrl")
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("ItemTypeId")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -370,11 +386,40 @@ namespace PaaS.Migrations
 
                     b.HasKey("ItemId");
 
-                    b.HasIndex("IdCategoryNavigationIdCategory");
+                    b.HasIndex("IdCategory");
 
-                    b.HasIndex("IdItemTypeNavigationItemTypeId");
+                    b.HasIndex("ItemTypeId");
 
                     b.ToTable("Item");
+
+                    b.HasData(
+                        new
+                        {
+                            ItemId = 1,
+                            Description = "Grilled chicken, BBQ sauce, red onions, and cilantro",
+                            IdCategory = 1,
+                            ItemTypeId = 1,
+                            Name = "BBQ Chicken",
+                            Price = 10m
+                        },
+                        new
+                        {
+                            ItemId = 2,
+                            Description = "Plant-based cheese, mushrooms, peppers, and vegan sausage",
+                            IdCategory = 2,
+                            ItemTypeId = 1,
+                            Name = "Vegan Delight",
+                            Price = 18.99m
+                        },
+                        new
+                        {
+                            ItemId = 3,
+                            Description = "Breaded mozzarella with marinara sauce",
+                            IdCategory = 3,
+                            ItemTypeId = 2,
+                            Name = "Mozzarella Sticks",
+                            Price = 6m
+                        });
                 });
 
             modelBuilder.Entity("PaaS.Models.ItemType", b =>
@@ -390,6 +435,23 @@ namespace PaaS.Migrations
                     b.HasKey("ItemTypeId");
 
                     b.ToTable("ItemType");
+
+                    b.HasData(
+                        new
+                        {
+                            ItemTypeId = 1,
+                            Description = "Pizza"
+                        },
+                        new
+                        {
+                            ItemTypeId = 2,
+                            Description = "Slide"
+                        },
+                        new
+                        {
+                            ItemTypeId = 3,
+                            Description = "Drink"
+                        });
                 });
 
             modelBuilder.Entity("PaaS.Models.Order", b =>
@@ -432,16 +494,12 @@ namespace PaaS.Migrations
             modelBuilder.Entity("PaaS.Models.OrderItem", b =>
                 {
                     b.Property<int>("OrderId")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Details")
                         .HasColumnType("TEXT");
 
                     b.Property<int>("ItemId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("OrderId1")
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("Quantity")
@@ -454,9 +512,36 @@ namespace PaaS.Migrations
 
                     b.HasIndex("ItemId");
 
-                    b.HasIndex("OrderId1");
-
                     b.ToTable("OrderItem");
+                });
+
+            modelBuilder.Entity("PaaS.Models.PayPalConfirmationModel", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("PayerName")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("TransactionId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("PayPalConfirmationModel");
                 });
 
             modelBuilder.Entity("PaaS.Models.PaymentMethod", b =>
@@ -683,21 +768,21 @@ namespace PaaS.Migrations
 
             modelBuilder.Entity("PaaS.Models.Item", b =>
                 {
-                    b.HasOne("PaaS.Models.Category", "IdCategoryNavigation")
+                    b.HasOne("PaaS.Models.Category", "Category")
                         .WithMany("Items")
-                        .HasForeignKey("IdCategoryNavigationIdCategory")
+                        .HasForeignKey("IdCategory")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("PaaS.Models.ItemType", "IdItemTypeNavigation")
-                        .WithMany("Items")
-                        .HasForeignKey("IdItemTypeNavigationItemTypeId")
+                    b.HasOne("PaaS.Models.ItemType", "ItemType")
+                        .WithMany()
+                        .HasForeignKey("ItemTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("IdCategoryNavigation");
+                    b.Navigation("Category");
 
-                    b.Navigation("IdItemTypeNavigation");
+                    b.Navigation("ItemType");
                 });
 
             modelBuilder.Entity("PaaS.Models.Order", b =>
@@ -738,14 +823,14 @@ namespace PaaS.Migrations
             modelBuilder.Entity("PaaS.Models.OrderItem", b =>
                 {
                     b.HasOne("PaaS.Models.Item", "Item")
-                        .WithMany("OrderItems")
+                        .WithMany()
                         .HasForeignKey("ItemId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("PaaS.Models.Order", "Order")
                         .WithMany("OrderItems")
-                        .HasForeignKey("OrderId1")
+                        .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -778,16 +863,6 @@ namespace PaaS.Migrations
             modelBuilder.Entity("PaaS.Models.DeliveryMethod", b =>
                 {
                     b.Navigation("Orders");
-                });
-
-            modelBuilder.Entity("PaaS.Models.Item", b =>
-                {
-                    b.Navigation("OrderItems");
-                });
-
-            modelBuilder.Entity("PaaS.Models.ItemType", b =>
-                {
-                    b.Navigation("Items");
                 });
 
             modelBuilder.Entity("PaaS.Models.Order", b =>

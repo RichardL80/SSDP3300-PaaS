@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using PaaS.Models;
@@ -14,6 +14,10 @@ public class ApplicationDbContext : IdentityDbContext
     }
 
     public DbSet<User> User { get; set; }
+    public DbSet<ItemType> ItemType { get; set; }
+    public DbSet<Category> Category { get; set; }
+    public DbSet<Item> Item { get; set; }
+    public DbSet<PayPalConfirmationModel> PayPalConfirmationModel { get; set; }
     public DbSet<ContactInfo> ContactInfo { get; set; }
     public DbSet<City> City { get; set; }
     public DbSet<Province> Province { get; set; }
@@ -22,11 +26,11 @@ public class ApplicationDbContext : IdentityDbContext
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
-
         // Seed some static data into the database
         SeedRoles(builder);
         SeedProvinces(builder);
         SeedCities(builder);
+        SeedItemsData(builder);
     }
 
     private void SeedRoles(ModelBuilder builder)
@@ -41,6 +45,51 @@ public class ApplicationDbContext : IdentityDbContext
             new Role { RoleId = 1, Description = "Admin" },
             new Role { RoleId = 2, Description = "Manager" },
             new Role { RoleId = 3, Description = "Customer" }
+        );
+    }
+
+    private void SeedItemsData(ModelBuilder builder)
+    {
+        builder.Entity<ItemType>().HasData(
+            new ItemType { ItemTypeId = 1, Description = "Pizza" },
+            new ItemType { ItemTypeId = 2, Description = "Slide" },
+            new ItemType { ItemTypeId = 3, Description = "Drink" }
+        );
+        builder.Entity<Category>().HasData(
+            new Category { IdCategory = 1, Description = "Specialty Pizzas" },
+            new Category { IdCategory = 2, Description = "Vegetarian Pizzas" },
+            new Category { IdCategory = 3, Description = "Appetizers" },
+            new Category { IdCategory = 4, Description = "Custom" }
+        );
+
+        builder.Entity<Item>().HasData(
+            new Item
+            {
+                ItemId = 1,
+                Name = "BBQ Chicken",
+                Description = "Grilled chicken, BBQ sauce, red onions, and cilantro",
+                Price = 10m,
+                ItemTypeId = 1,
+                IdCategory = 1
+            },
+            new Item
+            {
+                ItemId = 2,
+                Name = "Vegan Delight",
+                Description = "Plant-based cheese, mushrooms, peppers, and vegan sausage",
+                Price = 18.99m,
+                ItemTypeId = 1,
+                IdCategory = 2
+            },
+            new Item
+            {
+                ItemId = 3,
+                Name = "Mozzarella Sticks",
+                Description = "Breaded mozzarella with marinara sauce",
+                Price = 6m,
+                ItemTypeId = 2,
+                IdCategory = 3
+            }
         );
     }
 

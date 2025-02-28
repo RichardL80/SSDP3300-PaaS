@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace PaaS.Models;
 
-public partial class Order
+public class Order
 {
     [Key]
     public int OrderId { get; set; }
