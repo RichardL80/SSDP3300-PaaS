@@ -11,8 +11,8 @@ using PaaS.Data;
 namespace PaaS.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250127052532_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20250228041913_Merge-Test")]
+    partial class MergeTest
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -291,6 +291,26 @@ namespace PaaS.Migrations
                     b.HasIndex("ProvinceId");
 
                     b.ToTable("City");
+
+                    b.HasData(
+                        new
+                        {
+                            CityId = -1,
+                            Name = "",
+                            ProvinceId = -1
+                        },
+                        new
+                        {
+                            CityId = 1,
+                            Name = "Vancouver",
+                            ProvinceId = 1
+                        },
+                        new
+                        {
+                            CityId = 2,
+                            Name = "Toronto",
+                            ProvinceId = 2
+                        });
                 });
 
             modelBuilder.Entity("PaaS.Models.ContactInfo", b =>
@@ -308,10 +328,6 @@ namespace PaaS.Migrations
 
                     b.Property<int>("CityId")
                         .HasColumnType("INTEGER");
-
-                    b.Property<string>("Phone")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
 
                     b.Property<int>("ProvinceId")
                         .HasColumnType("INTEGER");
@@ -502,6 +518,35 @@ namespace PaaS.Migrations
                     b.ToTable("OrderItem");
                 });
 
+            modelBuilder.Entity("PaaS.Models.PayPalConfirmationModel", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("PayerName")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("TransactionId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("PayPalConfirmationModel");
+                });
+
             modelBuilder.Entity("PaaS.Models.PaymentMethod", b =>
                 {
                     b.Property<int>("PaymentMethodId")
@@ -530,6 +575,23 @@ namespace PaaS.Migrations
                     b.HasKey("ProvinceId");
 
                     b.ToTable("Province");
+
+                    b.HasData(
+                        new
+                        {
+                            ProvinceId = -1,
+                            Name = ""
+                        },
+                        new
+                        {
+                            ProvinceId = 1,
+                            Name = "British Columbia"
+                        },
+                        new
+                        {
+                            ProvinceId = 2,
+                            Name = "Ontario"
+                        });
                 });
 
             modelBuilder.Entity("PaaS.Models.Role", b =>
@@ -601,6 +663,10 @@ namespace PaaS.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Phone")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
