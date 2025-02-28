@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using PaaS.Data;
 using PaaS.RepoInterfaces;
 using PaaS.Repositories;
+using PaaS.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,6 +26,7 @@ builder.Services.AddScoped<ContactRepo>();
 builder.Services.AddScoped<LocationRepo>();
 builder.Services.AddScoped<OrderRepo>();
 builder.Services.AddScoped<IMenuRepository, MenuRepo>();
+builder.Services.AddScoped<CartService>();
 
 // Add session services
 builder.Services.AddDistributedMemoryCache();
@@ -51,6 +53,9 @@ else
 
 app.UseHttpsRedirection();
 app.UseRouting();
+
+// Add session middleware
+app.UseSession();
 
 app.UseAuthorization();
 
