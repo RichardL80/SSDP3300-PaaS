@@ -25,7 +25,12 @@ namespace PaaS.Controllers
             return View(cart);
         }
 
-
+        [HttpGet]
+        public JsonResult GetCartItems()
+        {
+            var cart = _cartService.GetCart();
+            return Json(cart);
+        }
 
         [HttpPost]
         public JsonResult AddToCartAjax([FromBody] AddToCartRequest request)
