@@ -25,11 +25,11 @@ namespace PaaS.Controllers
             _locationRepo = locationRepo;
         }
 
+        [Authorize]
         public IActionResult Index()
         {
-
+            // Get the user's contact info
             string userEmail = User.Identity?.Name;
-
             User user = _userRepo.GetUser(userEmail);
             IEnumerable<ContactInfoVM> contactInfoVM = _contactRepo.GetContactInfo(user.UserId); // Get contact info for the user
             foreach (var contact in contactInfoVM)
@@ -38,7 +38,7 @@ namespace PaaS.Controllers
                 contact.CityName = _locationRepo.GetCityName(contact.CityId);
                 contact.ProvinceName = _locationRepo.GetProvinceName(contact.ProvinceId);
             }
-
+            // Get the cart items
             CheckoutVM checkoutVM = new CheckoutVM
             {
                 CartItems = _cartService.GetCart(),

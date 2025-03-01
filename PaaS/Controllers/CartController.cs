@@ -21,7 +21,6 @@ namespace PaaS.Controllers
         public IActionResult Index()
         {
             var cart = _cartService.GetCart();
-
             return View(cart);
         }
 

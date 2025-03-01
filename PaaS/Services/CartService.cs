@@ -77,6 +77,7 @@ namespace PaaS.Services
                 }
             }
 
+            // idk this prevented a crash
             var jsonSettings = new JsonSerializerSettings
             {
                 ReferenceLoopHandling = ReferenceLoopHandling.Ignore
@@ -100,6 +101,7 @@ namespace PaaS.Services
                 cart.Remove(cartItem);
             }
 
+            // idk this prevented a crash
             var jsonSettings = new JsonSerializerSettings
             {
                 ReferenceLoopHandling = ReferenceLoopHandling.Ignore
