@@ -1,0 +1,69 @@
+@model IEnumerable<CartItem>
+
+@{
+    ViewData["Title"] = "Cart";
+}
+
+<h1>My Cart</h1>
+
+<div class="cart-container">
+    @foreach (var item in Model)
+    {
+        <div class="cart-item">
+            <img src="@item.Item.ImgUrl" alt="@item.Item.Name" width="100" height="100">
+            <h3>@item.Item.Name</h3>
+            <p>@item.Item.Description</p>
+            <p>@item.Quantity x @item.Item.Price = @((item.Quantity*item.Item.Price).ToString("C")) </p>
+            <button class="btn btn-primary update-cart" data-id="@item.Item.ItemId">+</button>
+            <button class="btn btn-danger remove-from-cart" data-id="@item.Item.ItemId">-</button>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script>
+        document.querySelectorAll('.update-cart').forEach(button => {
+            button.addEventListener('click', function() {
+                const itemId = this.getAttribute('data-id');
+                fetch('@Url.Action("AddToCartAjax", "Cart")', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ itemId: parseInt(itemId) })
+                    
+                })                
+                .then(response => response.json())
+                .then(data => {                    
+                    if (data.success) {
+                        console.log('Item added to cart');
+                    } else {
+                        console.log('Failed to add item to cart');
+                    }
+                });
+            });
+        });
+
+        document.querySelectorAll('.remove-from-cart').forEach(button => {
+            button.addEventListener('click', function() {
+                const itemId = this.getAttribute('data-id');
+                fetch('@Url.Action("RemoveFromCartAjax", "Cart")', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ itemId: parseInt(itemId) })
+                    
+                })                
+                .then(response => response.json())
+                .then(data => {                    
+                    if (data.success) {
+                        console.log('Item removed from cart');
+                    } else {
+                        console.log('Failed to remove item from cart');
+                    }
+                });
+            });
+        });
+    </script>
+}

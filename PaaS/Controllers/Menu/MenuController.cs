@@ -20,13 +20,6 @@ public class MenuController : Controller
 
     public ActionResult Index()
     {
-        var cartJson = HttpContext.Session.GetString("Cart");
-        var cart = string.IsNullOrEmpty(cartJson) ? new List<CartItem>() : JsonConvert.DeserializeObject<List<CartItem>>(cartJson);
-        if (cart == null)
-        {
-            cart = new List<CartItem>();
-            HttpContext.Session.SetString("Cart", JsonConvert.SerializeObject(cart));
-        }
 
         var pizzas = _menuRepo.GetPizzaCategories();
         return View(new MenuVM

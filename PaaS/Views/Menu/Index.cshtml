@@ -137,12 +137,11 @@
                     
                 })                
                 .then(response => response.json())
-                .then(data => {
-                    console.log(JSON.stringify({ itemId: parseInt(itemId) }));
+                .then(data => {                    
                     if (data.success) {
-                        alert('Item added to cart');
+                        console.log('Item added to cart');
                     } else {
-                        alert('Failed to add item to cart');
+                        console.log('Failed to add item to cart');
                     }
                 });
             });
