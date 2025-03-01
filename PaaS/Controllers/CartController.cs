@@ -25,10 +25,7 @@ namespace PaaS.Controllers
             return View(cart);
         }
 
-        public class AddToCartRequest
-        {
-            public int ItemId { get; set; }
-        }
+
 
         [HttpPost]
         public JsonResult AddToCartAjax([FromBody] AddToCartRequest request)

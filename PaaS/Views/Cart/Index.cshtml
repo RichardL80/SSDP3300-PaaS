@@ -10,8 +10,8 @@
     @foreach (var item in Model)
     {
         <div class="cart-item">
-            <img src="@item.Item.ImgUrl" alt="@item.Item.Name" width="100" height="100">
             <h3>@item.Item.Name</h3>
+            <img src="@item.Item.ImgUrl" alt="@item.Item.Name Image" width="100" height="100">            
             <p>@item.Item.Description</p>
             <p>@item.Quantity x @item.Item.Price = @((item.Quantity*item.Item.Price).ToString("C")) </p>
             <button class="btn btn-primary update-cart" data-id="@item.Item.ItemId">+</button>
