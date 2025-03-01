@@ -84,5 +84,28 @@ namespace PaaS.Services
 
             _httpContextAccessor.HttpContext.Session.SetString("Cart", JsonConvert.SerializeObject(cart, jsonSettings));
         }
+
+        public void DeleteFromCart(Item item)
+        {
+            var cartJson = _httpContextAccessor.HttpContext.Session.GetString("Cart");
+            var cart = string.IsNullOrEmpty(cartJson) ? new List<CartItem>() : JsonConvert.DeserializeObject<List<CartItem>>(cartJson);
+            if (cart == null)
+            {
+                cart = new List<CartItem>();
+            }
+
+            var cartItem = cart.FirstOrDefault(c => c.Item.ItemId == item.ItemId);
+            if (cartItem != null)
+            {
+                cart.Remove(cartItem);
+            }
+
+            var jsonSettings = new JsonSerializerSettings
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            };
+
+            _httpContextAccessor.HttpContext.Session.SetString("Cart", JsonConvert.SerializeObject(cart, jsonSettings));
+        }
     }
 }

@@ -4,28 +4,59 @@
     ViewData["Title"] = "Cart";
 }
 
-<h1>My Cart</h1>
+
 
 <div class="cart-container">
+    <h1>My Cart</h1>
+    <a id="cart" class="nav-link" asp-area="" asp-controller="Menu" asp-action="Index">+ Add More</a>
     @foreach (var item in Model)
     {
         <div class="cart-item">
+            <img src="@item.Item.ImgUrl" alt="@item.Item.Name Image" width="100" height="100">  
             <h3>@item.Item.Name</h3>
-            <img src="@item.Item.ImgUrl" alt="@item.Item.Name Image" width="100" height="100">            
-            <p>@item.Item.Description</p>
-            <p>@item.Quantity x @item.Item.Price = @((item.Quantity*item.Item.Price).ToString("C")) </p>
-            <button class="btn btn-primary update-cart" data-id="@item.Item.ItemId">+</button>
+            <div>@item.Item.Price</div>
             <button class="btn btn-danger remove-from-cart" data-id="@item.Item.ItemId">-</button>
+            <span> @item.Quantity </span>
+            <button class="btn btn-primary add-to-cart" data-id="@item.Item.ItemId">+</button>
+            <div>@((item.Quantity*item.Item.Price).ToString("C")) </div>
+            <button class="btn btn-danger delete-from-cart" data-id="@item.Item.ItemId">Delete</button>   
         </div>
     }
+
+    <div class="cart-total">
+        <h3>Total: @Model.Sum(x => x.Quantity * x.Item.Price).ToString("C")</h3>
+    </div>
+    <a class="checkout" asp-area="" asp-controller="PayPal" asp-action="Index">Checkout</a>
 </div>
 
 @section Scripts {
     <script>
-        document.querySelectorAll('.update-cart').forEach(button => {
+        document.querySelectorAll('.add-to-cart').forEach(button => {
             button.addEventListener('click', function() {
                 const itemId = this.getAttribute('data-id');
                 fetch('@Url.Action("AddToCartAjax", "Cart")', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ itemId: parseInt(itemId) })
+                    
+                })                
+                .then(response => response.json())
+                .then(data => {                    
+                    if (data.success) {
+                        console.log('Item added to cart');
+                    } else {
+                        console.log('Failed to add item to cart');
+                    }
+                });
+            });
+        });
+
+        document.querySelectorAll('.delete-from-cart').forEach(button => {
+            button.addEventListener('click', function() {
+                const itemId = this.getAttribute('data-id');
+                fetch('@Url.Action("DeleteFromCartAjax", "Cart")', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

@@ -70,5 +70,27 @@ namespace PaaS.Controllers
             }
 
         }
+
+        [HttpPost]
+        public JsonResult DeleteFromCartAjax([FromBody] AddToCartRequest request)
+        {
+            int itemId = request.ItemId;
+
+            if (itemId == 0)
+            {
+                return Json(new { success = false });
+            }
+            Item item = _menuRepo.GetById(itemId);
+            if (item == null)
+            {
+                return Json(new { success = false });
+            }
+            else
+            {
+                _cartService.DeleteFromCart(item);
+                return Json(new { success = true });
+            }
+
+        }
     }
 }
