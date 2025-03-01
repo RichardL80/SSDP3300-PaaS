@@ -59,7 +59,7 @@ public class MenuController : Controller
         }
         else
         {
-            _cartService.AddToCart(itemId);
+            _cartService.AddToCart(item);
             return Json(new { success = true });
         }
 

@@ -13,7 +13,7 @@ namespace PaaS.Services
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public void AddToCart(int itemId)
+        public void AddToCart(Item item)
         {
             var cartJson = _httpContextAccessor.HttpContext.Session.GetString("Cart");
             var cart = string.IsNullOrEmpty(cartJson) ? new List<CartItem>() : JsonConvert.DeserializeObject<List<CartItem>>(cartJson);
@@ -22,17 +22,22 @@ namespace PaaS.Services
                 cart = new List<CartItem>();
             }
 
-            var cartItem = cart.FirstOrDefault(c => c.ItemId == itemId);
+            var cartItem = cart.FirstOrDefault(c => c.Item.ItemId == item.ItemId);
             if (cartItem != null)
             {
                 cartItem.Quantity++;
             }
             else
             {
-                cart.Add(new CartItem { ItemId = itemId, Quantity = 1 });
+                cart.Add(new CartItem { Item = item, Quantity = 1 });
             }
-            Console.WriteLine(JsonConvert.SerializeObject(cart));
-            _httpContextAccessor.HttpContext.Session.SetString("Cart", JsonConvert.SerializeObject(cart));
+
+            var jsonSettings = new JsonSerializerSettings
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            };
+
+            _httpContextAccessor.HttpContext.Session.SetString("Cart", JsonConvert.SerializeObject(cart, jsonSettings));
         }
     }
 }
