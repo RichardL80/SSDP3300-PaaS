@@ -247,3 +247,7 @@ app.db-wal
 *.suo
 *.user
 *.vscode/
+
+.DS_Store
+
+PaaS/app.db
