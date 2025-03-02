@@ -1,122 +1,180 @@
-﻿@model PaaS.ViewModels.MenuVM
+@model PaaS.ViewModels.MenuVM
 @{
     ViewData["Title"] = "Menu";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+@section Styles {
+    <link rel="stylesheet" href="~/css/menu.css" asp-append-version="true" />
+}
+
+<!-- Hero Section -->
+<div class="menu-hero">
+    <h1>Our Menu</h1>
+    <p>Discover our delicious selection of pizzas and more</p>
+</div>
+
 <div class="container-fluid">
     <div class="row">
         <!-- Left Navigation -->
         <div class="col-md-3">
-            <nav class="nav flex-column sticky-top">
+            <nav class="menu-nav nav flex-column">
                 <!-- Pizza Sections -->
-                @foreach (var category in Model.PizzaCategories)
+                <h5>Pizzas</h5>
+                @foreach (var category in Model.PizzaCategories.Keys)
                 {
-                    <section id="@category.Key.ToLower().Replace(' ', '-')" class="mb-5">
-                        <h2>@category.Key</h2>
+                    <a class="nav-link" href="#@category.ToLower().Replace(' ', '-')">@category</a>
+                }
+                <!-- Other Sections -->
+                <h5 class="mt-3">Sides</h5>
+                <a class="nav-link" href="#sides">Appetizers</a>
+                
+                <h5 class="mt-3">Drinks</h5>
+                <a class="nav-link" href="#drinks">Soft Drinks</a>
 
-                        @if (User.IsInRole("Admin"))
+                @if (User.IsInRole("Admin"))
+                {
+                    <a class="nav-link" href="@Url.Action("Create", "AdminMenu")">Create Menu Item</a>
+                }
+                else
+                {
+                    <a class="nav-link" href="@Url.Action("Customize", "Menu")" target="_blank">Customize Pizza</a>
+                }
+            </nav>
+        </div>
+
+        <!-- Main Content -->
+        <div class="col-md-9">
+            <!-- Pizza Categories -->
+            @foreach (var category in Model.PizzaCategories)
+            {
+                <section id="@category.Key.ToLower().Replace(' ', '-')" class="menu-section">
+                    <h2 class="category-header">@category.Key</h2>
+                    <div class="row">
+                        @foreach (var item in category.Value)
                         {
-                            @Html.ActionLink($"Create New Pizza", "Create", "AdminMenu", new { category = "Pizza" }, new { @class = "btn btn-success mb-3" })
-                        }
-
-                        <div class="row">
-                            @foreach (var item in category.Value)
-                            {
-                                <div class="col-md-6 mb-4">
-                                    <div class="card h-100">
-                                        <img src="@item.ImgUrl" class="card-img-top" alt="@item.Name" width="300" height="300">
-                                        <div class="card-body">
-                                            <h5 class="card-title">@item.Name</h5>
-                                            <p class="card-text">@item.Description</p>
-                                            <p class="h5">@item.Price.ToString("C")</p>
+                            <div class="col-md-6 mb-4">
+                                <div class="menu-card card h-100">
+                                    <img src="@item.ImgUrl" class="menu-card-img card-img-top" alt="@item.Name">
+                                    <div class="menu-card-body card-body">
+                                        <div class="menu-card-category">@category.Key</div>
+                                        <h5 class="menu-card-title">@item.Name</h5>
+                                        <p class="menu-card-description">@item.Description</p>
+                                        <p class="menu-card-price">@item.Price.ToString("C")</p>
+                                        <div class="d-flex justify-content-between">
                                             @if (User.IsInRole("Admin"))
                                             {
-                                                @Html.ActionLink("Edit", "Edit", "AdminMenu", new { id = item.ItemId }, new { @class = "btn btn-warning" })
-                                                @Html.ActionLink("Delete", "Delete", "AdminMenu", new { id = item.ItemId }, new { @class = "btn btn-danger" })
+                                                @Html.ActionLink("Edit", "Edit", "AdminMenu", new { id = item.ItemId }, new { @class = "btn btn-warning" })  
+                                                @Html.ActionLink("Delete", "Delete", "AdminMenu", new { id = item.ItemId }, new { @class = "btn btn-warning" })
                                             }
                                             else
                                             {
-                                                <button class="btn btn-primary add-to-cart" data-id="@item.ItemId">Add to Cart</button>
+                                                <button class="btn-add-cart" data-id="@item.ItemId">Add to Cart</button>
+                                                <a href="@Url.Action("Detail", "Menu", new { id = item.ItemId })" class="btn-view">View</a>
                                             }
                                         </div>
                                     </div>
                                 </div>
-                            }
-                        </div>
-                    </section>
-                }
-
-
-
+                            </div>
+                        }
+                    </div>
+                </section>
+            }
 
             <!-- Sides Section -->
-                <section id="sides" class="mb-5">
-                    <h2>Sides</h2>
-
-                    @if (User.IsInRole("Admin"))
+            <section id="sides" class="menu-section">
+                <h2 class="category-header">Sides</h2>
+                <div class="row">
+                    @foreach (var item in Model.Sides)
                     {
-                        @Html.ActionLink("Create New Side", "Create", "AdminMenu", new { category = "Sides" }, new { @class = "btn btn-success mb-3" })
-                    }
-
-                    <div class="row">
-                        @foreach (var item in Model.Sides)
-                        {
-                            <div class="col-md-6 mb-4">
-                                <div class="card h-100">
-                                    <img src="@item.ImgUrl" class="card-img-top" alt="@item.Name" width="300" height="300">
-                                    <div class="card-body">
-                                        <h5 class="card-title">@item.Name</h5>
-                                        <p class="card-text">@item.Description</p>
-                                        <p class="h5">@item.Price.ToString("C")</p>
+                        <div class="col-md-6 mb-4">
+                            <div class="menu-card card h-100">
+                                <img src="@item.ImgUrl" class="menu-card-img card-img-top" alt="@item.Name">
+                                <div class="menu-card-body card-body">
+                                    <div class="menu-card-category">Sides</div>
+                                    <h5 class="menu-card-title">@item.Name</h5>
+                                    <p class="menu-card-description">@item.Description</p>
+                                    <p class="menu-card-price">@item.Price.ToString("C")</p>
+                                    <div class="d-flex justify-content-between">
                                         @if (User.IsInRole("Admin"))
                                         {
                                             @Html.ActionLink("Edit", "Edit", "AdminMenu", new { id = item.ItemId }, new { @class = "btn btn-warning" })
-                                            @Html.ActionLink("Delete", "Delete", "AdminMenu", new { id = item.ItemId }, new { @class = "btn btn-danger" })
+                                            @Html.ActionLink("Delete", "Delete", "AdminMenu", new { id = item.ItemId }, new { @class = "btn btn-warning" })
                                         }
                                         else
                                         {
-                                            <button class="btn btn-primary add-to-cart" data-id="@item.ItemId">Add to Cart</button>
+                                            <button class="btn-add-cart" data-id="@item.ItemId">Add to Cart</button>
+                                            <a href="@Url.Action("Detail", "Menu", new { id = item.ItemId })" class="btn-view">View</a>
                                         }
                                     </div>
                                 </div>
                             </div>
-                        }
-                    </div>
-                </section>
-
+                        </div>
+                    }
+                </div>
+            </section>
 
             <!-- Drinks Section -->
-                <section id="drinks" class="mb-5">
-                    <h2>Drinks</h2>
-
-                    @if (User.IsInRole("Admin"))
+            <section id="drinks" class="menu-section">
+                <h2 class="category-header">Drinks</h2>
+                <div class="row">
+                    @foreach (var item in Model.Drinks)
                     {
-                        @Html.ActionLink("Create New Drink", "Create", "AdminMenu", new { category = "Drinks" }, new { @class = "btn btn-success mb-3" })
-                    }
-
-                    <div class="row">
-                        @foreach (var item in Model.Drinks)
-                        {
-                            <div class="col-md-6 mb-4">
-                                <div class="card h-100">
-                                    <img src="@item.ImgUrl" class="card-img-top" alt="@item.Name" width="300" height="300">
-                                    <div class="card-body">
-                                        <h5 class="card-title">@item.Name</h5>
-                                        <p class="card-text">@item.Description</p>
-                                        <p class="h5">@item.Price.ToString("C")</p>
+                        <div class="col-md-6 mb-4">
+                            <div class="menu-card card h-100">
+                                <img src="@item.ImgUrl" class="menu-card-img card-img-top" alt="@item.Name">
+                                <div class="menu-card-body card-body">
+                                    <div class="menu-card-category">Drinks</div>
+                                    <h5 class="menu-card-title">@item.Name</h5>
+                                    <p class="menu-card-description">@item.Description</p>
+                                    <p class="menu-card-price">@item.Price.ToString("C")</p>
+                                    <div class="d-flex justify-content-between">
                                         @if (User.IsInRole("Admin"))
                                         {
                                             @Html.ActionLink("Edit", "Edit", "AdminMenu", new { id = item.ItemId }, new { @class = "btn btn-warning" })
-                                            @Html.ActionLink("Delete", "Delete", "AdminMenu", new { id = item.ItemId }, new { @class = "btn btn-danger" })
+                                            @Html.ActionLink("Delete", "Delete", "AdminMenu", new { id = item.ItemId }, new { @class = "btn btn-warning" })
                                         }
                                         else
                                         {
-                                            <button class="btn btn-primary add-to-cart" data-id="@item.ItemId">Add to Cart</button>
+                                            <button class="btn-add-cart" data-id="@item.ItemId">Add to Cart</button>
+                                            <a href="@Url.Action("Detail", "Menu", new { id = item.ItemId })" class="btn-view">View</a>
                                         }
                                     </div>
                                 </div>
                             </div>
-                        }
-                    </div>
-                </section>
+                        </div>
+                    }
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            // Handle Add to Cart button clicks
+            $('.btn-add-cart').on('click', function() {
+                const itemId = $(this).data('id');
+                
+                // Add item to cart (you can replace this with your actual cart logic)
+                $.ajax({
+                    url: '/Menu/AddToCart',
+                    type: 'POST',
+                    data: { itemId: itemId },
+                    success: function(response) {
+                        // Update cart count
+                        const currentCount = parseInt($('#cart-item-count').text());
+                        $('#cart-item-count').text(currentCount + 1);
+                        
+                        // Show success message
+                        alert('Item added to cart!');
+                    },
+                    error: function() {
+                        alert('Failed to add item to cart. Please try again.');
+                    }
+                });
+            });
+        });
+    </script>
+}

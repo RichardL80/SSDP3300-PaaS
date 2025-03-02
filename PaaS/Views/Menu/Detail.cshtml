@@ -1,0 +1,209 @@
+@model PaaS.ViewModels.ItemDetailVM
+@{
+    ViewData["Title"] = Model.Item.Name;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/menu.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/item-detail.css" asp-append-version="true" />
+}
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="item-detail-image-container">
+                <img src="@Model.Item.ImgUrl" class="item-detail-image" alt="@Model.Item.Name">
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="item-detail-content">
+                <h1 class="item-detail-title">@Model.Item.Name</h1>
+                <p class="item-detail-description">@Model.Item.Description</p>
+                
+                <div class="item-detail-price-container">
+                    <h3 id="selected-price">@Model.Item.Price.ToString("C")</h3>
+                </div>
+                
+                <div class="item-detail-options">
+                    @if (Model.Item.ItemTypeId == 1)
+                    {
+                        <div class="form-group mb-4">
+                            <label for="size-select" class="form-label">Select Size</label>
+                            <select id="size-select" class="form-select">
+                                @foreach (var option in Model.SizeOptions)
+                                {
+                                    if (option.Name == Model.SelectedSize)
+                                    {
+                                        <option value="@option.Name" data-price="@option.Price" selected>
+                                            @option.DisplayText
+                                        </option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@option.Name" data-price="@option.Price">
+                                            @option.DisplayText
+                                        </option>
+                                    }
+                                }
+                            </select>
+                        </div>
+                    }
+                    else
+                    {
+                        <input type="hidden" id="size-select" value="Regular" />
+                    }
+                    
+                    @if (Model.Item.ItemTypeId == 1)
+                    {
+                        <div class="form-group mb-4">
+                            <label class="form-label">Some Ingredients</label>
+                            <div class="ingredients-list">
+                                <div class="ingredient-item">
+                                    <span class="ingredient-check">✓</span>
+                                    <span>Mozzarella</span>
+                                </div>
+                                <div class="ingredient-item">
+                                    <span class="ingredient-check">✓</span>
+                                    <span>Tomato Sauce</span>
+                                </div>
+                                <div class="ingredient-item">
+                                    <span class="ingredient-check">✓</span>
+                                    <span>Italian Herbs</span>
+                                </div>
+                                <div class="ingredient-item">
+                                    <span class="ingredient-check">✓</span>
+                                    <span>Garlic</span>
+                                </div>
+                                <div class="ingredient-item">
+                                    <span class="ingredient-check">✓</span>
+                                    <span>Black Pepper</span>
+                                </div>
+                                <div class="ingredient-item">
+                                    <span class="ingredient-check">✓</span>
+                                    <span>Olive Oil</span>
+                                </div>
+                                <div class="ingredient-item">
+                                    <span class="ingredient-check">✓</span>
+                                    <span>Parmesan</span>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    
+                    <div class="form-group mb-4">
+                        <label class="form-label">Quantity</label>
+                        <div class="quantity-control">
+                            <button type="button" id="decrease-quantity" class="quantity-btn">−</button>
+                            <input type="number" id="quantity" class="quantity-input" value="1" min="1" max="10">
+                            <button type="button" id="increase-quantity" class="quantity-btn">+</button>
+                        </div>
+                    </div>
+                    
+                    <div class="item-detail-actions">
+                        <button type="button" id="add-to-cart-btn" class="btn-add-cart-detail" data-id="@Model.Item.ItemId">
+                            Add to Cart - <span id="total-price">@Model.Item.Price.ToString("C")</span>
+                        </button>
+                        <a href="@Url.Action("Index", "Menu")" class="btn-return-menu">Return to Menu</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            // Variables to track state
+            let currentPrice = @Html.Raw(Json.Serialize(Model.Item.Price));
+            let quantity = 1;
+            
+            // Update displayed price when size changes (only for pizza items)
+            @if (Model.Item.ItemTypeId == 1)
+            {
+                <text>
+                $('#size-select').on('change', function() {
+                    const selectedOption = $(this).find('option:selected');
+                    currentPrice = parseFloat(selectedOption.data('price'));
+                    updateDisplayedPrices();
+                });
+                </text>
+            }
+            
+            // Quantity controls
+            $('#increase-quantity').on('click', function() {
+                if (quantity < 10) {
+                    quantity++;
+                    $('#quantity').val(quantity);
+                    updateDisplayedPrices();
+                }
+            });
+            
+            $('#decrease-quantity').on('click', function() {
+                if (quantity > 1) {
+                    quantity--;
+                    $('#quantity').val(quantity);
+                    updateDisplayedPrices();
+                }
+            });
+            
+            $('#quantity').on('change', function() {
+                quantity = parseInt($(this).val());
+                if (isNaN(quantity) || quantity < 1) {
+                    quantity = 1;
+                    $(this).val(1);
+                } else if (quantity > 10) {
+                    quantity = 10;
+                    $(this).val(10);
+                }
+                updateDisplayedPrices();
+            });
+            
+            // Update displayed prices based on current selections
+            function updateDisplayedPrices() {
+                const formattedPrice = formatCurrency(currentPrice);
+                const formattedTotal = formatCurrency(currentPrice * quantity);
+                
+                $('#selected-price').text(formattedPrice);
+                $('#total-price').text(formattedTotal);
+            }
+            
+            // Format currency based on locale
+            function formatCurrency(amount) {
+                return '$' + amount.toFixed(2);
+            }
+            
+            // Add to cart functionality
+            $('#add-to-cart-btn').on('click', function() {
+                const itemId = $(this).data('id');
+                const size = $('#size-select').val();
+                
+                $.ajax({
+                    url: '@Url.Action("AddToCartWithOptions", "Menu")',
+                    type: 'POST',
+                    data: { 
+                        itemId: itemId,
+                        size: size,
+                        quantity: quantity
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            // Update cart count
+                            const currentCount = parseInt($('#cart-item-count').text() || '0');
+                            $('#cart-item-count').text(currentCount + quantity);
+                            
+                            // Show success message
+                            alert(response.message);
+                        } else {
+                            alert('Failed to add item to cart: ' + response.message);
+                        }
+                    },
+                    error: function() {
+                        alert('Failed to add item to cart. Please try again.');
+                    }
+                });
+            });
+        });
+    </script>
+}
