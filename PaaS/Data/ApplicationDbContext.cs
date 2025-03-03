@@ -21,21 +21,16 @@ public class ApplicationDbContext : IdentityDbContext
     public DbSet<Item> Item { get; set; }
     public DbSet<PayPalConfirmationModel> PayPalConfirmationModel { get; set; }
 
-<<<<<<< HEAD
     public DbSet<ContactInfo> ContactInfos { get; set; } = null;
 
     public DbSet<Order> Order { get; set; }
 
     public DbSet<OrderItem> OrderItem { get; set; }
 
-    public DbSet<Item> Item { get; set; }
-
     public DbSet<City> Cities { get; set; }
     public DbSet<Province> Provinces { get; set; }
 
 
-=======
->>>>>>> main
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
@@ -57,12 +52,12 @@ public class ApplicationDbContext : IdentityDbContext
             new Role { RoleId = 3, Description = "Customer" }
         );
     }
-    
+
     private void SeedItemsData(ModelBuilder builder)
     {
         builder.Entity<ItemType>().HasData(
             new ItemType { ItemTypeId = 1, Description = "Pizza" },
-            new ItemType { ItemTypeId = 2, Description = "Slide" }, 
+            new ItemType { ItemTypeId = 2, Description = "Slide" },
             new ItemType { ItemTypeId = 3, Description = "Drink" }
         );
         builder.Entity<Category>().HasData(
@@ -71,7 +66,7 @@ public class ApplicationDbContext : IdentityDbContext
             new Category { IdCategory = 3, Description = "Appetizers" },
             new Category { IdCategory = 4, Description = "Custom" }
         );
-        
+
         builder.Entity<Item>().HasData(
             new Item
             {
