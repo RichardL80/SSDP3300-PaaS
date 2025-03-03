@@ -21,11 +21,11 @@
                 <div class="container-fluid">
                     <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
                         @* PaaS *@
-                        <img src="~/images/image.png" /> 
+                        <img src="~/images/image.png" />
                     </a>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                        data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent" aria-expanded="false"
-                        aria-label="Toggle navigation">
+                            data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent" aria-expanded="false"
+                            aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
                     <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
@@ -49,8 +49,8 @@
                             <li class="nav-item">
                                 <a id="cart" class="nav-link" asp-area="" asp-controller="Cart"
                                    asp-action="Index">
-                                   <span class="material-icons">shopping_cart</span>
-                                   <span id="cart-item-count" class="notification-circle">0</span>
+                                    <span class="material-icons">shopping_cart</span>
+                                    <span id="cart-item-count" class="notification-circle">0</span>
                                 </a>
                             </li>
                             @* <li class="nav-item"> *@
@@ -61,7 +61,8 @@
                             @* <span class="material-icons">shopping_cart</span> *@
                             @* Test for Order Summary page and paypal trasaction page(Admin)*@
                             <li class="nav-item">
-                                <a class="nav-link" asp-area="" asp-controller="PayPal" asp-action="Index">PayPal
+                                <a class="nav-link" asp-area="" asp-controller="PayPal" asp-action="Index">
+                                    PayPal
                                 </a>
                             </li>
                             <li class="nav-item">
@@ -74,18 +75,14 @@
                                         <span class="material-icons">manage_accounts</span> User Management
                                     </a>
                                 </li>
+                                <li class="nav-item">
+                                    <form asp-controller="Contact" asp-action="AdminUserDetails" method="get">
+                                        <input type="text" name="userEmail" placeholder="Search User Email" aria-label="userEmail">
+                                        <button type="submit">Search</button>
+                                    </form>
+                                </li>
                             }
-                    @if (User.IsInRole("Admin"))
-                    {
-                        <li class="nav-item">
-                            <form asp-controller="Contact" asp-action="AdminUserDetails" method="get">
-                                <input type="text" name="userEmail" placeholder="Search User Email" aria-label="userEmail">
-                                <button type="submit">Search</button>
-                            </form>
-                        </li>
-                    }
                         </ul>
-
                     </div>
                 </div>
             </nav>
@@ -100,7 +97,6 @@
         <footer>
             <div class="row">
                 <div class="col-12 col-md-3">
-
                     <ul>
                         <h5>Help & Services</h5>
                         <li>Contact Us</li>
@@ -113,40 +109,37 @@
                     <ul>
                         <h5>Follow Us</h5>
                         <div class="social-media">
-                            <li><i class="bi bi-facebook"></i></li>
-                            <li><i class="bi bi-instagram"></i></li>
-                            <li><i class="bi bi-twitter"></i></li>
-                        </div>
-                    </ul>
+                        <li><i class="bi bi-facebook"></i></li>
+                        <li><i class="bi bi-instagram"></i></li>
+                        <li><i class="bi bi-twitter"></i></li>
                 </div>
-                <div class="col-12 col-md-3">
-                    <ul>
-                        <h5>Nutritions</h5>
-                        <li>Nutrition Information</li>
-                        <li>Food Allergen & Sensitives</li>
-                        <li>Ingredient Listing</li>
-                        <li>Gluten Free FAQ</li>
-                    </ul>
-                </div>
-                <div class="col-12 col-md-3">
-                    <ul>
-                        <h5>Our Policies</h5>
-                        <li>Privacy</li>
-                        <li>Terms & Conditions</li>
-                        <li>Responsible Disclosure</li>
-                        <li>Cookies & Ads</li>
-                    </ul>
-                </div>
+                </ul>
             </div>
-        </footer>
+            <div class="col-12 col-md-3">
+                <ul>
+                    <h5>Nutritions</h5>
+                    <li>Nutrition Information</li>
+                    <li>Food Allergen & Sensitives</li>
+                    <li>Ingredient Listing</li>
+                    <li>Gluten Free FAQ</li>
+                </ul>
+            </div>
+            <div class="col-12 col-md-3">
+                <ul>
+                    <h5>Our Policies</h5>
+                    <li>Privacy</li>
+                    <li>Terms & Conditions</li>
+                    <li>Responsible Disclosure</li>
+                    <li>Cookies & Ads</li>
+                </ul>
+            </div>
+    </div>
+    </footer>
 
-        <script src="~/lib/jquery/dist/jquery.min.js"></script>
-        <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-        <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
         @await RenderSectionAsync("Scripts", required: false)
     </div>
-
 </body>
-
-
 </html>
