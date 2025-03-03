@@ -59,91 +59,92 @@
 .p-main-container {
     height: 100vh;
     display: grid;
-    grid-template-rows: 5% 80% 15%; 
+    grid-template-rows: 5% 80% 15%;
     width: 100%;
     background-color: var(--gray-light);
     flex-grow: 1;
     padding: var(--padding-15);
-/*    color: var(--primary-color);*/
+    /*    color: var(--primary-color);*/
 }
 
 }
 
 /* Nav bar style is here */
 .navbar {
-  background-color: white;
-  border-bottom: 1px solid #e5e5e5;
+    background-color: white;
+    border-bottom: 1px solid #e5e5e5;
 }
 
 .p-container-fluid {
-  display: flex;
-/*  padding: 0px 300px;*/
+    display: flex;
+    /*  padding: 0px 300px;*/
 }
 
 .navbar-nav {
-  margin-left: auto;
+    margin-left: auto;
 }
 
 #cart {
-  font-size: var(--icon-size);
+    font-size: var(--icon-size);
 }
 
 .nav-link:hover #cart:hover {
-  color: var(--primary-color);
+    color: var(--primary-color);
 }
 
 .nav-link {
-  margin-right: 2px;
+    margin-right: 2px;
 }
 
 .navbar-brand {
-  color: var(--primary-color);
-  font-weight: bold;
+    color: var(--primary-color);
+    font-weight: bold;
 }
 
-.navbar-brand:hover {
-  color: var(--primary-color);
-}
+    .navbar-brand:hover {
+        color: var(--primary-color);
+    }
 
 .nav-item a {
-  color: var(--navy-dark);
+    color: var(--navy-dark);
 }
 
-.nav-item a:hover {
-  color: var(--primary-color);
-}
+    .nav-item a:hover {
+        color: var(--primary-color);
+    }
 
 /* Footer style */
 footer {
-  width: 100%;
-  padding: var(--padding-15);
-  background-color: var(--navy-dark);
-  color: var(--white);
+    width: 100%;
+    padding: var(--padding-15);
+    background-color: var(--navy-dark);
+    color: var(--white);
+    font-size: 90%;
 }
 
-footer ul {
-  list-style-type: none;
-}
+    footer ul {
+        list-style-type: none;
+    }
 
-footer i {
-  font-size: 20px;
-  padding-right: var(--padding-15);
-}
+    footer i {
+        font-size: 20px;
+        padding-right: var(--padding-15);
+    }
 
 .social-media {
-  display: flex;
+    display: flex;
 }
 
 /* Index page style */
 #index-page {
-  color: var(--primary-color);
-  text-align: center;
-  justify-content: center;
-  align-items: center;
+    color: var(--primary-color);
+    text-align: center;
+    justify-content: center;
+    align-items: center;
 }
 /* Menu page style */
 #paypal-button-container {
-  max-width: 100px;
+    max-width: 100px;
 }
 
 .material-symbols-outlined,
@@ -170,7 +171,7 @@ footer i {
     align-items: center;
     justify-content: center;
     font-size: 12px; /* Adjust as needed */
-    transition: background-color 0.2s ease; 
+    transition: background-color 0.2s ease;
     /*
     &:hover {
         background-color: var(--primary-color);  Or any color you prefer 
@@ -209,13 +210,11 @@ footer i {
 
 .p-grid-item {
     text-align: center; /* Center text within each grid item */
-    border: 1px solid black; /* Optional: Add borders for visualization */
-    /*padding: 10px;*/ /* Optional: Add padding for content spacing */
     height: 100%;
 }
 
 .p-landing-main-image {
-/*    height: 450px;*/
+    /*    height: 450px;*/
     background-image: url('../images/landing-hero.jpg'); /* Adds the image */
     background-size: cover; /* Ensures the image covers the whole area */
     background-position: center; /* Centers the image */
@@ -304,12 +303,12 @@ footer i {
     justify-items: center;
 }
 
-.p-login-container img {
-    width: 50px;
-    height: auto;
-    background-color: var(--bs-body-bg)
-}
-/*.p-login-container .logo-container {
+    .p-login-container img {
+        width: 50px;
+        height: auto;
+        background-color: var(--bs-body-bg)
+    }
+    /*.p-login-container .logo-container {
     width: 50px;
     height: auto;
 }
@@ -321,16 +320,20 @@ footer i {
     background-color: var(--bs-body-bg)
 }
 */
-.p-login-container section {
-    text-align: center;
-    max-width: 400px;
-    width: 50%;
-}
+    .p-login-container section {
+        text-align: center;
+        max-width: 400px;
+        width: 50%;
+    }
 
-.p-login-container form {
-    padding: 24px;
-    background-color: white;
-    border 1px solid grey;
+    .p-login-container form {
+        padding: 24px;
+        background-color: white;
+        border 1px solid grey;
+    }
+
+.p-recaptcha {
+    margin: 24px;
 }
 
 .p-cta-button {
@@ -347,9 +350,9 @@ footer i {
     /*padding: 1rem;*/ /* Add padding to the top and bottom */
 }
 
-.p-cta-button:hover {
-    background-color: var(--pizza-red);
-}
+    .p-cta-button:hover {
+        background-color: var(--pizza-red);
+    }
 
 .p-link {
     color: var(--brand-orange);
@@ -367,12 +370,12 @@ footer i {
     width: 100%;
 }
 
-.p-image-container img {
-    width: 100%; /* Make the image fill the container width */
-    height: 100%; /* Make the image fill the container height */
-    object-fit: cover; /* Maintain aspect ratio and cover the container */
-    object-position: center; /* Center the image within the container */
-}
+    .p-image-container img {
+        width: 100%; /* Make the image fill the container width */
+        height: 100%; /* Make the image fill the container height */
+        object-fit: cover; /* Maintain aspect ratio and cover the container */
+        object-position: center; /* Center the image within the container */
+    }
 
 .p-grid-split {
     display: grid;
