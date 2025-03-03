@@ -1,12 +1,14 @@
 using Microsoft.AspNetCore.Mvc;
 using PaaS.RepoInterfaces;
 using PaaS.ViewModels;
+using System.Text.Json;
 
 namespace PaaS.Controllers.Menu;
 
 public class MenuController : Controller
 {
     private readonly IMenuRepository _menuRepo;
+    private const string ImgUrl = "https://images.unsplash.com/photo-1559183533-ee5f4826d3db?q=80&w=1654&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
 
     public MenuController(IMenuRepository menuRepo)
     {
@@ -103,10 +105,10 @@ public class MenuController : Controller
             return Json(new { success = false, message = "Item not found" });
         }
 
-        // Calculate price based on size (only for pizza items)
-        decimal price = item.Price; // Default price
+        decimal price = item.Price;
         
-        if (item.ItemTypeId == 1) // Only apply size pricing for pizzas
+        var isPizza = item.ItemTypeId == 1;
+        if (isPizza) 
         {
             if (size == "Small")
             {
@@ -118,13 +120,77 @@ public class MenuController : Controller
             }
         }
 
-        // In a real application, you would add the item to a cart in session or database
-        // with the selected size and quantity
-        
         return Json(new { 
             success = true, 
             message = $"{quantity} {size} {item.Name}(s) added to cart",
             totalPrice = (price * quantity).ToString("C")
+        });
+    }
+    
+    public IActionResult CustomPizza()
+    {
+        var customPizza = _menuRepo.GetCustomPizza();
+        
+        var sizeOptions = new List<SizeOption>
+        {
+            new SizeOption 
+            { 
+                Name = "Small", 
+                Price = Math.Round(customPizza.Price * 0.8m, 2), 
+                DisplayText = $"Small (8\") - {(customPizza.Price * 0.8m).ToString("C")}" 
+            },
+            new SizeOption 
+            { 
+                Name = "Medium", 
+                Price = customPizza.Price, 
+                DisplayText = $"Medium (12\") - {customPizza.Price.ToString("C")}" 
+            },
+            new SizeOption 
+            { 
+                Name = "Large", 
+                Price = Math.Round(customPizza.Price * 1.2m, 2), 
+                DisplayText = $"Large (16\") - {(customPizza.Price * 1.2m).ToString("C")}" 
+            }
+        };
+        
+        var viewModel = new CustomPizzaVM
+        {
+            ItemId = customPizza.ItemId,
+            Name = customPizza.Name,
+            Description = customPizza.Description,
+            BasePrice = customPizza.Price,
+            ImgUrl = customPizza.ImgUrl ?? ImgUrl,
+            SizeOptions = sizeOptions,
+            SelectedSize = "Medium"
+        };
+        
+        return View(viewModel);
+    }
+    
+    [HttpPost]
+    public IActionResult SaveCustomPizza(CustomPizzaVM model)
+    {
+        var customPizza = _menuRepo.GetCustomPizza();
+        
+        customPizza.ImgUrl = model.ImgUrl;
+        
+        decimal price = customPizza.Price;
+        if (model.SelectedSize == "Small")
+        {
+            price = Math.Round(customPizza.Price * 0.8m, 2);
+        }
+        else if (model.SelectedSize == "Large")
+        {
+            price = Math.Round(customPizza.Price * 1.2m, 2);
+        }
+        
+        var customizationJson = model.GetCustomizationJson();
+                
+        return Json(new { 
+            success = true, 
+            message = $"{model.Quantity} {model.SelectedSize} Custom Pizza added to cart",
+            details = customizationJson,
+            totalPrice = (price * model.Quantity).ToString("C")
         });
     }
 }

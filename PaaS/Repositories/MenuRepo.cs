@@ -51,6 +51,14 @@ public class MenuRepo : IMenuRepository
             .Include(i => i.ItemType)
             .FirstOrDefault(i => i.ItemId == id)?? throw new EntityNotFoundException("Item not found");
     }
+    
+    public Item GetCustomPizza()
+    {
+        return _context.Item
+            .Include(i => i.Category)
+            .Include(i => i.ItemType)
+            .FirstOrDefault(i => i.IdCategory == customPizzaCategoryId) ?? throw new EntityNotFoundException("Custom pizza not found");
+    }
 
     public void Add(Item item)
     {
