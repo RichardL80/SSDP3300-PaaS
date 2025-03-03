@@ -28,4 +28,6 @@ public partial class ContactInfo
     public virtual Province Province { get; set; } = null!;
 
     public virtual User User { get; set; } = null!;
+
+    public int Phone { get; set; }
 }
