@@ -230,25 +230,85 @@
             }
             
             $('#add-to-cart-btn').on('click', function() {
-                const formData = $('#customPizzaForm').serialize();
+                const itemId = $(this).data('id');
+                const size = $('#size-select').val();
+                const quantity = parseInt($('#quantity').val());
                 
-                $.ajax({
-                    url: '@Url.Action("SaveCustomPizza", "Menu")',
-                    type: 'POST',
-                    data: formData,
-                    success: function(response) {
-                        if (response.success) {
-                            const currentCount = parseInt($('#cart-item-count').text() || '0');
-                            $('#cart-item-count').text(currentCount + quantity);
-                            
-                            alert(response.message);
-                        } else {
-                            alert('Failed to add custom pizza to cart: ' + response.message);
-                        }
-                    },
-                    error: function() {
-                        alert('Failed to add custom pizza to cart. Please try again.');
+                // Collect customization data
+                const customization = {
+                    sauce: $('#sauce-select').val(),
+                    dough: $('#dough-select').val(),
+                    cheese: $('#cheese-select').val(),
+                    toppings: {
+                        meats: [],
+                        veggies: [],
+                        others: []
                     }
+                };
+                
+                // Collect selected meat toppings
+                @for (int i = 0; i < Model.MeatToppings.Count; i++)
+                {
+                    <text>
+                    if ($('#meat-@i').is(':checked')) {
+                        customization.toppings.meats.push('@Model.MeatToppings[i].Name');
+                    }
+                    </text>
+                }
+                
+                // Collect selected veggie toppings
+                @for (int i = 0; i < Model.VeggieToppings.Count; i++)
+                {
+                    <text>
+                    if ($('#veggie-@i').is(':checked')) {
+                        customization.toppings.veggies.push('@Model.VeggieToppings[i].Name');
+                    }
+                    </text>
+                }
+                
+                // Collect selected other toppings
+                @for (int i = 0; i < Model.OtherToppings.Count; i++)
+                {
+                    <text>
+                    if ($('#other-@i').is(':checked')) {
+                        customization.toppings.others.push('@Model.OtherToppings[i].Name');
+                    }
+                    </text>
+                }
+                
+                // Prepare the payload in the requested format
+                const payload = {
+                    Item: {
+                        ItemId: parseInt(itemId)
+                    },
+                    Size: size,
+                    Quantity: quantity,
+                    Customization: JSON.stringify(customization)
+                };
+                
+                console.log('Sending payload:', payload);
+                
+                fetch('@Url.Action("AddToCartAjax", "Cart")', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(payload)
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        const $cartItemCount = $('#cart-item-count');
+                        const currentCount = parseInt($cartItemCount.text() || '0');
+                        $cartItemCount.text(currentCount + quantity);
+                        console.log('Custom pizza added to cart!');
+                    } else {
+                        console.log('Failed to add item to cart: ' + (data.message || 'Unknown error'));
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    console.log('An error occurred while adding to cart. Please try again.');
                 });
             });
         });

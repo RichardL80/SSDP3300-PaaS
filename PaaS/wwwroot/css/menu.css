@@ -108,7 +108,13 @@
   font-size: 0.95rem;
 }
 
-.menu-card-price {
+.menu-card-price .menu-card-size{
+  font-weight: 700;
+  color: #333;
+  font-size: 1.2rem;
+  margin-bottom: 15px;
+}
+.menu-card-size {
   font-weight: 700;
   color: #333;
   font-size: 1.2rem;

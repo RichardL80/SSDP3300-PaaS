@@ -102,36 +102,6 @@ public class MenuController : Controller
         return View(viewModel);
     }
 
-    [HttpPost]
-    public IActionResult AddToCartWithOptions(int itemId, string size, int quantity)
-    {
-        var item = _menuRepo.GetById(itemId);
-        if (item == null)
-        {
-            return Json(new { success = false, message = "Item not found" });
-        }
-
-        decimal price = item.Price;
-        
-        var isPizza = item.ItemTypeId == 1;
-        if (isPizza) 
-        {
-            if (size == "Small")
-            {
-                price = Math.Round(item.Price * 0.8m, 2);
-            }
-            else if (size == "Large")
-            {
-                price = Math.Round(item.Price * 1.2m, 2);
-            }
-        }
-
-        return Json(new { 
-            success = true, 
-            message = $"{quantity} {size} {item.Name}(s) added to cart",
-            totalPrice = (price * quantity).ToString("C")
-        });
-    }
     
     public IActionResult CustomPizza()
     {
@@ -173,58 +143,37 @@ public class MenuController : Controller
         return View(viewModel);
     }
     
-    [HttpPost]
-    public IActionResult SaveCustomPizza(CustomPizzaVM model)
-    {
-        var customPizza = _menuRepo.GetCustomPizza();
-        
-        customPizza.ImgUrl = model.ImgUrl;
-        
-        decimal price = customPizza.Price;
-        if (model.SelectedSize == "Small")
-        {
-            price = Math.Round(customPizza.Price * 0.8m, 2);
-        }
-        else if (model.SelectedSize == "Large")
-        {
-            price = Math.Round(customPizza.Price * 1.2m, 2);
-        }
-        
-        var customizationJson = model.GetCustomizationJson();
-                
-        return Json(new { 
-            success = true, 
-            message = $"{model.Quantity} {model.SelectedSize} Custom Pizza added to cart",
-            details = customizationJson,
-            totalPrice = (price * model.Quantity).ToString("C")
-        });
-    }
+    
 
     public class AddToCartRequest
     {
         public int ItemId { get; set; }
+        public String details { get; set; }
     }
-
-
-    [HttpPost]
-    public JsonResult AddToCartAjax([FromBody] AddToCartRequest request)
-    {
-        int itemId = request.ItemId;
-
-        if (itemId == 0)
-        {
-            return Json(new { success = false });
-        }
-        Item item = _menuRepo.GetById(itemId);
-        if (item == null)
-        {
-            return Json(new { success = false });
-        }
-        else
-        {
-            _cartService.AddToCart(item);
-            return Json(new { success = true });
-        }
-
-    }
+    
+    // [HttpPost]
+    // public JsonResult AddToCartAjax([FromBody] AddToCartRequest request)
+    // {
+    //     int itemId = request.ItemId;
+    //
+    //     if (itemId == 0)
+    //     {
+    //         return Json(new { success = false });
+    //     }
+    //     Item item = _menuRepo.GetById(itemId);
+    //     if (item == null)
+    //     {
+    //         return Json(new { success = false });
+    //     }
+    //     else
+    //     {
+    //         if(itemId == 4)
+    //         {
+    //             item.Price = 10;
+    //         }
+    //         _cartService.AddToCart(item);
+    //         return Json(new { success = true });
+    //     }
+    //
+    // }
 }
