@@ -4509,6 +4509,12 @@ textarea.form-control-lg {
 .card-img-bottom {
   width: 100%;
 }
+.card-img-top {
+  max-width: 100%;
+  height: auto;
+  max-height: 300px; /* Adjust the max-height as needed */
+  object-fit: cover;
+}
 
 .card-img,
 .card-img-top {
