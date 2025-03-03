@@ -1,0 +1,335 @@
+/* Variables */
+:root {
+    --primary-color: #FF5722;
+    /*    --primary-color: #f97316;*/
+
+    --icon-size: 18px;
+    --padding-15: 15px;
+    --padding-12: 12px;
+    --color-light: white;
+    --color-dark: black;
+    /* Primary Colors */
+    --brand-orange: #FF5722; /* Logo and CTA buttons */
+    --navy-dark: #1A1F2C; /* Footer background */
+    --white: #FFFFFF; /* Text on dark backgrounds */
+    /* Secondary Colors */
+    --pizza-red: #D84315; /* Used for hover states and accents */
+    --warm-brown: #8B4513; /* Wood texture in images */
+    /* Neutral Colors */
+    --gray-light: #F5F5F5; /* Background color */
+    --gray-medium: #757575; /* Secondary text */
+    --gray-dark: #424242; /* Primary text */
+    /* Accent Colors */
+    --olive-green: #556B2F; /* Food imagery accents */
+    --golden-yellow: #FFA000; /* Cheese highlights */
+    /* UI Elements */
+    --error-red: #FF3D00; /* Error states */
+    --success-green: #4CAF50; /* Success states */
+    --link-blue: #2196F3; /* Links */
+    /* Overlay & Shadows */
+    --overlay-dark: rgba(0, 0, 0, 0.6); /* Image overlays */
+    --box-shadow: rgba(0, 0, 0, 0.1); /* Card shadows */
+}
+
+/* Usage Examples */
+/*.primary-button {
+    background-color: var(--brand-orange);
+    color: var(--white);
+}
+
+.footer {
+    background-color: var(--navy-dark);
+    color: var(--white);
+}
+
+.card {
+    background-color: var(--white);
+    box-shadow: 0 2px 4px var(--box-shadow);
+}
+
+.section-heading {
+    color: var(--gray-dark);
+}
+
+.price-text {
+    color: var(--brand-orange);
+}
+*/
+/* Set a container to wrap all the content */
+.p-main-container {
+    height: 100vh;
+    display: grid;
+    grid-template-rows: 5% 80% 15%; 
+    width: 100%;
+    background-color: var(--gray-light);
+    flex-grow: 1;
+    padding: var(--padding-15);
+/*    color: var(--primary-color);*/
+}
+
+}
+
+/* Nav bar style is here */
+.navbar {
+  background-color: white;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.p-container-fluid {
+  display: flex;
+/*  padding: 0px 300px;*/
+}
+
+.navbar-nav {
+  margin-left: auto;
+}
+
+#cart {
+  font-size: var(--icon-size);
+}
+
+.nav-link:hover #cart:hover {
+  color: var(--primary-color);
+}
+
+.nav-link {
+  margin-right: 2px;
+}
+
+.navbar-brand {
+  color: var(--primary-color);
+  font-weight: bold;
+}
+
+.navbar-brand:hover {
+  color: var(--primary-color);
+}
+
+.nav-item a {
+  color: var(--navy-dark);
+}
+
+.nav-item a:hover {
+  color: var(--primary-color);
+}
+
+/* Footer style */
+footer {
+  width: 100%;
+  padding: var(--padding-15);
+  background-color: var(--navy-dark);
+  color: var(--white);
+}
+
+footer ul {
+  list-style-type: none;
+}
+
+footer i {
+  font-size: 20px;
+  padding-right: var(--padding-15);
+}
+
+.social-media {
+  display: flex;
+}
+
+/* Index page style */
+#index-page {
+  color: var(--primary-color);
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+}
+/* Menu page style */
+#paypal-button-container {
+  max-width: 100px;
+}
+
+.material-symbols-outlined,
+.nav-link span {
+    vertical-align: middle;
+    transition: background-color 0.2s ease;
+}
+
+.nav-link {
+    position: relative; /* This is needed for absolute positioning of the circle */
+}
+
+.notification-circle {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: var(--navy-dark); /* Or any color you prefer */
+    /*background-color: var(--primary-color);*/ /* Or any color you prefer */
+    color: white;
+    width: 20px; /* Adjust size as needed */
+    height: 20px;
+    border-radius: 50%; /* Makes it circular */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px; /* Adjust as needed */
+    transition: background-color 0.2s ease; 
+    /*
+    &:hover {
+        background-color: var(--primary-color);  Or any color you prefer 
+    }*/
+}
+
+.nav-link:hover .notification-circle {
+    background-color: var(--primary-color);
+}
+
+.p-grid-container {
+    display: grid;
+    grid-template-columns: 1fr; /* Single column */
+    /*grid-template-rows: .6fr .4fr;*/ /* Rows with 0.25fr */
+    /*max-width: 800px;*/ /* Maximum width */
+    margin: 0 auto; /* Center horizontally */
+    /*gap: 10px;*/ /* Optional: Add spacing between rows */
+    height: 100%;
+}
+
+.p-hero-layout-sm {
+    grid-template-rows: 300px 1fr; /* Rows with 0.25fr */
+}
+
+.p-hero-layout-lg {
+    grid-template-rows: 500px 1fr; /* Rows with 0.25fr */
+}
+
+.p-landing-special {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 columns */
+    margin: 16px;
+    grid-gap: 32px;
+}
+
+
+.p-grid-item {
+    text-align: center; /* Center text within each grid item */
+    border: 1px solid black; /* Optional: Add borders for visualization */
+    /*padding: 10px;*/ /* Optional: Add padding for content spacing */
+    height: 100%;
+}
+
+.p-landing-main-image {
+/*    height: 450px;*/
+    background-image: url('../images/landing-hero.jpg'); /* Adds the image */
+    background-size: cover; /* Ensures the image covers the whole area */
+    background-position: center; /* Centers the image */
+    background-repeat: no-repeat; /* Prevents tiling */
+}
+
+.p-hero.p-grid-container {
+    display: grid;
+    grid-template-columns: 1fr; /* Single column */
+    grid-template-rows: 1fr repeat(3, minmax(50px, 50px)) 1fr; /* Three rows with minmax */
+    max-width: 800px; /* Maximum width */
+    margin: 0 auto; /* Center horizontally */
+    align-content: space-around; /* Distribute space before/after */
+    /*height: 500px;*/ /* Example height, adjust as needed */
+    justify-items: center;
+}
+
+.p-grid-container h1 {
+    grid-row: 2 / span 1; /* Start at row line 2, span 1 row */
+}
+
+.p-grid-container p {
+    grid-row: 3 / span 1; /* Start at row line 3, span 1 row */
+}
+
+.p-grid-container button {
+    grid-row: 4 / span 1; /* Start at row line 4, span 1 row */
+}
+
+.p-hero h1 {
+    color: var(--white);
+    font-weight: bold;
+}
+
+.p-hero-section {
+    position: relative;
+    background-image: url('../images/landing-hero.jpg');
+    background-size: cover;
+}
+
+.p-hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient( rgba(0, 0, 0, 0.2), /* Increase opacity from 0.5 to 0.7 if needed */
+    rgba(0, 0, 0, 0.3) );
+}
+
+.p-hero-text {
+    position: relative;
+    z-index: 1;
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Text shadow for extra readability */
+}
+
+.p-hero-content {
+    position: relative;
+    z-index: 1;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: white;
+    padding: 1rem;
+}
+
+.p-hero-title {
+    font-weight: 700; /* Make text bolder */
+    letter-spacing: 1px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5), 0 0 10px rgba(0, 0, 0, 0.3); /* Double shadow for better legibility */
+}
+
+.p-hero-subtitle {
+/*    font-size: 1.5rem;*/
+    font-weight: 500;
+    margin-bottom: 2rem;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);
+}
+
+.p-cta-button {
+    background-color: var(--brand-orange);
+    color: white;
+    padding: .5rem 1rem;
+    border: none;
+    border-radius: 25px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: fit-content; /* Make the button fit its content */
+    /*padding: 1rem;*/ /* Add padding to the top and bottom */
+}
+
+.p-cta-button:hover {
+    background-color: var(--pizza-red);
+}
+
+.p-landing-special img {
+    height: 200px;
+}
+
+.p-image-container {
+    height: 200px; /* Set your desired height */
+    overflow: hidden; /* Clip the image if it's too wide */
+    width: 100%;
+}
+
+.p-image-container img {
+    width: 100%; /* Make the image fill the container width */
+    height: 100%; /* Make the image fill the container height */
+    object-fit: cover; /* Maintain aspect ratio and cover the container */
+    object-position: center; /* Center the image within the container */
+}

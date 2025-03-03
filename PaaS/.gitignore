@@ -237,10 +237,6 @@ _Pvt_Extensions
 .idea/
 *.sln.iml
 
-app.db
-app.db-shm
-app.db-wal
-
 ../.idea/
 # Ignore Visual Studio files
 .vs/
