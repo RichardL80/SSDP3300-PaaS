@@ -70,7 +70,8 @@ public class ApplicationDbContext : IdentityDbContext
                 Description = "Grilled chicken, BBQ sauce, red onions, and cilantro",
                 Price = 10m,
                 ItemTypeId = 1,
-                IdCategory = 1
+                IdCategory = 1,
+                ImgUrl = "https://plus.unsplash.com/premium_photo-1664472696633-4b0b41e95202?q=80&w=2752&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
             },
             new Item
             {
@@ -79,7 +80,8 @@ public class ApplicationDbContext : IdentityDbContext
                 Description = "Plant-based cheese, mushrooms, peppers, and vegan sausage",
                 Price = 18.99m,
                 ItemTypeId = 1,
-                IdCategory = 2
+                IdCategory = 2,
+                ImgUrl = "https://plus.unsplash.com/premium_photo-1722945691819-e58990e7fb27?q=80&w=2821&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
             },
             new Item
             {
@@ -88,7 +90,47 @@ public class ApplicationDbContext : IdentityDbContext
                 Description = "Breaded mozzarella with marinara sauce",
                 Price = 6m,
                 ItemTypeId = 2,
-                IdCategory = 3
+                IdCategory = 3,
+                ImgUrl = "https://images.unsplash.com/photo-1708980108318-4b843e243080?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+            },
+            new Item
+            {
+                ItemId = 4,
+                Name = "Custom Pizza",
+                Description = "Create your own pizza with your choice of toppings",
+                Price = 12m,
+                ItemTypeId = 1,
+                IdCategory = 4
+            } ,
+            new Item
+            {
+                ItemId = 5,
+                Name = "Coke",
+                Description = "Coca-Cola",
+                Price = 4m,
+                ItemTypeId = 3,
+                IdCategory = 3,
+                ImgUrl = "https://images.unsplash.com/photo-1624552184280-9e9631bbeee9?q=80&w=2787&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+            },
+            new Item
+            {
+                ItemId = 6,
+                Name = "Pepsi",
+                Description = "Pepsi",
+                Price = 4m,
+                ItemTypeId = 3,
+                IdCategory = 3,
+                ImgUrl = "https://images.unsplash.com/photo-1553456558-aff63285bdd1?q=80&w=2787&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+            },
+            new Item
+            {
+                ItemId = 7,
+                Name = "Craft Beer",
+                Description = "Local craft beer",
+                Price = 6m,
+                ItemTypeId = 3,
+                IdCategory = 3,
+                ImgUrl = "https://images.unsplash.com/photo-1612528443702-f6741f70a049?q=80&w=2680&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
             }
         );
     }

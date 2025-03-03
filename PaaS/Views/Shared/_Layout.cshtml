@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -7,25 +7,25 @@
     <title>@ViewData["Title"] - PaaS</title>
     <script type="importmap"></script>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <link rel="stylesheet" href="~/css/PaaS.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     @* <link rel="stylesheet" href="~/PaaS.styles.css" asp-append-version="true" /> *@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    @await RenderSectionAsync("Styles", required: false)
 </head>
 
 <body>
-    <div class="p-main-container p-landing-layout">
-        <header>
+    <div class="main-container">
+        <header class="fixed-top">
             <nav class="navbar navbar-expand-sm navbar-toggleable-sm mb-3">
                 <div class="container-fluid">
                     <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
                         @* PaaS *@
-                        <img src="~/images/image.png" />
+                        <img src="~/images/image.png" /> 
                     </a>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                            data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent" aria-expanded="false"
-                            aria-label="Toggle navigation">
+                        data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent" aria-expanded="false"
+                        aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
                     <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
@@ -49,8 +49,8 @@
                             <li class="nav-item">
                                 <a id="cart" class="nav-link" asp-area="" asp-controller="Cart"
                                    asp-action="Index">
-                                    <span class="material-icons">shopping_cart</span>
-                                    <span id="cart-item-count" class="notification-circle">0</span>
+                                   <span class="material-icons">shopping_cart</span>
+                                   <span id="cart-item-count" class="notification-circle">0</span>
                                 </a>
                             </li>
                             @* <li class="nav-item"> *@
@@ -61,8 +61,7 @@
                             @* <span class="material-icons">shopping_cart</span> *@
                             @* Test for Order Summary page and paypal trasaction page(Admin)*@
                             <li class="nav-item">
-                                <a class="nav-link" asp-area="" asp-controller="PayPal" asp-action="Index">
-                                    PayPal
+                                <a class="nav-link" asp-area="" asp-controller="PayPal" asp-action="Index">PayPal
                                 </a>
                             </li>
                             <li class="nav-item">
@@ -75,14 +74,18 @@
                                         <span class="material-icons">manage_accounts</span> User Management
                                     </a>
                                 </li>
-                                <li class="nav-item">
-                                    <form asp-controller="Contact" asp-action="AdminUserDetails" method="get">
-                                        <input type="text" name="userEmail" placeholder="Search User Email" aria-label="userEmail">
-                                        <button type="submit">Search</button>
-                                    </form>
-                                </li>
                             }
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <li class="nav-item">
+                            <form asp-controller="Contact" asp-action="AdminUserDetails" method="get">
+                                <input type="text" name="userEmail" placeholder="Search User Email" aria-label="userEmail">
+                                <button type="submit">Search</button>
+                            </form>
+                        </li>
+                    }
                         </ul>
+
                     </div>
                 </div>
             </nav>
@@ -97,6 +100,7 @@
         <footer>
             <div class="row">
                 <div class="col-12 col-md-3">
+
                     <ul>
                         <h5>Help & Services</h5>
                         <li>Contact Us</li>
@@ -109,37 +113,40 @@
                     <ul>
                         <h5>Follow Us</h5>
                         <div class="social-media">
-                        <li><i class="bi bi-facebook"></i></li>
-                        <li><i class="bi bi-instagram"></i></li>
-                        <li><i class="bi bi-twitter"></i></li>
+                            <li><i class="bi bi-facebook"></i></li>
+                            <li><i class="bi bi-instagram"></i></li>
+                            <li><i class="bi bi-twitter"></i></li>
+                        </div>
+                    </ul>
                 </div>
-                </ul>
+                <div class="col-12 col-md-3">
+                    <ul>
+                        <h5>Nutritions</h5>
+                        <li>Nutrition Information</li>
+                        <li>Food Allergen & Sensitives</li>
+                        <li>Ingredient Listing</li>
+                        <li>Gluten Free FAQ</li>
+                    </ul>
+                </div>
+                <div class="col-12 col-md-3">
+                    <ul>
+                        <h5>Our Policies</h5>
+                        <li>Privacy</li>
+                        <li>Terms & Conditions</li>
+                        <li>Responsible Disclosure</li>
+                        <li>Cookies & Ads</li>
+                    </ul>
+                </div>
             </div>
-            <div class="col-12 col-md-3">
-                <ul>
-                    <h5>Nutritions</h5>
-                    <li>Nutrition Information</li>
-                    <li>Food Allergen & Sensitives</li>
-                    <li>Ingredient Listing</li>
-                    <li>Gluten Free FAQ</li>
-                </ul>
-            </div>
-            <div class="col-12 col-md-3">
-                <ul>
-                    <h5>Our Policies</h5>
-                    <li>Privacy</li>
-                    <li>Terms & Conditions</li>
-                    <li>Responsible Disclosure</li>
-                    <li>Cookies & Ads</li>
-                </ul>
-            </div>
-    </div>
-    </footer>
+        </footer>
 
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
+        <script src="~/lib/jquery/dist/jquery.min.js"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="~/js/site.js" asp-append-version="true"></script>
         @await RenderSectionAsync("Scripts", required: false)
     </div>
+
 </body>
+
+
 </html>

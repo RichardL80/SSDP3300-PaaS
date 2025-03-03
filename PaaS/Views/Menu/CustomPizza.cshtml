@@ -1,0 +1,316 @@
+@model PaaS.ViewModels.CustomPizzaVM
+@{
+    ViewData["Title"] = "Customize Your Pizza";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/menu.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/item-detail.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/custom-pizza.css" asp-append-version="true" />
+}
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="item-detail-image-container">
+                <img src="@Model.ImgUrl" class="item-detail-image" alt="@Model.Name">
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="item-detail-content">
+                <h1 class="item-detail-title">@Model.Name</h1>
+                <p class="item-detail-description">@Model.Description</p>
+                
+                <div class="item-detail-price-container">
+                    <h3 id="selected-price">@Model.BasePrice.ToString("C")</h3>
+                </div>
+                
+                <form id="customPizzaForm">
+                    <input type="hidden" name="ItemId" value="@Model.ItemId" />
+                    <input type="hidden" name="Name" value="@Model.Name" />
+                    <input type="hidden" name="Description" value="@Model.Description" />
+                    <input type="hidden" name="BasePrice" value="@Model.BasePrice" />
+                    <input type="hidden" name="ImgUrl" value="@Model.ImgUrl" />
+                    
+                    <div class="custom-pizza-options">
+                        <div class="form-group mb-3">
+                            <label for="size-select" class="form-label">Pizza Size</label>
+                            <select id="size-select" name="SelectedSize" class="form-select">
+                                @foreach (var option in Model.SizeOptions)
+                                {
+                                    if (option.Name == Model.SelectedSize)
+                                    {
+                                        <option value="@option.Name" data-price="@option.Price" selected>
+                                            @option.DisplayText
+                                        </option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@option.Name" data-price="@option.Price">
+                                            @option.DisplayText
+                                        </option>
+                                    }
+                                }
+                            </select>
+                        </div>
+                        
+                        <div class="form-group mb-3">
+                            <label for="sauce-select" class="form-label">Sauce Type</label>
+                            <select id="sauce-select" name="SelectedSauce" class="form-select">
+                                @foreach (var sauce in Model.SauceTypes)
+                                {
+                                    if (sauce == Model.SelectedSauce)
+                                    {
+                                        <option value="@sauce" selected>@sauce</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@sauce">@sauce</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+                        
+                        <div class="form-group mb-3">
+                            <label for="dough-select" class="form-label">Dough Type</label>
+                            <select id="dough-select" name="SelectedDough" class="form-select">
+                                @foreach (var dough in Model.DoughTypes)
+                                {
+                                    if (dough == Model.SelectedDough)
+                                    {
+                                        <option value="@dough" selected>@dough</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@dough">@dough</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+                        
+                        <div class="form-group mb-3">
+                            <label for="cheese-select" class="form-label">Cheese Type</label>
+                            <select id="cheese-select" name="SelectedCheese" class="form-select">
+                                @foreach (var cheese in Model.CheeseTypes)
+                                {
+                                    if (cheese == Model.SelectedCheese)
+                                    {
+                                        <option value="@cheese" selected>@cheese</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@cheese">@cheese</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+                        
+                        <div class="form-group mb-4">
+                            <label class="form-label">Toppings</label>
+                            
+                            <div class="toppings-section">
+                                <h6>Meats</h6>
+                                <div class="toppings-grid">
+                                    @for (int i = 0; i < Model.MeatToppings.Count; i++)
+                                    {
+                                        var topping = Model.MeatToppings[i];
+                                        <div class="topping-item">
+                                            <input type="checkbox" id="meat-@i" name="MeatToppings[@i].Selected" value="true" @(topping.Selected ? "checked" : "") />
+                                            <input type="hidden" name="MeatToppings[@i].Name" value="@topping.Name" />
+                                            <label for="meat-@i">@topping.Name</label>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                            
+                            <div class="toppings-section">
+                                <h6>Veggies</h6>
+                                <div class="toppings-grid">
+                                    @for (int i = 0; i < Model.VeggieToppings.Count; i++)
+                                    {
+                                        var topping = Model.VeggieToppings[i];
+                                        <div class="topping-item">
+                                            <input type="checkbox" id="veggie-@i" name="VeggieToppings[@i].Selected" value="true" @(topping.Selected ? "checked" : "") />
+                                            <input type="hidden" name="VeggieToppings[@i].Name" value="@topping.Name" />
+                                            <label for="veggie-@i">@topping.Name</label>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                            
+                            <div class="toppings-section">
+                                <h6>Other</h6>
+                                <div class="toppings-grid">
+                                    @for (int i = 0; i < Model.OtherToppings.Count; i++)
+                                    {
+                                        var topping = Model.OtherToppings[i];
+                                        <div class="topping-item">
+                                            <input type="checkbox" id="other-@i" name="OtherToppings[@i].Selected" value="true" @(topping.Selected ? "checked" : "") />
+                                            <input type="hidden" name="OtherToppings[@i].Name" value="@topping.Name" />
+                                            <label for="other-@i">@topping.Name</label>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group mb-4">
+                            <label class="form-label">Quantity</label>
+                            <div class="quantity-control">
+                                <button type="button" id="decrease-quantity" class="quantity-btn">−</button>
+                                <input type="number" id="quantity" name="Quantity" class="quantity-input" value="1" min="1" max="10">
+                                <button type="button" id="increase-quantity" class="quantity-btn">+</button>
+                            </div>
+                        </div>
+                        
+                        <div class="item-detail-actions">
+                            <button type="button" id="add-to-cart-btn" class="btn-add-cart-detail" data-id="@Model.ItemId">
+                                Add to Cart - <span id="total-price">@Model.BasePrice.ToString("C")</span>
+                            </button>
+                            <a href="@Url.Action("Index", "Menu")" class="btn-return-menu">Return to Menu</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            let currentPrice = @Html.Raw(Json.Serialize(Model.BasePrice));
+            let quantity = 1;
+            
+            $('#size-select').on('change', function() {
+                const selectedOption = $(this).find('option:selected');
+                currentPrice = parseFloat(selectedOption.data('price'));
+                updateDisplayedPrices();
+            });
+            
+            $('#increase-quantity').on('click', function() {
+                if (quantity < 10) {
+                    quantity++;
+                    $('#quantity').val(quantity);
+                    updateDisplayedPrices();
+                }
+            });
+            
+            $('#decrease-quantity').on('click', function() {
+                if (quantity > 1) {
+                    quantity--;
+                    $('#quantity').val(quantity);
+                    updateDisplayedPrices();
+                }
+            });
+            
+            $('#quantity').on('change', function() {
+                quantity = parseInt($(this).val());
+                if (isNaN(quantity) || quantity < 1) {
+                    quantity = 1;
+                    $(this).val(1);
+                } else if (quantity > 10) {
+                    quantity = 10;
+                    $(this).val(10);
+                }
+                updateDisplayedPrices();
+            });
+            
+            function updateDisplayedPrices() {
+                const formattedPrice = formatCurrency(currentPrice);
+                const formattedTotal = formatCurrency(currentPrice * quantity);
+                
+                $('#selected-price').text(formattedPrice);
+                $('#total-price').text(formattedTotal);
+            }
+            
+            function formatCurrency(amount) {
+                return '$' + amount.toFixed(2);
+            }
+            
+            $('#add-to-cart-btn').on('click', function() {
+                const itemId = $(this).data('id');
+                const size = $('#size-select').val();
+                const quantity = parseInt($('#quantity').val());
+                
+                // Collect customization data
+                const customization = {
+                    sauce: $('#sauce-select').val(),
+                    dough: $('#dough-select').val(),
+                    cheese: $('#cheese-select').val(),
+                    toppings: {
+                        meats: [],
+                        veggies: [],
+                        others: []
+                    }
+                };
+                
+                // Collect selected meat toppings
+                @for (int i = 0; i < Model.MeatToppings.Count; i++)
+                {
+                    <text>
+                    if ($('#meat-@i').is(':checked')) {
+                        customization.toppings.meats.push('@Model.MeatToppings[i].Name');
+                    }
+                    </text>
+                }
+                
+                // Collect selected veggie toppings
+                @for (int i = 0; i < Model.VeggieToppings.Count; i++)
+                {
+                    <text>
+                    if ($('#veggie-@i').is(':checked')) {
+                        customization.toppings.veggies.push('@Model.VeggieToppings[i].Name');
+                    }
+                    </text>
+                }
+                
+                // Collect selected other toppings
+                @for (int i = 0; i < Model.OtherToppings.Count; i++)
+                {
+                    <text>
+                    if ($('#other-@i').is(':checked')) {
+                        customization.toppings.others.push('@Model.OtherToppings[i].Name');
+                    }
+                    </text>
+                }
+                
+                // Prepare the payload in the requested format
+                const payload = {
+                    Item: {
+                        ItemId: parseInt(itemId)
+                    },
+                    Size: size,
+                    Quantity: quantity,
+                    Customization: JSON.stringify(customization)
+                };
+                
+                console.log('Sending payload:', payload);
+                
+                fetch('@Url.Action("AddToCartAjax", "Cart")', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(payload)
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        const $cartItemCount = $('#cart-item-count');
+                        const currentCount = parseInt($cartItemCount.text() || '0');
+                        $cartItemCount.text(currentCount + quantity);
+                        console.log('Custom pizza added to cart!');
+                    } else {
+                        console.log('Failed to add item to cart: ' + (data.message || 'Unknown error'));
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    console.log('An error occurred while adding to cart. Please try again.');
+                });
+            });
+        });
+    </script>
+}

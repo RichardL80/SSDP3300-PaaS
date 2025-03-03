@@ -1,3 +1,5 @@
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Newtonsoft.Json
 @model IEnumerable<CartItem>
 
 @{
@@ -10,15 +12,49 @@
     <div id="cart-items">
         @foreach (var item in Model)
         {
-            <div class="cart-item" data-id="@item.Item.ItemId">
+            <div class="cart-item" data-id="@item.Item.ItemId" data-item='@JsonConvert.SerializeObject(item)'>
                 <img src="@item.Item.ImgUrl" alt="@item.Item.Name Image" width="100" height="100">  
                 <h3>@item.Item.Name</h3>
                 <div>@item.Item.Price</div>
-                <button class="btn btn-danger remove-from-cart" data-id="@item.Item.ItemId">-</button>
+                <div>@item.Size</div>
+                @if (item.Item.IdCategory == 4)
+                {
+                    <div class="custom-pizza-details">
+                        @{
+                            var customization = JsonConvert.DeserializeObject<dynamic>(item.Customization);
+                            if (customization != null)
+                            {
+                                <div class="pizza-options">
+                                    <span class="option-label">Sauce:</span> <span class="option-value">@customization.sauce</span>
+                                    <span class="option-label">Dough:</span> <span class="option-value">@customization.dough</span>
+                                    <span class="option-label">Cheese:</span> <span class="option-value">@customization.cheese</span>
+                                </div>
+                                <div class="pizza-toppings">
+                                    @if (customization.toppings.meats.Count > 0)
+                                    {
+                                        <span class="topping-category">Meats:</span>
+                                        <span class="topping-list">@string.Join(", ", customization.toppings.meats)</span>
+                                    }
+                                    @if (customization.toppings.veggies.Count > 0)
+                                    {
+                                        <span class="topping-category">Veggies:</span>
+                                        <span class="topping-list">@string.Join(", ", customization.toppings.veggies)</span>
+                                    }
+                                    @if (customization.toppings.others.Count > 0)
+                                    {
+                                        <span class="topping-category">Others:</span>
+                                        <span class="topping-list">@string.Join(", ", customization.toppings.others)</span>
+                                    }
+                                </div>
+                            }
+                        }
+                    </div>
+                }
+                <button class="btn btn-danger remove-from-cart" data-id="@item.Item.ItemId" data-item='@JsonConvert.SerializeObject(item)'>-</button>
                 <span> @item.Quantity </span>
-                <button class="btn btn-primary add-to-cart" data-id="@item.Item.ItemId">+</button>
+                <button class="btn btn-primary add-to-cart" data-id="@item.Item.ItemId" data-item='@JsonConvert.SerializeObject(item)'>+</button>
                 <div>@((item.Quantity*item.Item.Price).ToString("C")) </div>
-                <button class="btn btn-danger delete-from-cart" data-id="@item.Item.ItemId">Delete</button>   
+                <button class="btn btn-danger delete-from-cart" data-id="@item.Item.ItemId" data-item='@JsonConvert.SerializeObject(item)'>Delete</button>   
             </div>
         }
     </div>
@@ -27,6 +63,49 @@
     </div>
     <a class="checkout" asp-area="" asp-controller="PayPal" asp-action="Index">Checkout</a>
 </div>
+
+@section Styles {
+    <style>
+        .custom-pizza-details {
+            font-size: 0.9rem;
+            background-color: #f8f9fa;
+            border-radius: 4px;
+            padding: 8px;
+            margin: 5px 0;
+            max-width: 300px;
+        }
+        
+        .pizza-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-bottom: 5px;
+        }
+        
+        .pizza-toppings {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+        }
+        
+        .option-label, .topping-category {
+            font-weight: bold;
+            margin-right: 3px;
+        }
+        
+        .option-value, .topping-list {
+            color: #555;
+        }
+        
+        .topping-category {
+            color: #007bff;
+        }
+        
+        .topping-list {
+            font-style: italic;
+        }
+    </style>
+}
 
 @section Scripts {
     <script>
@@ -41,15 +120,54 @@
                         const cartItem = document.createElement('div');
                         cartItem.classList.add('cart-item');
                         cartItem.setAttribute('data-id', item.item.itemId);
+                        
+                        let customizationHtml = '';
+                        if (item.item.idCategory === 4 && item.customization) {
+                            try {
+                                const customization = typeof item.customization === 'string' 
+                                    ? JSON.parse(item.customization) 
+                                    : item.customization;
+                                
+                                customizationHtml = `
+                                    <div class="custom-pizza-details">
+                                        <div class="pizza-options">
+                                            <span class="option-label">Sauce:</span> <span class="option-value">${customization.sauce}</span>
+                                            <span class="option-label">Dough:</span> <span class="option-value">${customization.dough}</span>
+                                            <span class="option-label">Cheese:</span> <span class="option-value">${customization.cheese}</span>
+                                        </div>
+                                        <div class="pizza-toppings">
+                                            ${customization.toppings.meats && customization.toppings.meats.length > 0 ? `
+                                                <span class="topping-category">Meats:</span>
+                                                <span class="topping-list">${customization.toppings.meats.join(", ")}</span>
+                                            ` : ''}
+                                            ${customization.toppings.veggies && customization.toppings.veggies.length > 0 ? `
+                                                <span class="topping-category">Veggies:</span>
+                                                <span class="topping-list">${customization.toppings.veggies.join(", ")}</span>
+                                            ` : ''}
+                                            ${customization.toppings.others && customization.toppings.others.length > 0 ? `
+                                                <span class="topping-category">Others:</span>
+                                                <span class="topping-list">${customization.toppings.others.join(", ")}</span>
+                                            ` : ''}
+                                        </div>
+                                    </div>
+                                `;
+                            } catch (e) {
+                                console.error('Error parsing customization:', e);
+                                customizationHtml = `<div class="custom-pizza-details">Custom Pizza</div>`;
+                            }
+                        }
+                        
                         cartItem.innerHTML = `
                             <img src="${item.item.imgUrl}" alt="${item.item.name} Image" width="100" height="100">
                             <h3>${item.item.name}</h3>
                             <div>${item.item.price}</div>
-                            <button class="btn btn-danger remove-from-cart" data-id="${item.item.itemId}">-</button>
+                            <div>${item.size}</div>
+                            ${customizationHtml}
+                            <button class="btn btn-danger remove-from-cart" data-id="${item.item.itemId}" data-item='${JSON.stringify(item)}' >-</button>
                             <span>${item.quantity}</span>
-                            <button class="btn btn-primary add-to-cart" data-id="${item.item.itemId}">+</button>
+                            <button class="btn btn-primary add-to-cart" data-id="${item.item.itemId}" data-item='${JSON.stringify(item)}'>+</button>
                             <div>${(item.quantity * item.item.price).toFixed(2)}</div>
-                            <button class="btn btn-danger delete-from-cart" data-id="${item.item.itemId}">Delete</button>
+                            <button class="btn btn-danger delete-from-cart" data-id="${item.item.itemId}" data-item='${JSON.stringify(item)}'>Delete</button>
                         `;
                         cartItemsContainer.appendChild(cartItem);
                         total += item.quantity * item.item.price;
@@ -63,12 +181,22 @@
             document.querySelectorAll('.add-to-cart').forEach(button => {
                 button.addEventListener('click', function() {
                     const itemId = this.getAttribute('data-id');
+                    const itemData = JSON.parse(this.getAttribute('data-item'));
                     fetch('@Url.Action("AddToCartAjax", "Cart")', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
                         },
-                        body: JSON.stringify({ itemId: parseInt(itemId) })
+                        body: JSON.stringify(
+                            {
+                                item : {
+                                    itemId: parseInt(itemId),
+                                },
+                                size: itemData.Size || itemData.size,
+                                quantity: 1,
+                                customization: itemData.Customization || itemData.customization,
+                            }
+                        )
                     })
                     .then(response => response.json())
                     .then(data => {
@@ -84,12 +212,22 @@
             document.querySelectorAll('.delete-from-cart').forEach(button => {
                 button.addEventListener('click', function() {
                     const itemId = this.getAttribute('data-id');
+                    const dataItem = JSON.parse(this.getAttribute('data-item'));
+                    const itemSize = dataItem.Size || dataItem.size;
+                    
                     fetch('@Url.Action("DeleteFromCartAjax", "Cart")', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
                         },
-                        body: JSON.stringify({ itemId: parseInt(itemId) })
+                        body: JSON.stringify(
+                            {
+                                item : {
+                                    itemId: parseInt(itemId),
+                                },
+                                size: itemSize,
+                            }
+                        )
                     })
                     .then(response => response.json())
                     .then(data => {
@@ -105,12 +243,19 @@
             document.querySelectorAll('.remove-from-cart').forEach(button => {
                 button.addEventListener('click', function() {
                     const itemId = this.getAttribute('data-id');
-                    fetch('@Url.Action("RemoveFromCartAjax", "Cart")', {
+                    const dataItem = JSON.parse(this.getAttribute('data-item'));
+                    const itemSize = dataItem.Size || dataItem.size;
+                    fetch('@Url.Action("RemoveItemCountFromCartAjax", "Cart")', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
                         },
-                        body: JSON.stringify({ itemId: parseInt(itemId) })
+                        body: JSON.stringify({ 
+                            item : {
+                                itemId: parseInt(itemId),
+                            },
+                            size: itemSize,
+                        })
                     })
                     .then(response => response.json())
                     .then(data => {
