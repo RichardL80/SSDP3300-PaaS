@@ -1,4 +1,6 @@
 @model PaaS.ViewModels.MenuVM
+@using Microsoft.AspNetCore.Antiforgery
+@inject IAntiforgery Antiforgery
 @{
     ViewData["Title"] = "Menu";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -81,6 +83,9 @@
                 </section>
             }
 
+
+
+
             <!-- Sides Section -->
             <section id="sides" class="menu-section">
                 <h2 class="category-header">Sides</h2>
@@ -113,6 +118,7 @@
                     }
                 </div>
             </section>
+
 
             <!-- Drinks Section -->
             <section id="drinks" class="menu-section">
@@ -152,26 +158,23 @@
 
 @section Scripts {
     <script>
-        $(document).ready(function() {
-            // Handle Add to Cart button clicks
-            $('.btn-add-cart').on('click', function() {
-                const itemId = $(this).data('id');
-                
-                // Add item to cart (you can replace this with your actual cart logic)
-                $.ajax({
-                    url: '/Menu/AddToCart',
-                    type: 'POST',
-                    data: { itemId: itemId },
-                    success: function(response) {
-                        // Update cart count
-                        const currentCount = parseInt($('#cart-item-count').text());
-                        $('#cart-item-count').text(currentCount + 1);
-                        
-                        // Show success message
-                        alert('Item added to cart!');
+        document.querySelectorAll('.add-to-cart').forEach(button => {
+            button.addEventListener('click', function() {
+                const itemId = this.getAttribute('data-id');
+                fetch('@Url.Action("AddToCartAjax", "Menu")', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
                     },
-                    error: function() {
-                        alert('Failed to add item to cart. Please try again.');
+                    body: JSON.stringify({ itemId: parseInt(itemId) })
+                    
+                })                
+                .then(response => response.json())
+                .then(data => {                    
+                    if (data.success) {
+                        console.log('Item added to cart');
+                    } else {
+                        console.log('Failed to add item to cart');
                     }
                 });
             });
