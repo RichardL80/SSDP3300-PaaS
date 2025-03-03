@@ -1,4 +1,6 @@
 ﻿@model PaaS.ViewModels.MenuVM
+@using Microsoft.AspNetCore.Antiforgery
+@inject IAntiforgery Antiforgery
 @{
     ViewData["Title"] = "Menu";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -120,3 +122,29 @@
                         }
                     </div>
                 </section>
+
+@section Scripts {
+    <script>
+        document.querySelectorAll('.add-to-cart').forEach(button => {
+            button.addEventListener('click', function() {
+                const itemId = this.getAttribute('data-id');
+                fetch('@Url.Action("AddToCartAjax", "Menu")', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ itemId: parseInt(itemId) })
+                    
+                })                
+                .then(response => response.json())
+                .then(data => {                    
+                    if (data.success) {
+                        console.log('Item added to cart');
+                    } else {
+                        console.log('Failed to add item to cart');
+                    }
+                });
+            });
+        });
+    </script>
+}
