@@ -1,0 +1,112 @@
+@model PaaS.ViewModels.MyAccountVM
+
+@{
+	ViewData["Title"] = "My Account";
+	Layout = "~/Views/Shared/_Layout.cshtml";
+	
+}
+
+<br />
+<h1>My Account</h1>
+
+<div class="account-wrapper">
+	<div class="left-nav">
+		<ul class="account-nav">
+			<li><button id="personal-details-nav">Personal Details</button></li>
+			<li><button id="address-nav">Addressess</button></li>
+			<li><button id="order-history-nav">Order History</button></li>
+			<li><button id="settings-nav">Settings</button></li>
+			<li><form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                <button type="submit" class="nav-link btn btn-link text-dark">Logout</button>
+            </form></li>
+		</ul>
+	</div>
+	<div class="account-content">
+		<section id="personal-details" class="my-account-section">
+			<div class="section-header">
+				<h2>Personal Details</h2>
+				<a asp-action="EditDetails" asp-route-userId="@Model.ContactInfo.FirstOrDefault()?.UserId">Edit</a>
+			</div>
+			<div class="details-content">
+				<ul>
+					<li><span>Name:</span> <span>@Model.ContactInfo.FirstOrDefault()?.FirstName</span> <span>@Model.ContactInfo.FirstOrDefault()?.LastName</span></li>
+					<li><span>Email:</span> @Model.ContactInfo.FirstOrDefault()?.Email</li>
+					<li><span>Phone:</span> @Model.ContactInfo.FirstOrDefault()?.Phone</li>
+				</ul>
+			</div>
+		</section>
+		<section id="addresses" class="my-account-section">
+			<div class="section-header">
+				<h2>Addresses</h2>
+				<a asp-action="AddAddress" asp-route-userId="@Model.ContactInfo.FirstOrDefault()?.UserId">+ Add New</a>
+			</div>
+			<div class="addresses-content">
+				@foreach (var item in Model.ContactInfo)
+				{
+					<div class="address">
+						<ul>
+							<li>@item.Address1</li>
+							<li>@item.Address2</li>
+							<li><span>@item.CityName</span>, <span>@item.ProvinceName</span></li>
+						</ul>
+						<a asp-action="EditAddress" asp-route-contactId="@item.ContactId">Edit</a>
+						<a asp-action="DeleteAddress" asp-route-contactId="@item.ContactId">Delete</a>
+					</div>
+				}
+				
+			</div>
+		</section>
+		<section id="order-history" class="my-account-section">
+			<div class="section-header">
+				<h2>Order History</h2>
+				@foreach (var item in Model.Orders)
+				{
+					<div class="order">
+						<ul>
+							<li><span>Order ID:</span> @item.OrderId</li>
+							<li><span>Order Date:</span> @item.OrderDate</li>
+							<li><span>Order Total:</span> @item.TotalAmount</li>
+						</ul>
+						<a asp-action="OrderDetails" asp-route-orderId="@item.OrderId">View Details</a>
+					</div>
+				}
+			</div>
+		</section>
+		<section id="settings" class="my-account-section">
+			<div class="section-header">
+				<h2>Settings</h2>
+				
+			</div>
+			<div class="settings-content">
+				<ul>
+					<li><a asp-action="ChangePassword" asp-route-userId="@Model.ContactInfo.FirstOrDefault()?.UserId">Change Password</a></li>
+				</ul>
+			</div>
+	</div>
+</div>
+
+
+@section Scripts {
+	<script>
+		$(document).ready(function () {
+			$(".my-account-section").hide();
+			$("#personal-details").show();
+			$("#personal-details-nav").click(function () {
+				$(".my-account-section").hide();
+				$("#personal-details").show();
+			});
+			$("#address-nav").click(function () {
+				$(".my-account-section").hide();
+				$("#addresses").show();
+			});
+			$("#order-history-nav").click(function () {
+				$(".my-account-section").hide();
+				$("#order-history").show();
+			});
+			$("#settings-nav").click(function () {
+				$(".my-account-section").hide();
+				$("#settings").show();
+			});
+		});
+	</script>
+}

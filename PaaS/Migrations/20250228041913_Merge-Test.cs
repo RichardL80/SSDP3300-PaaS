@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace PaaS.Migrations
 {
     /// <inheritdoc />
-    public partial class RoleGenerate : Migration
+    public partial class MergeTest : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -102,6 +102,23 @@ namespace PaaS.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_PaymentMethod", x => x.PaymentMethodId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PayPalConfirmationModel",
+                columns: table => new
+                {
+                    ID = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    TransactionId = table.Column<string>(type: "TEXT", nullable: false),
+                    Amount = table.Column<decimal>(type: "TEXT", nullable: false),
+                    PayerName = table.Column<string>(type: "TEXT", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    Email = table.Column<string>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PayPalConfirmationModel", x => x.ID);
                 });
 
             migrationBuilder.CreateTable(
@@ -259,23 +276,21 @@ namespace PaaS.Migrations
                     Description = table.Column<string>(type: "TEXT", nullable: false),
                     Price = table.Column<decimal>(type: "TEXT", nullable: false),
                     ImgUrl = table.Column<string>(type: "TEXT", nullable: true),
-                    IdItemType = table.Column<int>(type: "INTEGER", nullable: false),
-                    IdCategory = table.Column<int>(type: "INTEGER", nullable: false),
-                    IdCategoryNavigationIdCategory = table.Column<int>(type: "INTEGER", nullable: false),
-                    IdItemTypeNavigationItemTypeId = table.Column<int>(type: "INTEGER", nullable: false)
+                    ItemTypeId = table.Column<int>(type: "INTEGER", nullable: false),
+                    IdCategory = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Item", x => x.ItemId);
                     table.ForeignKey(
-                        name: "FK_Item_Category_IdCategoryNavigationIdCategory",
-                        column: x => x.IdCategoryNavigationIdCategory,
+                        name: "FK_Item_Category_IdCategory",
+                        column: x => x.IdCategory,
                         principalTable: "Category",
                         principalColumn: "IdCategory",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Item_ItemType_IdItemTypeNavigationItemTypeId",
-                        column: x => x.IdItemTypeNavigationItemTypeId,
+                        name: "FK_Item_ItemType_ItemTypeId",
+                        column: x => x.ItemTypeId,
                         principalTable: "ItemType",
                         principalColumn: "ItemTypeId",
                         onDelete: ReferentialAction.Cascade);
@@ -312,6 +327,7 @@ namespace PaaS.Migrations
                     Email = table.Column<string>(type: "TEXT", nullable: false),
                     Password = table.Column<string>(type: "TEXT", nullable: false),
                     IsVerified = table.Column<bool>(type: "INTEGER", nullable: false),
+                    Phone = table.Column<string>(type: "TEXT", nullable: false),
                     RoleId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
@@ -331,7 +347,6 @@ namespace PaaS.Migrations
                 {
                     ContactId = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Phone = table.Column<string>(type: "TEXT", nullable: false),
                     Address1 = table.Column<string>(type: "TEXT", nullable: false),
                     Address2 = table.Column<string>(type: "TEXT", nullable: true),
                     CityId = table.Column<int>(type: "INTEGER", nullable: false),
@@ -407,13 +422,11 @@ namespace PaaS.Migrations
                 name: "OrderItem",
                 columns: table => new
                 {
-                    OrderId = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                    OrderId = table.Column<int>(type: "INTEGER", nullable: false),
                     ItemId = table.Column<int>(type: "INTEGER", nullable: false),
                     Details = table.Column<string>(type: "TEXT", nullable: true),
                     Size = table.Column<string>(type: "TEXT", nullable: true),
-                    Quantity = table.Column<int>(type: "INTEGER", nullable: false),
-                    OrderId1 = table.Column<int>(type: "INTEGER", nullable: false)
+                    Quantity = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -425,8 +438,8 @@ namespace PaaS.Migrations
                         principalColumn: "ItemId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_OrderItem_Order_OrderId1",
-                        column: x => x.OrderId1,
+                        name: "FK_OrderItem_Order_OrderId",
+                        column: x => x.OrderId,
                         principalTable: "Order",
                         principalColumn: "OrderId",
                         onDelete: ReferentialAction.Cascade);
@@ -443,6 +456,37 @@ namespace PaaS.Migrations
                 });
 
             migrationBuilder.InsertData(
+                table: "Category",
+                columns: new[] { "IdCategory", "Description" },
+                values: new object[,]
+                {
+                    { 1, "Specialty Pizzas" },
+                    { 2, "Vegetarian Pizzas" },
+                    { 3, "Appetizers" },
+                    { 4, "Custom" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "ItemType",
+                columns: new[] { "ItemTypeId", "Description" },
+                values: new object[,]
+                {
+                    { 1, "Pizza" },
+                    { 2, "Slide" },
+                    { 3, "Drink" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Province",
+                columns: new[] { "ProvinceId", "Name" },
+                values: new object[,]
+                {
+                    { -1, "" },
+                    { 1, "British Columbia" },
+                    { 2, "Ontario" }
+                });
+
+            migrationBuilder.InsertData(
                 table: "Role",
                 columns: new[] { "RoleId", "Description" },
                 values: new object[,]
@@ -450,6 +494,26 @@ namespace PaaS.Migrations
                     { 1, "Admin" },
                     { 2, "Manager" },
                     { 3, "Customer" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "City",
+                columns: new[] { "CityId", "Name", "ProvinceId" },
+                values: new object[,]
+                {
+                    { -1, "", -1 },
+                    { 1, "Vancouver", 1 },
+                    { 2, "Toronto", 2 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Item",
+                columns: new[] { "ItemId", "Description", "IdCategory", "ImgUrl", "ItemTypeId", "Name", "Price" },
+                values: new object[,]
+                {
+                    { 1, "Grilled chicken, BBQ sauce, red onions, and cilantro", 1, null, 1, "BBQ Chicken", 10m },
+                    { 2, "Plant-based cheese, mushrooms, peppers, and vegan sausage", 2, null, 1, "Vegan Delight", 18.99m },
+                    { 3, "Breaded mozzarella with marinara sauce", 3, null, 2, "Mozzarella Sticks", 6m }
                 });
 
             migrationBuilder.CreateIndex(
@@ -510,14 +574,14 @@ namespace PaaS.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Item_IdCategoryNavigationIdCategory",
+                name: "IX_Item_IdCategory",
                 table: "Item",
-                column: "IdCategoryNavigationIdCategory");
+                column: "IdCategory");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Item_IdItemTypeNavigationItemTypeId",
+                name: "IX_Item_ItemTypeId",
                 table: "Item",
-                column: "IdItemTypeNavigationItemTypeId");
+                column: "ItemTypeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Order_DeliveryMethodId",
@@ -543,11 +607,6 @@ namespace PaaS.Migrations
                 name: "IX_OrderItem_ItemId",
                 table: "OrderItem",
                 column: "ItemId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_OrderItem_OrderId1",
-                table: "OrderItem",
-                column: "OrderId1");
 
             migrationBuilder.CreateIndex(
                 name: "IX_User_RoleId",
@@ -578,6 +637,9 @@ namespace PaaS.Migrations
 
             migrationBuilder.DropTable(
                 name: "OrderItem");
+
+            migrationBuilder.DropTable(
+                name: "PayPalConfirmationModel");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

@@ -35,20 +35,20 @@
                                 <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Privacy">
+                                <a class="nav-link" asp-area="" asp-controller="Menu" asp-action="Index">
                                     <div>
                                         <span class="material-symbols-outlined">menu</span>
                                         Menu
                                     </div>
                                 </a>
                             </li>
-                            <li class="nav-item">
+                            @* <li class="nav-item">
                                 <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Privacy">Account</a>
-                            </li>
+                            </li> *@
                             <partial name="_LoginPartial" />
                             <li class="nav-item">
-                                <a id="cart" class="nav-link" asp-area="" asp-controller="Home"
-                                   asp-action="Privacy">
+                                <a id="cart" class="nav-link" asp-area="" asp-controller="Cart"
+                                   asp-action="Index">
                                    <span class="material-icons">shopping_cart</span>
                                    <span id="cart-item-count" class="notification-circle">0</span>
                                 </a>
@@ -67,6 +67,23 @@
                             <li class="nav-item">
                                 <a class="nav-link" asp-area="" asp-controller="PayPal" asp-action="Transaction">Transaction</a>
                             </li>
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-area="" asp-controller="UserManagement" asp-action="Index">
+                                        <span class="material-icons">manage_accounts</span> User Management
+                                    </a>
+                                </li>
+                            }
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <li class="nav-item">
+                            <form asp-controller="Contact" asp-action="AdminUserDetails" method="get">
+                                <input type="text" name="userEmail" placeholder="Search User Email" aria-label="userEmail">
+                                <button type="submit">Search</button>
+                            </form>
+                        </li>
+                    }
                         </ul>
 
                     </div>

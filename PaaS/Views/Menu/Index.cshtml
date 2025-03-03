@@ -1,0 +1,150 @@
+﻿@model PaaS.ViewModels.MenuVM
+@using Microsoft.AspNetCore.Antiforgery
+@inject IAntiforgery Antiforgery
+@{
+    ViewData["Title"] = "Menu";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <!-- Left Navigation -->
+        <div class="col-md-3">
+            <nav class="nav flex-column sticky-top">
+                <!-- Pizza Sections -->
+                @foreach (var category in Model.PizzaCategories)
+                {
+                    <section id="@category.Key.ToLower().Replace(' ', '-')" class="mb-5">
+                        <h2>@category.Key</h2>
+
+                        @if (User.IsInRole("Admin"))
+                        {
+                            @Html.ActionLink($"Create New Pizza", "Create", "AdminMenu", new { category = "Pizza" }, new { @class = "btn btn-success mb-3" })
+                        }
+
+                        <div class="row">
+                            @foreach (var item in category.Value)
+                            {
+                                <div class="col-md-6 mb-4">
+                                    <div class="card h-100">
+                                        <img src="@item.ImgUrl" class="card-img-top" alt="@item.Name" width="300" height="300">
+                                        <div class="card-body">
+                                            <h5 class="card-title">@item.Name</h5>
+                                            <p class="card-text">@item.Description</p>
+                                            <p class="h5">@item.Price.ToString("C")</p>
+                                            @if (User.IsInRole("Admin"))
+                                            {
+                                                @Html.ActionLink("Edit", "Edit", "AdminMenu", new { id = item.ItemId }, new { @class = "btn btn-warning" })
+                                                @Html.ActionLink("Delete", "Delete", "AdminMenu", new { id = item.ItemId }, new { @class = "btn btn-danger" })
+                                            }
+                                            else
+                                            {
+                                                <button class="btn btn-primary add-to-cart" data-id="@item.ItemId">Add to Cart</button>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </section>
+                }
+
+
+
+
+            <!-- Sides Section -->
+                <section id="sides" class="mb-5">
+                    <h2>Sides</h2>
+
+                    @if (User.IsInRole("Admin"))
+                    {
+                        @Html.ActionLink("Create New Side", "Create", "AdminMenu", new { category = "Sides" }, new { @class = "btn btn-success mb-3" })
+                    }
+
+                    <div class="row">
+                        @foreach (var item in Model.Sides)
+                        {
+                            <div class="col-md-6 mb-4">
+                                <div class="card h-100">
+                                    <img src="@item.ImgUrl" class="card-img-top" alt="@item.Name" width="300" height="300">
+                                    <div class="card-body">
+                                        <h5 class="card-title">@item.Name</h5>
+                                        <p class="card-text">@item.Description</p>
+                                        <p class="h5">@item.Price.ToString("C")</p>
+                                        @if (User.IsInRole("Admin"))
+                                        {
+                                            @Html.ActionLink("Edit", "Edit", "AdminMenu", new { id = item.ItemId }, new { @class = "btn btn-warning" })
+                                            @Html.ActionLink("Delete", "Delete", "AdminMenu", new { id = item.ItemId }, new { @class = "btn btn-danger" })
+                                        }
+                                        else
+                                        {
+                                            <button class="btn btn-primary add-to-cart" data-id="@item.ItemId">Add to Cart</button>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </section>
+
+
+            <!-- Drinks Section -->
+                <section id="drinks" class="mb-5">
+                    <h2>Drinks</h2>
+
+                    @if (User.IsInRole("Admin"))
+                    {
+                        @Html.ActionLink("Create New Drink", "Create", "AdminMenu", new { category = "Drinks" }, new { @class = "btn btn-success mb-3" })
+                    }
+
+                    <div class="row">
+                        @foreach (var item in Model.Drinks)
+                        {
+                            <div class="col-md-6 mb-4">
+                                <div class="card h-100">
+                                    <img src="@item.ImgUrl" class="card-img-top" alt="@item.Name" width="300" height="300">
+                                    <div class="card-body">
+                                        <h5 class="card-title">@item.Name</h5>
+                                        <p class="card-text">@item.Description</p>
+                                        <p class="h5">@item.Price.ToString("C")</p>
+                                        @if (User.IsInRole("Admin"))
+                                        {
+                                            @Html.ActionLink("Edit", "Edit", "AdminMenu", new { id = item.ItemId }, new { @class = "btn btn-warning" })
+                                            @Html.ActionLink("Delete", "Delete", "AdminMenu", new { id = item.ItemId }, new { @class = "btn btn-danger" })
+                                        }
+                                        else
+                                        {
+                                            <button class="btn btn-primary add-to-cart" data-id="@item.ItemId">Add to Cart</button>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </section>
+
+@section Scripts {
+    <script>
+        document.querySelectorAll('.add-to-cart').forEach(button => {
+            button.addEventListener('click', function() {
+                const itemId = this.getAttribute('data-id');
+                fetch('@Url.Action("AddToCartAjax", "Menu")', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ itemId: parseInt(itemId) })
+                    
+                })                
+                .then(response => response.json())
+                .then(data => {                    
+                    if (data.success) {
+                        console.log('Item added to cart');
+                    } else {
+                        console.log('Failed to add item to cart');
+                    }
+                });
+            });
+        });
+    </script>
+}

@@ -1,7 +1,9 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using PaaS.Data;
+using PaaS.RepoInterfaces;
 using PaaS.Repositories;
+using PaaS.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,6 +22,20 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<UserRepo>();
 builder.Services.AddScoped<UserRoleRepo>();
 builder.Services.AddScoped<RoleRepo>();
+builder.Services.AddScoped<ContactRepo>();
+builder.Services.AddScoped<LocationRepo>();
+builder.Services.AddScoped<OrderRepo>();
+builder.Services.AddScoped<IMenuRepository, MenuRepo>();
+builder.Services.AddScoped<CartService>();
+
+// Add session services
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(30);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
 
 var app = builder.Build();
 
@@ -37,6 +53,9 @@ else
 
 app.UseHttpsRedirection();
 app.UseRouting();
+
+// Add session middleware
+app.UseSession();
 
 app.UseAuthorization();
 

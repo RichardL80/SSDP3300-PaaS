@@ -237,10 +237,9 @@ _Pvt_Extensions
 .idea/
 *.sln.iml
 
-# Visual Studio files
+../.idea/
+# Ignore Visual Studio files
 .vs/
-bin/
-obj/
-*.user
 *.suo
-*.sln.docstates
+*.user
+*.vscode/
