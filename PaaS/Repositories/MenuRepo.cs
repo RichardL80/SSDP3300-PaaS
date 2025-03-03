@@ -11,7 +11,8 @@ public class MenuRepo : IMenuRepository
 {
     private readonly ApplicationDbContext _context;
     private const string DefaultUrl = "https://plus.unsplash.com/premium_photo-1737232107266-a9e2f07119f4?q=80&w=1674&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
-
+    private const int CustomPizza = 4;
+    
     public MenuRepo(ApplicationDbContext context)
     {
         _context = context;
@@ -21,7 +22,7 @@ public class MenuRepo : IMenuRepository
     {
         return _context.Item
             .Include(i => i.Category)
-            .Where(i => i.ItemTypeId == (int)ItemType.Pizza)
+            .Where(i => i.ItemTypeId == (int)ItemType.Pizza && i.IdCategory != CustomPizza)
             .AsEnumerable()
             .GroupBy(i => i.Category.Description)
             .ToDictionary(g => g.Key, g => g.ToList());
@@ -49,6 +50,14 @@ public class MenuRepo : IMenuRepository
             .Include(i => i.Category)
             .Include(i => i.ItemType)
             .FirstOrDefault(i => i.ItemId == id)?? throw new EntityNotFoundException("Item not found");
+    }
+    
+    public Item GetCustomPizza()
+    {
+        return _context.Item
+            .Include(i => i.Category)
+            .Include(i => i.ItemType)
+            .FirstOrDefault(i => i.IdCategory == CustomPizza) ?? throw new EntityNotFoundException("Custom pizza not found");
     }
 
     public void Add(Item item)

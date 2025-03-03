@@ -1,11 +1,20 @@
+<<<<<<< HEAD
 using PaaS.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using PaaS.Data;
+=======
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using PaaS.Data;
+using PaaS.ViewModels;
+using PaaS.Models;
+>>>>>>> main
 
 namespace PaaS.Repositories
 {
     public class OrderRepo
     {
+<<<<<<< HEAD
         private readonly ApplicationDbContext _context;
 
         public OrderRepo(ApplicationDbContext context)
@@ -85,3 +94,29 @@ namespace PaaS.Repositories
         }
     }
 }
+=======
+        private readonly ApplicationDbContext _db;
+
+        public OrderRepo(ApplicationDbContext db)
+        {
+            _db = db;
+        }
+
+        public IEnumerable<OrderVM> GetOrderByUserId(int userId)
+        {
+            IEnumerable<OrderVM> ordersVM = _db.Order
+                .Join(_db.User,
+                o => o.UserId,
+                u => u.UserId,
+                (o, u) => new OrderVM
+                {
+                    OrderId = o.OrderId,
+                    UserId = o.UserId,
+                    OrderDate = o.OrderDate,
+                    TotalAmount = o.TotalAmount,
+                }).Where(o => o.UserId == userId).ToList();
+            return ordersVM;
+        }
+    }
+}
+>>>>>>> main

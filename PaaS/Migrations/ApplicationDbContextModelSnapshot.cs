@@ -288,6 +288,26 @@ namespace PaaS.Migrations
                     b.HasIndex("ProvinceId");
 
                     b.ToTable("City");
+
+                    b.HasData(
+                        new
+                        {
+                            CityId = -1,
+                            Name = "",
+                            ProvinceId = -1
+                        },
+                        new
+                        {
+                            CityId = 1,
+                            Name = "Vancouver",
+                            ProvinceId = 1
+                        },
+                        new
+                        {
+                            CityId = 2,
+                            Name = "Toronto",
+                            ProvinceId = 2
+                        });
                 });
 
             modelBuilder.Entity("PaaS.Models.ContactInfo", b =>
@@ -305,10 +325,6 @@ namespace PaaS.Migrations
 
                     b.Property<int>("CityId")
                         .HasColumnType("INTEGER");
-
-                    b.Property<string>("Phone")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
 
                     b.Property<int>("ProvinceId")
                         .HasColumnType("INTEGER");
@@ -382,6 +398,7 @@ namespace PaaS.Migrations
                             ItemId = 1,
                             Description = "Grilled chicken, BBQ sauce, red onions, and cilantro",
                             IdCategory = 1,
+                            ImgUrl = "https://plus.unsplash.com/premium_photo-1664472696633-4b0b41e95202?q=80&w=2752&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
                             ItemTypeId = 1,
                             Name = "BBQ Chicken",
                             Price = 10m
@@ -391,6 +408,7 @@ namespace PaaS.Migrations
                             ItemId = 2,
                             Description = "Plant-based cheese, mushrooms, peppers, and vegan sausage",
                             IdCategory = 2,
+                            ImgUrl = "https://plus.unsplash.com/premium_photo-1722945691819-e58990e7fb27?q=80&w=2821&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
                             ItemTypeId = 1,
                             Name = "Vegan Delight",
                             Price = 18.99m
@@ -400,8 +418,48 @@ namespace PaaS.Migrations
                             ItemId = 3,
                             Description = "Breaded mozzarella with marinara sauce",
                             IdCategory = 3,
+                            ImgUrl = "https://images.unsplash.com/photo-1708980108318-4b843e243080?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
                             ItemTypeId = 2,
                             Name = "Mozzarella Sticks",
+                            Price = 6m
+                        },
+                        new
+                        {
+                            ItemId = 4,
+                            Description = "Create your own pizza with your choice of toppings",
+                            IdCategory = 4,
+                            ItemTypeId = 1,
+                            Name = "Custom Pizza",
+                            Price = 12m
+                        },
+                        new
+                        {
+                            ItemId = 5,
+                            Description = "Coca-Cola",
+                            IdCategory = 3,
+                            ImgUrl = "https://images.unsplash.com/photo-1624552184280-9e9631bbeee9?q=80&w=2787&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                            ItemTypeId = 3,
+                            Name = "Coke",
+                            Price = 4m
+                        },
+                        new
+                        {
+                            ItemId = 6,
+                            Description = "Pepsi",
+                            IdCategory = 3,
+                            ImgUrl = "https://images.unsplash.com/photo-1553456558-aff63285bdd1?q=80&w=2787&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                            ItemTypeId = 3,
+                            Name = "Pepsi",
+                            Price = 4m
+                        },
+                        new
+                        {
+                            ItemId = 7,
+                            Description = "Local craft beer",
+                            IdCategory = 3,
+                            ImgUrl = "https://images.unsplash.com/photo-1612528443702-f6741f70a049?q=80&w=2680&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                            ItemTypeId = 3,
+                            Name = "Craft Beer",
                             Price = 6m
                         });
                 });
@@ -556,6 +614,23 @@ namespace PaaS.Migrations
                     b.HasKey("ProvinceId");
 
                     b.ToTable("Province");
+
+                    b.HasData(
+                        new
+                        {
+                            ProvinceId = -1,
+                            Name = ""
+                        },
+                        new
+                        {
+                            ProvinceId = 1,
+                            Name = "British Columbia"
+                        },
+                        new
+                        {
+                            ProvinceId = 2,
+                            Name = "Ontario"
+                        });
                 });
 
             modelBuilder.Entity("PaaS.Models.Role", b =>
@@ -627,6 +702,10 @@ namespace PaaS.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Phone")
                         .IsRequired()
                         .HasColumnType("TEXT");
 

@@ -242,3 +242,12 @@ app.db-shm
 app.db-wal
 
 ../.idea/
+# Ignore Visual Studio files
+.vs/
+*.suo
+*.user
+*.vscode/
+
+.DS_Store
+
+PaaS/app.db

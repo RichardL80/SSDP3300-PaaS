@@ -1,0 +1,43 @@
+@model PaaS.ViewModels.UserVM
+
+@{
+	ViewData["Title"] = "Edit Account Details";
+	Layout = "~/Views/Shared/_Layout.cshtml";
+    string firstName = Model?.FirstName ?? string.Empty;
+    string lastName = Model?.LastName ?? string.Empty;
+    string email = Model?.Email ?? string.Empty;
+    string phone = Model?.Phone ?? string.Empty;
+    int userId = Model?.UserId ?? 0;
+}
+
+<h1>
+    Edit Account Details
+</h1>
+
+<form asp-action="EditDetails" asp-route-model="@Model" method="post">
+    <div class="form-group">
+        <label asp-for="@firstName">First Name</label>
+        <input asp-for="@firstName" class="form-control" placeholder="@firstName"/>
+        <span asp-validation-for="@firstName" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="@lastName">Last Name</label>
+        <input asp-for="@lastName" class="form-control" placeholder="@lastName"/>
+        <span asp-validation-for="@lastName" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="@email">Email</label>
+        <input asp-for="@email" class="form-control" placeholder="@email"/>
+        <span asp-validation-for="@email" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="@phone">Phone</label>
+        <input asp-for="@phone" class="form-control" placeholder="@phone"/>
+        <span asp-validation-for="@phone" class="text-danger"></span>
+    </div>
+    <input type="hidden" asp-for="@userId" />
+    <input type="hidden" name="oldEmail" value="@Model.Email" />
+    
+    <a asp-action="MyAccount" class="btn btn-secondary">Back to My Account</a>
+    <button type="submit" class="btn btn-primary">Save Changes</button>
+</form>

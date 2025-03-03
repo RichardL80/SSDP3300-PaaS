@@ -8,6 +8,7 @@ public interface IMenuRepository
     List<Item> GetSides();
     List<Item> GetDrinks();
     Item GetById(int id);
+    Item GetCustomPizza();
     void Add(Item item);
     void Update(Item item);
     void Delete(int id);

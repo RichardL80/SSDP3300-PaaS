@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -12,11 +12,12 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    @await RenderSectionAsync("Styles", required: false)
 </head>
 
 <body>
     <div class="main-container">
-        <header>
+        <header class="fixed-top">
             <nav class="navbar navbar-expand-sm navbar-toggleable-sm mb-3">
                 <div class="container-fluid">
                     <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
@@ -35,19 +36,19 @@
                                 <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Privacy">
+                                <a class="nav-link" asp-area="" asp-controller="Menu" asp-action="Index">
                                     <div>
                                         <span class="material-symbols-outlined">menu</span>
                                         Menu
                                     </div>
                                 </a>
                             </li>
-                            <li class="nav-item">
+                            @* <li class="nav-item">
                                 <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Privacy">Account</a>
-                            </li>
+                            </li> *@
                             <partial name="_LoginPartial" />
                             <li class="nav-item">
-                                <a id="cart" class="nav-link" asp-area="" asp-controller="Home" asp-action="Privacy">
+                                <a id="cart" class="nav-link" asp-area="" asp-controller="Cart" asp-action="Index">
                                     <span class="material-icons">shopping_cart</span>
                                     <span id="cart-item-count" class="notification-circle">0</span>
                                 </a>
@@ -72,6 +73,24 @@
                                 <a class="nav-link" asp-area="" asp-controller="OrderSummary" asp-action="Index"
                                     asp-route-orderId="1">OrderSummary</a>
                             </li>
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-area="" asp-controller="UserManagement" asp-action="Index">
+                                        <span class="material-icons">manage_accounts</span> User Management
+                                    </a>
+                                </li>
+                            }
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <li class="nav-item">
+                                    <form asp-controller="Contact" asp-action="AdminUserDetails" method="get">
+                                        <input type="text" name="userEmail" placeholder="Search User Email"
+                                            aria-label="userEmail">
+                                        <button type="submit">Search</button>
+                                    </form>
+                                </li>
+                            }
                         </ul>
 
                     </div>

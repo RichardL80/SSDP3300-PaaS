@@ -1,0 +1,172 @@
+/* Menu Hero Section */
+.menu-hero {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+    url("/images/chad-montano.jpg");
+  background-size: cover;
+  background-position: center;
+  color: white;
+  text-align: center;
+  padding: 80px 0;
+  margin-bottom: 30px;
+
+}
+
+.menu-hero h1 {
+  font-size: 3rem;
+  margin-bottom: 15px;
+}
+
+.menu-hero p {
+  font-size: 1.2rem;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* Menu Navigation */
+.menu-nav {
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+  position: sticky;
+  top: 70px; /* Adjusted to match the body padding-top */
+  max-height: calc(100vh - 90px); /* Adjusted to account for navbar height */
+  overflow-y: auto;
+}
+
+.menu-nav .nav-link {
+  color: #333;
+  font-weight: 500;
+  padding: 10px 15px;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+.menu-nav .nav-link:hover {
+  background-color: #e9ecef;
+  color: #f97316;
+}
+
+.menu-nav h5 {
+  margin-top: 15px;
+  margin-bottom: 10px;
+  padding-left: 15px;
+  font-weight: 600;
+  color: #333;
+}
+
+/* Category Headers */
+.category-header {
+  border-bottom: 2px solid #f97316;
+  padding-bottom: 10px;
+  margin-bottom: 25px;
+  font-weight: 700;
+  color: #333;
+}
+
+/* Menu Cards */
+.menu-card {
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  height: 100%;
+}
+
+.menu-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.menu-card-img {
+  height: 200px;
+  object-fit: cover;
+  width: 100%;
+}
+
+.menu-card-body {
+  padding: 20px;
+}
+
+.menu-card-title {
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.menu-card-category {
+  color: #f97316;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 10px;
+}
+
+.menu-card-description {
+  color: #6c757d;
+  margin-bottom: 15px;
+  font-size: 0.95rem;
+}
+
+.menu-card-price .menu-card-size{
+  font-weight: 700;
+  color: #333;
+  font-size: 1.2rem;
+  margin-bottom: 15px;
+}
+.menu-card-size {
+  font-weight: 700;
+  color: #333;
+  font-size: 1.2rem;
+  margin-bottom: 15px;
+}
+
+/* Buttons */
+.btn-add-cart {
+  background-color: #f97316;
+  color: white;
+  border: none;
+  padding: 8px 20px;
+  border-radius: 4px;
+  font-weight: 500;
+  transition: background-color 0.3s ease;
+}
+
+.btn-add-cart:hover {
+  background-color: #d75800;
+}
+
+.btn-view {
+  background-color: transparent;
+  color: #6c757d;
+  border: 1px solid #6c757d;
+  padding: 8px 20px;
+  border-radius: 4px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.btn-view:hover {
+  background-color: #6c757d;
+  color: white;
+}
+
+/* Menu Sections */
+.menu-section {
+  margin-bottom: 50px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .menu-hero {
+    padding: 50px 0;
+  }
+
+  .menu-hero h1 {
+    font-size: 2.5rem;
+  }
+
+  .menu-card-img {
+    height: 180px;
+  }
+}

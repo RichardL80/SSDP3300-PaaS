@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace PaaS.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class MergeTest : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -102,6 +102,23 @@ namespace PaaS.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_PaymentMethod", x => x.PaymentMethodId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PayPalConfirmationModel",
+                columns: table => new
+                {
+                    ID = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    TransactionId = table.Column<string>(type: "TEXT", nullable: false),
+                    Amount = table.Column<decimal>(type: "TEXT", nullable: false),
+                    PayerName = table.Column<string>(type: "TEXT", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    Email = table.Column<string>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PayPalConfirmationModel", x => x.ID);
                 });
 
             migrationBuilder.CreateTable(
@@ -310,6 +327,7 @@ namespace PaaS.Migrations
                     Email = table.Column<string>(type: "TEXT", nullable: false),
                     Password = table.Column<string>(type: "TEXT", nullable: false),
                     IsVerified = table.Column<bool>(type: "INTEGER", nullable: false),
+                    Phone = table.Column<string>(type: "TEXT", nullable: false),
                     RoleId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
@@ -329,7 +347,6 @@ namespace PaaS.Migrations
                 {
                     ContactId = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Phone = table.Column<string>(type: "TEXT", nullable: false),
                     Address1 = table.Column<string>(type: "TEXT", nullable: false),
                     Address2 = table.Column<string>(type: "TEXT", nullable: true),
                     CityId = table.Column<int>(type: "INTEGER", nullable: false),
@@ -460,6 +477,16 @@ namespace PaaS.Migrations
                 });
 
             migrationBuilder.InsertData(
+                table: "Province",
+                columns: new[] { "ProvinceId", "Name" },
+                values: new object[,]
+                {
+                    { -1, "" },
+                    { 1, "British Columbia" },
+                    { 2, "Ontario" }
+                });
+
+            migrationBuilder.InsertData(
                 table: "Role",
                 columns: new[] { "RoleId", "Description" },
                 values: new object[,]
@@ -467,6 +494,16 @@ namespace PaaS.Migrations
                     { 1, "Admin" },
                     { 2, "Manager" },
                     { 3, "Customer" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "City",
+                columns: new[] { "CityId", "Name", "ProvinceId" },
+                values: new object[,]
+                {
+                    { -1, "", -1 },
+                    { 1, "Vancouver", 1 },
+                    { 2, "Toronto", 2 }
                 });
 
             migrationBuilder.InsertData(
@@ -600,6 +637,9 @@ namespace PaaS.Migrations
 
             migrationBuilder.DropTable(
                 name: "OrderItem");
+
+            migrationBuilder.DropTable(
+                name: "PayPalConfirmationModel");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

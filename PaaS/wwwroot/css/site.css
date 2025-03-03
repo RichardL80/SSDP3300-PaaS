@@ -44,7 +44,7 @@ html {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  background-color: whitesmoke;
+  background-color: white;
 }
 
 /* Nav bar style is here */
@@ -55,7 +55,7 @@ html {
 
 .container-fluid {
   display: flex;
-/*  padding: 0px 300px;*/
+  /*  padding: 0px 300px;*/
 }
 
 .navbar-nav {
@@ -133,35 +133,66 @@ footer i {
 
 .material-symbols-outlined,
 .nav-link span {
-    vertical-align: middle;
-    transition: background-color 0.2s ease;
+  vertical-align: middle;
+  transition: background-color 0.2s ease;
 }
 
 .nav-link {
-    position: relative; /* This is needed for absolute positioning of the circle */
+  position: relative; /* This is needed for absolute positioning of the circle */
 }
 
 .notification-circle {
-    position: absolute;
-    top: 0;
-    right: 0;
-    background-color: black; /* Or any color you prefer */
-    /*background-color: var(--primary-color);*/ /* Or any color you prefer */
-    color: white;
-    width: 20px; /* Adjust size as needed */
-    height: 20px;
-    border-radius: 50%; /* Makes it circular */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 12px; /* Adjust as needed */
-    transition: background-color 0.2s ease; 
-    /*
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: black; /* Or any color you prefer */
+  /*background-color: var(--primary-color);*/ /* Or any color you prefer */
+  color: white;
+  width: 20px; /* Adjust size as needed */
+  height: 20px;
+  border-radius: 50%; /* Makes it circular */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px; /* Adjust as needed */
+  transition: background-color 0.2s ease;
+  /*
     &:hover {
         background-color: var(--primary-color);  Or any color you prefer 
     }*/
 }
 
 .nav-link:hover .notification-circle {
-    background-color: var(--primary-color);
+  background-color: var(--primary-color);
 }
+
+/* Fixed Navbar */
+.fixed-top {
+  background-color: white;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  z-index: 1030;
+  transition: all 0.3s ease;
+}
+
+.fixed-top .navbar {
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+/* Add padding to the body to prevent content from being hidden behind the fixed navbar */
+body {
+  padding-top: 70px; /* Adjust this value based on your navbar height */
+}
+
+/* Remove the sticky-top styles since we're not using them anymore */
+/* .sticky-top {
+  background-color: white;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  z-index: 1030;
+  transition: all 0.3s ease;
+}
+
+.sticky-top .navbar {
+  padding-top: 5px;
+  padding-bottom: 5px;
+} */

@@ -11,8 +11,8 @@ using PaaS.Data;
 namespace PaaS.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250126064527_AddPayPalConfirmationModel")]
-    partial class AddPayPalConfirmationModel
+    [Migration("20250302041332_CustomPizzaItem")]
+    partial class CustomPizzaItem
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -249,6 +249,28 @@ namespace PaaS.Migrations
                     b.HasKey("IdCategory");
 
                     b.ToTable("Category");
+
+                    b.HasData(
+                        new
+                        {
+                            IdCategory = 1,
+                            Description = "Specialty Pizzas"
+                        },
+                        new
+                        {
+                            IdCategory = 2,
+                            Description = "Vegetarian Pizzas"
+                        },
+                        new
+                        {
+                            IdCategory = 3,
+                            Description = "Appetizers"
+                        },
+                        new
+                        {
+                            IdCategory = 4,
+                            Description = "Custom"
+                        });
                 });
 
             modelBuilder.Entity("PaaS.Models.City", b =>
@@ -269,6 +291,26 @@ namespace PaaS.Migrations
                     b.HasIndex("ProvinceId");
 
                     b.ToTable("City");
+
+                    b.HasData(
+                        new
+                        {
+                            CityId = -1,
+                            Name = "",
+                            ProvinceId = -1
+                        },
+                        new
+                        {
+                            CityId = 1,
+                            Name = "Vancouver",
+                            ProvinceId = 1
+                        },
+                        new
+                        {
+                            CityId = 2,
+                            Name = "Toronto",
+                            ProvinceId = 2
+                        });
                 });
 
             modelBuilder.Entity("PaaS.Models.ContactInfo", b =>
@@ -286,10 +328,6 @@ namespace PaaS.Migrations
 
                     b.Property<int>("CityId")
                         .HasColumnType("INTEGER");
-
-                    b.Property<string>("Phone")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
 
                     b.Property<int>("ProvinceId")
                         .HasColumnType("INTEGER");
@@ -336,17 +374,11 @@ namespace PaaS.Migrations
                     b.Property<int>("IdCategory")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("IdCategoryNavigationIdCategory")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("IdItemType")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("IdItemTypeNavigationItemTypeId")
-                        .HasColumnType("INTEGER");
-
                     b.Property<string>("ImgUrl")
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("ItemTypeId")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -357,11 +389,82 @@ namespace PaaS.Migrations
 
                     b.HasKey("ItemId");
 
-                    b.HasIndex("IdCategoryNavigationIdCategory");
+                    b.HasIndex("IdCategory");
 
-                    b.HasIndex("IdItemTypeNavigationItemTypeId");
+                    b.HasIndex("ItemTypeId");
 
                     b.ToTable("Item");
+
+                    b.HasData(
+                        new
+                        {
+                            ItemId = 1,
+                            Description = "Grilled chicken, BBQ sauce, red onions, and cilantro",
+                            IdCategory = 1,
+                            ImgUrl = "https://plus.unsplash.com/premium_photo-1664472696633-4b0b41e95202?q=80&w=2752&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                            ItemTypeId = 1,
+                            Name = "BBQ Chicken",
+                            Price = 10m
+                        },
+                        new
+                        {
+                            ItemId = 2,
+                            Description = "Plant-based cheese, mushrooms, peppers, and vegan sausage",
+                            IdCategory = 2,
+                            ImgUrl = "https://plus.unsplash.com/premium_photo-1722945691819-e58990e7fb27?q=80&w=2821&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                            ItemTypeId = 1,
+                            Name = "Vegan Delight",
+                            Price = 18.99m
+                        },
+                        new
+                        {
+                            ItemId = 3,
+                            Description = "Breaded mozzarella with marinara sauce",
+                            IdCategory = 3,
+                            ImgUrl = "https://images.unsplash.com/photo-1708980108318-4b843e243080?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                            ItemTypeId = 2,
+                            Name = "Mozzarella Sticks",
+                            Price = 6m
+                        },
+                        new
+                        {
+                            ItemId = 4,
+                            Description = "Create your own pizza with your choice of toppings",
+                            IdCategory = 4,
+                            ItemTypeId = 1,
+                            Name = "Custom Pizza",
+                            Price = 12m
+                        },
+                        new
+                        {
+                            ItemId = 5,
+                            Description = "Coca-Cola",
+                            IdCategory = 3,
+                            ImgUrl = "https://images.unsplash.com/photo-1624552184280-9e9631bbeee9?q=80&w=2787&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                            ItemTypeId = 3,
+                            Name = "Coke",
+                            Price = 4m
+                        },
+                        new
+                        {
+                            ItemId = 6,
+                            Description = "Pepsi",
+                            IdCategory = 3,
+                            ImgUrl = "https://images.unsplash.com/photo-1553456558-aff63285bdd1?q=80&w=2787&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                            ItemTypeId = 3,
+                            Name = "Pepsi",
+                            Price = 4m
+                        },
+                        new
+                        {
+                            ItemId = 7,
+                            Description = "Local craft beer",
+                            IdCategory = 3,
+                            ImgUrl = "https://images.unsplash.com/photo-1612528443702-f6741f70a049?q=80&w=2680&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                            ItemTypeId = 3,
+                            Name = "Craft Beer",
+                            Price = 6m
+                        });
                 });
 
             modelBuilder.Entity("PaaS.Models.ItemType", b =>
@@ -377,6 +480,23 @@ namespace PaaS.Migrations
                     b.HasKey("ItemTypeId");
 
                     b.ToTable("ItemType");
+
+                    b.HasData(
+                        new
+                        {
+                            ItemTypeId = 1,
+                            Description = "Pizza"
+                        },
+                        new
+                        {
+                            ItemTypeId = 2,
+                            Description = "Slide"
+                        },
+                        new
+                        {
+                            ItemTypeId = 3,
+                            Description = "Drink"
+                        });
                 });
 
             modelBuilder.Entity("PaaS.Models.Order", b =>
@@ -419,16 +539,12 @@ namespace PaaS.Migrations
             modelBuilder.Entity("PaaS.Models.OrderItem", b =>
                 {
                     b.Property<int>("OrderId")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Details")
                         .HasColumnType("TEXT");
 
                     b.Property<int>("ItemId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("OrderId1")
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("Quantity")
@@ -440,8 +556,6 @@ namespace PaaS.Migrations
                     b.HasKey("OrderId");
 
                     b.HasIndex("ItemId");
-
-                    b.HasIndex("OrderId1");
 
                     b.ToTable("OrderItem");
                 });
@@ -503,6 +617,23 @@ namespace PaaS.Migrations
                     b.HasKey("ProvinceId");
 
                     b.ToTable("Province");
+
+                    b.HasData(
+                        new
+                        {
+                            ProvinceId = -1,
+                            Name = ""
+                        },
+                        new
+                        {
+                            ProvinceId = 1,
+                            Name = "British Columbia"
+                        },
+                        new
+                        {
+                            ProvinceId = 2,
+                            Name = "Ontario"
+                        });
                 });
 
             modelBuilder.Entity("PaaS.Models.Role", b =>
@@ -574,6 +705,10 @@ namespace PaaS.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Phone")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
@@ -678,21 +813,21 @@ namespace PaaS.Migrations
 
             modelBuilder.Entity("PaaS.Models.Item", b =>
                 {
-                    b.HasOne("PaaS.Models.Category", "IdCategoryNavigation")
+                    b.HasOne("PaaS.Models.Category", "Category")
                         .WithMany("Items")
-                        .HasForeignKey("IdCategoryNavigationIdCategory")
+                        .HasForeignKey("IdCategory")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("PaaS.Models.ItemType", "IdItemTypeNavigation")
-                        .WithMany("Items")
-                        .HasForeignKey("IdItemTypeNavigationItemTypeId")
+                    b.HasOne("PaaS.Models.ItemType", "ItemType")
+                        .WithMany()
+                        .HasForeignKey("ItemTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("IdCategoryNavigation");
+                    b.Navigation("Category");
 
-                    b.Navigation("IdItemTypeNavigation");
+                    b.Navigation("ItemType");
                 });
 
             modelBuilder.Entity("PaaS.Models.Order", b =>
@@ -733,14 +868,14 @@ namespace PaaS.Migrations
             modelBuilder.Entity("PaaS.Models.OrderItem", b =>
                 {
                     b.HasOne("PaaS.Models.Item", "Item")
-                        .WithMany("OrderItems")
+                        .WithMany()
                         .HasForeignKey("ItemId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("PaaS.Models.Order", "Order")
                         .WithMany("OrderItems")
-                        .HasForeignKey("OrderId1")
+                        .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -773,16 +908,6 @@ namespace PaaS.Migrations
             modelBuilder.Entity("PaaS.Models.DeliveryMethod", b =>
                 {
                     b.Navigation("Orders");
-                });
-
-            modelBuilder.Entity("PaaS.Models.Item", b =>
-                {
-                    b.Navigation("OrderItems");
-                });
-
-            modelBuilder.Entity("PaaS.Models.ItemType", b =>
-                {
-                    b.Navigation("Items");
                 });
 
             modelBuilder.Entity("PaaS.Models.Order", b =>

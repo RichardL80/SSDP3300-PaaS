@@ -2,18 +2,20 @@ using PaaS.Data;
 using PaaS.ViewModels;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using PaaS.Models;
+using PaaS.Repositories;
 
 public class UserRepo
 {
     private readonly ApplicationDbContext _db;
-    public UserRepo(ApplicationDbContext db)
+    private readonly ContactRepo _contactRepo;
+
+    public UserRepo(ApplicationDbContext db, ContactRepo contactRepo)
     {
         _db = db;
+        _contactRepo = contactRepo;
     }
     public IEnumerable<UserVM> GetAllUsers()
     {
-        // IEnumerable<UserVM> users = _db.Users.Select(u =>
-        // new UserVM { Email = u.Email }).ToList();
         IEnumerable<UserVM> users = _db.User.Select(u =>
         new UserVM
         {
@@ -24,6 +26,19 @@ public class UserRepo
 
         return users;
     }
+
+    public User GetUser(string email)
+    {
+        User? user = _db.User.FirstOrDefault(u => u.Email == email);
+        return user ?? new User();
+    }
+
+    public User GetById(int id)
+    {
+        User? user = _db.User.FirstOrDefault(u => u.UserId == id);
+        return user ?? new User();
+    }
+
     public SelectList GetUserSelectList(string? email)
     {
         IEnumerable<SelectListItem> users =
@@ -39,16 +54,32 @@ public class UserRepo
 
     public void AddUser(string firstName, string LastName, string email, string password)
     {
-        var newUser = new User
+
+        User newUser = new User
         {
             FirstName = firstName,
             LastName = LastName,
             Email = email,
             Password = password,
-            IsVerified = false,
-            RoleId = 3
+            IsVerified = false, // TODO: Implement email verification
+            Phone = "", // Changed from the ERD, needed for non-nullable
+            RoleId = 3 // All new users are customers by default
         };
         _db.User.Add(newUser);
+        _db.SaveChanges();
+        int userId = newUser.UserId;
+        _ = _contactRepo.AddContactInfo(userId);
+
+    }
+
+    // There is a potential issue here with updating the user's email, but not the AspNetUser's email
+    public void UpdateUserContactInfo(UserVM userVM)
+    {
+        User user = GetById(userVM.UserId);
+        user.FirstName = userVM.FirstName;
+        user.LastName = userVM.LastName;
+        user.Email = userVM.Email;
+        user.Phone = userVM.Phone;
         _db.SaveChanges();
     }
 }

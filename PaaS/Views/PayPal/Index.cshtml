@@ -1,18 +1,58 @@
+@model PaaS.ViewModels.CheckoutVM;
+
 @{
     ViewData["Title"] = "PayPal";
+    decimal subtotal = @Model.CartItems.Sum(x => x.Quantity * x.Item.Price);
+    decimal gst = subtotal * 0.05m;
+    decimal pst = subtotal * 0.07m;
+    decimal fee = subtotal * 0.03m;
+    decimal total = Math.Round(subtotal + gst + pst + fee, 2);;
 }
 
 @* PayPal script *@
 <script
     src="https://www.paypal.com/sdk/js?client-id=AV_6P7OPZwXSofUX2pdD0J1qymbE6k7rESrelqzf_jndK35unvyHtUdYyp5b8NefZA6W5I3QW0qzv5c4&currency=CAD"></script>
-<div id="menu-page">
-    <h1>@ViewData["Title"]</h1>
-    @* Below is Paypal *@
-    <div id="itemPrice" data-value="1.11">
-        <span id="currency" data-value="CAD"></span>
-    </div>
-    <div id="paypal-button-container"></div>
+
+<h1>Order Summary</h1>
+
+<section class="order-details">
+    <h2>Order Details</h2>
+    @foreach (var item in Model.CartItems)
+    {
+        <div class="order-item">
+            <img src="@item.Item.ImgUrl" alt="@item.Item.Name Image" width="100" height="100">
+            <h3>@item.Item.Name</h3>
+            <span>Quantity: @item.Quantity</span>
+            <div>@((item.Quantity * item.Item.Price).ToString("C"))</div>
+        </div>
+        
+    }
+    <div class="order-total">
+            <span>Subtotal</span> <span>@subtotal.ToString("C")</span>
+            <span>GST</span> <span>@gst.ToString("C")</span>
+            <span>PST</span> <span>@pst.ToString("C")</span>
+            <span>Fee</span> <span>@fee.ToString("C")</span>
+            @*For Paypal*@
+            <span>Total</span> <span id="itemPrice" data-value="@total">@total.ToString("C")</span>
+            <span id="currency" data-value="CAD"></span>
+            <div id="paypal-button-container"></div>
+        </div>
+</section>
+
+@* This will need to be modified into a form  where the user selects their address, and delivery method*@
+<div class="address">
+    <h2>Delivery Address</h2>
+    @foreach (var address in Model.ContactInfo) {
+        <ul>
+            <li>@address.Address1</li>
+            <li>@address.Address2</li>
+            <li><span>@address.CityName</span>, <span>@address.ProvinceName</span></li>
+            <li>@address.Phone</li>
+        </ul>
+    }
 </div>
+
+
 
 <script>
     paypal.Buttons({
@@ -61,3 +101,5 @@
         }
     }).render('#paypal-button-container');
 </script>
+
+

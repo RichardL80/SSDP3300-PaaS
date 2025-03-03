@@ -11,7 +11,7 @@ public partial class ContactInfo
     [Key]
     public int ContactId { get; set; }
 
-    public string Phone { get; set; } = null!;
+    // public string Phone { get; set; } = null!;
 
     public string Address1 { get; set; } = null!;
 
