@@ -242,4 +242,4 @@ _Pvt_Extensions
 .vs/
 *.suo
 *.user
-*.vscode/
+.vscode/
