@@ -102,7 +102,8 @@ namespace PaaS.Controllers
             _orderRepo.SaveOrder(orderVM);
             _cartService.ClearCart();// Clear cart after order completion
 
-            return RedirectToAction("Index");
+            // return RedirectToAction("Index");
+            return View(orderVM);
         }
 
         // OrderSummaryController (Adding Order History Page)
