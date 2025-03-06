@@ -1,80 +1,117 @@
-// using Microsoft.AspNetCore.Mvc;
-// using PaaS.Models;
-// using PaaS.Repositories;
-// using PaaS.ViewModels;
-// using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc;
+using PaaS.Models;
+using PaaS.Repositories;
+using PaaS.ViewModels;
+using Microsoft.EntityFrameworkCore;
+using PaaS.Data;
+using Microsoft.AspNetCore.Authorization;
+using PaaS.Services;
+using PaaS.Repositories;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 
-// namespace PaaS.Controllers
-// {
-//     public class OrderSummaryController : Controller
-//     {
-//         private readonly OrderRepo _orderRepository;
-//         private readonly ContactInfoRepo _contactInfoRepository;
+namespace PaaS.Controllers
+{
+    public class OrderSummaryController : Controller
+    {
+        private readonly OrderRepo _orderRepo;
+        private readonly ApplicationDbContext _context;
 
-//         public OrderSummaryController(OrderRepo orderRepository, ContactInfoRepo contactInfoRepository)
-//         {
-//             _orderRepository = orderRepository;
-//             _contactInfoRepository = contactInfoRepository;
-//         }
-//         public IActionResult Index(int orderId = 1) // Default to orderId=1 if not provided
-//         {
-//             // Create a mock OrderSummaryVM to test the view
-//             var orderSummary = new OrderSummaryVM
-//             {
-//                 Order = new Order
-//                 {
-//                     OrderItem = new List<OrderItem>
-//                 {
-//                     new OrderItem { Quantity = 1, Size ="Medium", Item = new Item { Price = 12.99m ,Name ="Peperoni"} },
-//                     new OrderItem { Quantity = 2, Size ="Large", Item = new Item { Price = 32.50m , Name ="Meet Lover"} }
-//                 }
-//                 },
-//                 AddressBook = new List<ContactInfo>
-//             {
-//                 new ContactInfo { Address1=" 1000 No.3 Road, Richmond A2k 3N4", Address2 = "2000 Oak Rd, Vancouver V1K 1P7"}
-//             },
-//                 ShippingFee = 10.00m,
-//                 EstimatedDeliveryTime = "30-50 mins"
-//             };
+        private readonly CartService _cartService;
 
+        private readonly UserRepo _userRepo;
 
-//             // Calculate the subtotal
-//             orderSummary.Subtotal = orderSummary.Order.OrderItem.Sum(item => item.Quantity * item.Item.Price);
+        private readonly ContactRepo _contactRepo;
+        private readonly LocationRepo _locationRepo;
 
-//             // Assume 5% GST and 7% PST
-//             orderSummary.GST = Math.Round(orderSummary.Subtotal * 0.05m, 2);
-//             orderSummary.PST = Math.Round(orderSummary.Subtotal * 0.07m, 2);
+        public OrderSummaryController(ApplicationDbContext context, CartService cartService, ContactRepo contactRepo, UserRepo userRepo, LocationRepo locationRepo, OrderRepo orderRepo)
+        {
+            _context = context;
+            _cartService = cartService;
+            _contactRepo = contactRepo;
+            _userRepo = userRepo;
+            _locationRepo = locationRepo;
+            _orderRepo = orderRepo;
+        }
+        public IActionResult Index(int orderId = 1) // Default to orderId=1 if not provided
+        {
+            // Get the user's contact info
+            string userEmail = User.Identity?.Name;
+            User user = _userRepo.GetUser(userEmail);
+            IEnumerable<ContactInfoVM> contactInfoVM = _contactRepo.GetContactInfo(user.UserId); // Get contact info for the user
+            foreach (var contact in contactInfoVM)
+            {
+                // Get the city and province names for each contact
+                contact.CityName = _locationRepo.GetCityName(contact.CityId);
+                contact.ProvinceName = _locationRepo.GetProvinceName(contact.ProvinceId);
+            }
 
-//             // Calculate the total
-//             orderSummary.Total = Math.Round(orderSummary.Subtotal + orderSummary.GST + orderSummary.PST + orderSummary.ShippingFee, 2);
+            // Get the cart items, and round the price to 2 decimal
+            var cartItems = _cartService.GetCart();
+            var subtotal = Math.Round(cartItems.Sum(x => x.Quantity * x.Item.Price), 2);
+            var gst = Math.Round(subtotal * 0.05m, 2);
+            var pst = Math.Round(subtotal * 0.07m, 2);
+            var shippingFee = Math.Round(subtotal * 0.02m, 2);
+            var total = Math.Round(subtotal + gst + pst + shippingFee, 2);
 
-//             // Estimated delivery time (keeping it fixed)
-//             orderSummary.EstimatedDeliveryTime = "30-50 mins";
+            OrderSummaryVM orderSummaryVM = new OrderSummaryVM
+            {
+                CartItems = cartItems,
+                ContactInfo = contactInfoVM,
+                OrderDate = DateTime.Now,
+                Subtotal = subtotal,
+                GST = gst,
+                PST = pst,
+                ShippingFee = shippingFee,
+                Total = total
+            };
 
-//             return View(orderSummary); // Pass mock data to the view
-//         }
+            return View(orderSummaryVM);
+        }
 
-//         // Place Order action
-//         [HttpPost]
-//         public IActionResult PlaceOrder(int orderId, int selectedAddressId)
-//         {
-//             var orderSummary = _orderRepository.GetOrderSummary(orderId);
-//             if (orderSummary == null)
-//             {
-//                 return NotFound();
-//             }
+        // Save order after place it 
+        [HttpPost]
+        public IActionResult SaveOrder(int deliveryMethodId, int paymentMethodId, string selectedAddress)
+        {
+            string userEmail = User.Identity?.Name;
+            User user = _userRepo.GetUser(userEmail);
 
-//             // Update the delivery address if selected
-//             var contactInfo = _contactInfoRepository.GetContactInfoById(selectedAddressId);
-//             if (contactInfo != null)
-//             {
-//                 orderSummary.UserContact = contactInfo;
-//             }
+            var cartItems = _cartService.GetCart();
+            if (!cartItems.Any())
+            {
+                return RedirectToAction("Index");
+            }
 
-//             // Logic to process the order
-//             return RedirectToAction("Index", "PayPal", new { orderId = orderId });
+            var orderVM = new OrderVM
+            {
+                UserId = user.UserId,
+                OrderDate = DateTime.Now,
+                TotalAmount = cartItems.Sum(c => c.Item.Price * c.Quantity),
+                DeliveryMethodId = deliveryMethodId,
+                PaymentMethodId = paymentMethodId,
+                SelectedAddress = deliveryMethodId == 1 ? "Pickup" : selectedAddress, // If pickup, no address needed
+                OrderItems = cartItems.Select(c => new OrderItemVM
+                {
+                    ItemId = c.Item.ItemId,
+                    Details = c.Customization,
+                    Size = c.Size,
+                    Quantity = c.Quantity
+                }).ToList()
+            };
 
-//         }
-//     }
-// }
+            _orderRepo.SaveOrder(orderVM);
+            _cartService.ClearCart();// Clear cart after order completion
+
+            return RedirectToAction("Index");
+        }
+
+        // OrderSummaryController (Adding Order History Page)
+        public IActionResult OrderHistory()
+        {
+            string userEmail = User.Identity?.Name;
+            User user = _userRepo.GetUser(userEmail);
+            var orders = _orderRepo.GetOrderByUserId(user.UserId);
+            return View(orders);
+        }
+    }
+}

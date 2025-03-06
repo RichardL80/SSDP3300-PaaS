@@ -1,40 +1,48 @@
-@model PaaS.ViewModels.OrderSummaryVM
+@model PaaS.ViewModels.OrderSummaryVM;
 
 @{
     ViewData["Title"] = "Order Summary";
 }
+
+@* PayPal script *@
 <script
-    src="https://www.paypal.com/sdk/js?client-id=AV_6P7OPZwXSofUX2pdD0J1qymbE6k7rESrelqzf_jndK35unvyHtUdYyp5b8NefZA6W5I3QW0qzv5c4&currency=CAD&locale=en_US"></script>
+    src="https://www.paypal.com/sdk/js?client-id=AV_6P7OPZwXSofUX2pdD0J1qymbE6k7rESrelqzf_jndK35unvyHtUdYyp5b8NefZA6W5I3QW0qzv5c4&currency=CAD"></script>
 
 <h1>Order Summary</h1>
-
+<p>Order on: @Model.OrderDate</p>
 <div>
-    @* Items detail *@
+    @* Order details *@
     <section id="order-item-detail-section">
-        <h3 class="mt-2">Order Details</h3>
-        <ul>
-            @foreach (var item in Model.Order.OrderItem)
-            {
-                <li>
-                    <span>@item.Item.Name</span>
-                    <span class="ms-5">Size: @item.Size </span>
-                    <span class="ms-5">Quantity: @item.Quantity</span>
-                    <p class="mt-2">Price: $@item.Item.Price</p>
-                </li>
-            }
-        </ul>
-        <h5>Subtotal: $@Model.Subtotal</h5>
+        <h2>Order Details</h2>
+        @foreach (var item in Model.CartItems)
+        {
+            <div class="order-item">
+                <img src="@item.Item.ImgUrl" alt="@item.Item.Name Image" width="100" height="100">
+                <h3>@item.Item.Name</h3>
+                <span>Quantity: @item.Quantity</span>
+                <div>@((item.Quantity * item.Item.Price).ToString("C"))</div>
+            </div>
+        }
+        <h5>Subtotal: @Model.Subtotal</h5>
     </section>
 
     @* Total price  *@
-    <section id="total-price-section">
+    <section id="total-price-section" class="right-aside-display">
         <span>GST: @Model.GST</span><br>
         <span>PST: @Model.PST</span><br>
         <span>Shipping Fee: @Model.ShippingFee</span><br>
-        <div id="totalPrice" data-value=@Model.Total>
-            <h4 id="currency" data-value="CAD">Total: $@Model.Total</h4>
+        @* Price For Paypal*@
+        <div id="totalPrice" data-value="@Model.Total">
+            <h4 id="currency" data-value="CAD">Total: @Model.Total</h4>
+        </div>
+        @* Paypal Button *@
+        <div id="place-order-section">
+            <div id="paypal-button-container">
+            </div>
+            <p>Estimated Delivery Time: @Model.EstimatedDeliveryTime</p>
         </div>
     </section>
+
 
     @* Delivery option *@
     <section id="delivery-section">
@@ -49,29 +57,47 @@
 
         @* Delivery address hide if user choose pick-up *@
         <div id="addressSection" style="display: none;">
-            <p>
-                @* Address1 is the default address of delivery *@
-                <input type="radio" id="selectedAddress" name="address" checked>
-                <span id="selectedAddressText">@Model.AddressBook[0].Address1</span>
-                <button type="button" id="editAddressBtn" class="btn btn-sm btn-secondary">Edit</button>
-            </p>
+            @foreach (var address in Model.ContactInfo)
+            {
+                <ul>
+                    @* Address1 is the default address of delivery *@
+                    <input type="radio" id="selectedAddress" name="address" checked>
+                    <div>
+                        <p>@address.Address1</p>
+                        <p><span>@address.CityName</span>, <span>@address.ProvinceName</span></p>
+                        <p>@address.Phone</p>
+                    </div>
+                    <button type="button" id="editAddressBtn" class="btn btn-sm btn-secondary">Edit</button>
+                </ul>
+            }
         </div>
 
         @* Address Selection Modal(shows up when click "Edit") *@
         <div id="addressModal" class="modal" style="display:none;">
             <div class="modal-content">
                 <h4>Select Address</h4>
-                <label>
-                    <input type="radio" name="addressOption" id="address1" value="@Model.AddressBook[0].Address1"
-                        checked>
-                    @Model.AddressBook[0].Address1
-                </label>
-                <br>
-                <label>
-                    <input type="radio" name="addressOption" id="address2" value="@Model.AddressBook[0].Address2">
-                    @Model.AddressBook[0].Address2
-                </label>
-                <br>
+                @foreach (var address in Model.ContactInfo)
+                {
+                    <label>
+                        <input type="radio" name="addressOption" id="address1" value="@address.Address1" checked>
+                        <div>
+                            <p>@address.Address1</p>
+                            <p><span>@address.CityName</span>, <span>@address.ProvinceName</span></p>
+                            <p>@address.Phone</p>
+                        </div>
+                    </label>
+                    <br>
+                    <label>
+                        <input type="radio" name="addressOption" id="address2" value="@address.Address2">
+                        <div>
+                            <p>@address.Address2</p>
+                            <p><span>@address.CityName</span>, <span>@address.ProvinceName</span></p>
+                            <p>@address.Phone</p>
+                        </div>
+                    </label>
+                    <br>
+
+                }
                 <button id="confirmAddressBtn" class="btn btn-primary">Confirm</button>
                 <button id="closeModalBtn" class="btn btn-secondary">Close</button>
             </div>
@@ -83,13 +109,9 @@
         <input type="radio" id="paypal" name="paymentMethod" value="paypal" checked>
         <label for="paypal">PayPal</label>
     </section>
-
-    <section id="place-order-section">
-        <div id="paypal-button-container" asp-route-orderId="@Model.Order.OrderId">
-        </div>
-        <p>Estimated Delivery Time: @Model.EstimatedDeliveryTime</p>
-    </section>
 </div>
+
+
 
 <script>
     @* Delivery method script *@
@@ -161,9 +183,23 @@
             // Finalize the transaction
             onApprove: function (data, actions) {
                 return actions.order.capture().then(function (details) {
-                    // Redirect to the PayPalConfirmation action method
-                    window.location.href =
-                        '/PayPal/PayPalConfirmation?TransactionId=' +
+                    @* const deliveryMethodId = document.querySelector('input[name="deliveryMethod"]:checked').value === "pickup" ? 1 : 2;
+                    const paymentMethodId = document.querySelector('input[name="paymentMethod"]:checked').value;
+                    const selectedAddress = deliveryMethodId === 2 ? document.querySelector('input[name="addressOption"]:checked').value : "Pickup"; *@
+                        @* update the data of order *@
+                        @* fetch('/OrderSummary/SaveOrder', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                deliveryMethodId, paymentMethodId, selectedAddress
+                            })
+                        }).then(response => response.json()) *@
+                        @* .then(data => { *@
+                        // Redirect to the PayPalConfirmation action method
+                        window.location.href =
+                    '/PayPal/PayPalConfirmation?TransactionId=' +
                         encodeURIComponent(details.id) + '&Amount=' +
                         encodeURIComponent(details.purchase_units[0].amount.value) +
                         '&PayerName=' +
@@ -171,7 +207,6 @@
                         '&Email=' + encodeURIComponent(details.payer.email_address);
                 });
             },
-
             onCancel: function (data) {
                 alert('Transaction was cancelled.');
             },
@@ -186,5 +221,4 @@
                 tagline: false,
             }
         }).render('#paypal-button-container');
-
 </script>

@@ -21,16 +21,17 @@ namespace PaaS.Services
             var isCustomPizza = item.IdCategory == CustomPizza;
             request.Size ??= DefaultSize;
             request.Quantity = request.Quantity == 0 ? 1 : request.Quantity;
-            
+
             if (isCustomPizza)
             {
-                var cartItem = cart.FirstOrDefault(c => c.Item.ItemId == item.ItemId && c.Size == request.Size && String.Equals(c.Customization , request.Customization));
+                var cartItem = cart.FirstOrDefault(c => c.Item.ItemId == item.ItemId && c.Size == request.Size && String.Equals(c.Customization, request.Customization));
                 if (cartItem != null)
                 {
                     cartItem.Quantity += request.Quantity;
-                }else
+                }
+                else
                 {
-                    cart.Add(new CartItem {Item = item,Quantity = request.Quantity, Size = request.Size , Customization = request.Customization});
+                    cart.Add(new CartItem { Item = item, Quantity = request.Quantity, Size = request.Size, Customization = request.Customization });
                 }
             }
             else
@@ -64,7 +65,7 @@ namespace PaaS.Services
         public void RemoveItemCountFromCart(AddToCartRequest request)
         {
             var cart = GetCart();
-            var  item = request.Item;
+            var item = request.Item;
 
             var cartItem = cart.FirstOrDefault(c => c.Item.ItemId == item.ItemId && c.Size == request.Size);
             if (cartItem != null)
@@ -93,7 +94,7 @@ namespace PaaS.Services
             }
             UpdateSessionCart(cart);
         }
-        
+
         private void UpdateSessionCart(List<CartItem> cart)
         {
             // idk this prevented a crash
@@ -104,7 +105,13 @@ namespace PaaS.Services
 
             _httpContextAccessor.HttpContext.Session.SetString("Cart", JsonConvert.SerializeObject(cart, jsonSettings));
         }
+
+        // Clear the cart by setting an empty list in the session
+        public void ClearCart()
+        {
+            _httpContextAccessor.HttpContext.Session.Remove("Cart");
+        }
     }
-    
-    
+
+
 }
