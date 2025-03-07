@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 using PaaS.Services;
 using PaaS.Repositories;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using PaaS.Models.Dtos;
 
 
 namespace PaaS.Controllers
@@ -71,8 +72,13 @@ namespace PaaS.Controllers
 
         // Save order after place it 
         [HttpPost]
-        public IActionResult SaveOrder(int deliveryMethodId, int paymentMethodId, string selectedAddress)
+        public IActionResult SaveOrder([FromBody] OrderRequestModel request) // JEZS 2 : Change the request in order to receive the correct params
         {
+            if (request == null)
+            {
+                return BadRequest("Invalid request data");
+            }
+
             string userEmail = User.Identity?.Name;
             User user = _userRepo.GetUser(userEmail);
 
@@ -86,10 +92,10 @@ namespace PaaS.Controllers
             {
                 UserId = user.UserId,
                 OrderDate = DateTime.Now,
-                TotalAmount = cartItems.Sum(c => c.Item.Price * c.Quantity),
-                DeliveryMethodId = deliveryMethodId,
-                PaymentMethodId = paymentMethodId,
-                SelectedAddress = deliveryMethodId == 1 ? "Pickup" : selectedAddress, // If pickup, no address needed
+                TotalAmount = cartItems.Sum(c => c.Item.Price * c.Quantity), // JEZS 3: TODO - Calculate the total amount + taxes and whatever
+                DeliveryMethodId = request.DeliveryMethodId,
+                PaymentMethodId = request.PaymentMethodId,
+                SelectedAddress = request.DeliveryMethodId == 1 ? "Pickup" : request.SelectedAddress, 
                 OrderItems = cartItems.Select(c => new OrderItemVM
                 {
                     ItemId = c.Item.ItemId,
@@ -115,4 +121,5 @@ namespace PaaS.Controllers
             return View(orders);
         }
     }
+    
 }

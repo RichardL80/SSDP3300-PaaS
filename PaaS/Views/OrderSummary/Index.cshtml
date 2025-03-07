@@ -184,7 +184,7 @@
             onApprove: function (data, actions) {
                 return actions.order.capture().then(function (details) {
                     const deliveryMethodId = document.querySelector('input[name="deliveryMethod"]:checked').value === "pickup" ? 1 : 2;
-                    const paymentMethodId = document.querySelector('input[name="paymentMethod"]:checked').value;
+                    const paymentMethodId = 1 //JEZS : 1 for PayPal (default method);
                     const selectedAddress = deliveryMethodId === 2 ? document.querySelector('input[name="addressOption"]:checked').value : "Pickup";
                     @* update the data of order *@
                         fetch('/OrderSummary/SaveOrder', {

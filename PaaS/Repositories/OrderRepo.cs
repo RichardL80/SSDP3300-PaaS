@@ -1,4 +1,3 @@
-
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using PaaS.Data;
@@ -26,6 +25,7 @@ namespace PaaS.Repositories
                 OrderDate = DateTime.Now,
                 TotalAmount = orderVM.TotalAmount,
                 DeliveryMethodId = orderVM.DeliveryMethodId,
+                PaymentMethodId = orderVM.PaymentMethodId,
                 StatusId = 1 // Assuming 1 = 'Pending'
             };
 
@@ -58,6 +58,7 @@ namespace PaaS.Repositories
                     OrderDate = o.OrderDate,
                     TotalAmount = o.TotalAmount,
                     DeliveryMethodId = o.DeliveryMethodId,
+                    PaymentMethodId = o.PaymentMethodId,
                     StatusId = o.StatusId,
                     OrderItems = o.OrderItem.Select(oi => new OrderItemVM
                     {
@@ -70,4 +71,3 @@ namespace PaaS.Repositories
         }
     }
 }
-
