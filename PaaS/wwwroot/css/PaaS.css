@@ -487,3 +487,13 @@ dl::after {
 .p-input-grid .p-second {
     grid-column: 2;
 }
+
+.p-grid-vcenter {
+    display: flex;
+    align-items: center; /* Vertically center the items */
+}
+
+.p-grid-item-center {
+    justify-self: center;
+    align-self: center;
+}
