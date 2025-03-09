@@ -250,6 +250,7 @@ footer {
     grid-row: 3 / span 1; /* Start at row line 3, span 1 row */
 }
 
+.p-grid-container a,
 .p-grid-container button {
     grid-row: 4 / span 1; /* Start at row line 4, span 1 row */
 }
