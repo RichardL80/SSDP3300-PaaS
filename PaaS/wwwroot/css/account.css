@@ -1,0 +1,32 @@
+﻿.p-acct-flex {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.p-acct-flex .p-w-25 {
+    width: 25%;
+    flex: 0 0 25%;
+}
+
+.p-acct-flex .p-w-75 {
+    width: 75%;
+    flex: 0 0 75%;
+}
+
+dt, dd {
+    margin: 0;
+    padding: 0;
+}
+
+.p-acct-grid {
+    display: grid;
+    grid-template-columns: 25% 75%;
+}
+
+.p-acct-grid .p-first {
+    grid-column: 1;
+}
+
+.p-acct-grid .p-second {
+    grid-column: 2;
+}

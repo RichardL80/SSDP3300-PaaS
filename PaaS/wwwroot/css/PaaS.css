@@ -88,6 +88,19 @@
     font-size: var(--icon-size);
 }
 
+.nav-link {
+    color: #333;
+    font-weight: 500;
+    padding: 10px 15px;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+.nav-link:hover {
+    background-color: #e9ecef;
+    color: #f97316;
+}
+
 .nav-link:hover #cart:hover {
     color: var(--primary-color);
 }
@@ -185,10 +198,7 @@ footer {
 .p-grid-container {
     display: grid;
     grid-template-columns: 1fr; /* Single column */
-    /*grid-template-rows: .6fr .4fr;*/ /* Rows with 0.25fr */
-    /*max-width: 800px;*/ /* Maximum width */
     margin: 0 auto; /* Center horizontally */
-    /*gap: 10px;*/ /* Optional: Add spacing between rows */
     height: 100%;
 }
 
@@ -352,9 +362,9 @@ footer {
     /*padding: 1rem;*/ /* Add padding to the top and bottom */
 }
 
-    .p-cta-button:hover {
-        background-color: var(--pizza-red);
-    }
+.p-cta-button:hover {
+    background-color: var(--pizza-red);
+}
 
 .p-link {
     color: var(--brand-orange);
@@ -439,3 +449,28 @@ footer {
     font-style: italic;
 }
 */
+
+dt, dd {
+    float: left;
+    margin: 0;
+    padding: 0;
+}
+
+/*dt {
+    width: 25%;*/ /* Adjust the width as needed */
+/*}
+
+dd {
+    width: 75%;*/ /* Adjust the width as needed */
+/*}*/
+
+dl::after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+.btn.p-brand {
+    background-color: var(--brand-orange);
+    color: white;
+}

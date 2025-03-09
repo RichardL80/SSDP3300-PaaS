@@ -10,34 +10,41 @@
     int userId = Model?.UserId ?? 0;
 }
 
-<h1>
-    Edit Account Details
-</h1>
+@section Styles {
+    <link rel="stylesheet" href="~/css/account.css" asp-append-version="true" />
+}
 
-<form asp-action="EditDetails" asp-route-model="@Model" method="post">
-    <div class="form-group">
-        <label asp-for="@firstName">First Name</label>
-        <input asp-for="@firstName" class="form-control" placeholder="@firstName"/>
-        <span asp-validation-for="@firstName" class="text-danger"></span>
+<div class="p-grid-container">
+    <div class="p-grid-item mb-2">
+        <h1>Edit Account Details</h1>
     </div>
-    <div class="form-group">
-        <label asp-for="@lastName">Last Name</label>
-        <input asp-for="@lastName" class="form-control" placeholder="@lastName"/>
-        <span asp-validation-for="@lastName" class="text-danger"></span>
+    <div class="row">
+        <form asp-action="EditDetails" asp-route-model="@Model" method="post">
+            <div class="p-acct-grid mb-2">
+                <label class="p-first" asp-for="@firstName">First Name</label>
+                <input asp-for="@firstName" class="form-control p-second" placeholder="@firstName"/>
+                <span asp-validation-for="@firstName" class="text-danger"></span>
+            </div>
+            <div class="p-acct-grid mb-2">
+                <label class="p-first" asp-for="@lastName">Last Name</label>
+                <input asp-for="@lastName" class="form-control p-second" placeholder="@lastName" />
+                <span asp-validation-for="@lastName" class="text-danger"></span>
+            </div>
+            <div class="p-acct-grid mb-2">
+                <label class="p-first" asp-for="@email">Email</label>
+                <input asp-for="@email" class="form-control p-second" placeholder="@email" />
+                <span asp-validation-for="@email" class="text-danger"></span>
+            </div>
+            <div class="p-acct-grid mb-2">
+                <label class="p-first" asp-for="@phone">Phone</label>
+                <input asp-for="@phone" class="form-control p-second" placeholder="@phone" />
+                <span asp-validation-for="@phone" class="text-danger"></span>
+            </div>
+            <input type="hidden" asp-for="@userId" />
+            <input type="hidden" name="oldEmail" value="@Model.Email" />
+
+            <a asp-action="MyAccount" class="btn btn-secondary mt-2">Back to My Account</a>
+            <button type="submit" class="btn p-brand ms-2 mt-2">Save Changes</button>
+        </form>
     </div>
-    <div class="form-group">
-        <label asp-for="@email">Email</label>
-        <input asp-for="@email" class="form-control" placeholder="@email"/>
-        <span asp-validation-for="@email" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="@phone">Phone</label>
-        <input asp-for="@phone" class="form-control" placeholder="@phone"/>
-        <span asp-validation-for="@phone" class="text-danger"></span>
-    </div>
-    <input type="hidden" asp-for="@userId" />
-    <input type="hidden" name="oldEmail" value="@Model.Email" />
-    
-    <a asp-action="MyAccount" class="btn btn-secondary">Back to My Account</a>
-    <button type="submit" class="btn btn-primary">Save Changes</button>
-</form>
+</div>

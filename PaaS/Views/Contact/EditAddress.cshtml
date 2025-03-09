@@ -5,34 +5,36 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>
-    Edit Address
-</h1>
+@section Styles {
+    <link rel="stylesheet" href="~/css/account.css" asp-append-version="true" />
+}
 
-<div class="row">
-    <div class="col-md-6">
+<div class="p-grid-container">
+    <div class="p-grid-item mb-2">
+        <h1>Add / Edit Address</h1>
+    </div>
+    <div class="row">
         <form asp-action="EditAddress" asp-route-model="@Model" method="post">
-
-            <div class="form-group">
-                <label asp-for="@Model.Address1">Address 1</label>
-                <input asp-for="@Model.Address1" class="form-control" placeholder="@Model.Address1" />
+            <div class="p-acct-grid mb-2">
+                <label class="p-first" asp-for="@Model.Address1">Address 1</label>
+                <input asp-for="@Model.Address1" class="form-control p-second" placeholder="@Model.Address1" />
                 <span asp-validation-for="@Model.Address1" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="@Model.Address2">Address 2</label>
+            <div class="p-acct-grid mb-2">
+                <label class="p-first" asp-for="@Model.Address2">Address 2</label>
                 <input asp-for="@Model.Address2" class="form-control" placeholder="@Model.Address2" />
                 <span asp-validation-for="@Model.Address2" class="text-danger"></span>
             </div>
-            <div class="form-group mb-3">
-                <label asp-for="@Model.CityId">City</label>
+            <div class="p-acct-grid mb-2">
+                <label class="p-first" asp-for="@Model.CityId">City</label>
                 <select asp-for="@Model.CityId" asp-items="ViewBag.CitySelectList"
 						class="form-select">
 					<option value="">-- Select City --</option>
 				</select>
                 <span asp-validation-for="@Model.CityId" class="text-danger"></span>
 			</div>
-            <div class="form-group mb-3">
-                <label asp-for="@Model.ProvinceId">Province</label>
+            <div class="p-acct-grid mb-2">
+                <label class="p-first" asp-for="@Model.ProvinceId">Province</label>
                 <select asp-for="@Model.ProvinceId" asp-items="ViewBag.ProvinceSelectList"
 						class="form-select">
 					<option value="">-- Select Province --</option>
@@ -43,7 +45,9 @@
             <input type="hidden" asp-for="@Model.ContactId" />
             <input type="hidden" asp-for="@Model.UserId" />            
 
-            <a asp-action="MyAccount" class="btn btn-secondary">Back to My Account</a>
-            <button type="submit" class="btn btn-primary">Save Changes</button>
+            <a asp-action="MyAccount" class="btn btn-secondary mt-2">Back to My Account</a>
+            <button type="submit" class="btn p-brand ms-2 mt-2">Save Changes</button>
         </form>
+    </div>
 </div>
+        

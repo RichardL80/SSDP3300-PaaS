@@ -42,25 +42,36 @@ namespace PaaS.Repositories
 
         public ContactInfoVM GetContactInfoById(int contactId)
         {
-            ContactInfoVM? contanctInfoVM = _db.ContactInfo.Join(_db.User,
-                c => c.UserId,
-                u => u.UserId,
-                (c, u) => new ContactInfoVM
-                {
-                    ContactId = c.ContactId,
-                    FirstName = u.FirstName,
-                    LastName = u.LastName,
-                    Email = u.Email,
-                    //Phone = c.Phone,
-                    Phone = u.Phone,
-                    Address1 = c.Address1,
-                    Address2 = c.Address2,
-                    CityId = c.CityId,
-                    ProvinceId = c.ProvinceId,
-                    UserId = c.UserId,
-                }).FirstOrDefault(c => c.ContactId == contactId);
+            ContactInfoVM? contactInfoVM = _db.ContactInfo
+                .Join(_db.User,
+                    c => c.UserId,
+                    u => u.UserId,
+                    (c, u) => new { c, u })
+                .Join(_db.City,
+                    cu => cu.c.CityId,
+                    city => city.CityId,
+                    (cu, city) => new { cu.c, cu.u, city })
+                .Join(_db.Province,
+                    cuc => cuc.city.ProvinceId,
+                    province => province.ProvinceId,
+                    (cuc, province) => new ContactInfoVM
+                    {
+                        ContactId = cuc.c.ContactId,
+                        FirstName = cuc.u.FirstName,
+                        LastName = cuc.u.LastName,
+                        Email = cuc.u.Email,
+                        Phone = cuc.u.Phone,
+                        Address1 = cuc.c.Address1,
+                        Address2 = cuc.c.Address2,
+                        CityId = cuc.c.CityId,
+                        ProvinceId = cuc.c.ProvinceId,
+                        UserId = cuc.c.UserId,
+                        CityName = cuc.city.Name,
+                        ProvinceName = province.Name
+                    })
+                .FirstOrDefault(c => c.ContactId == contactId);
 
-            return contanctInfoVM ?? new ContactInfoVM();
+            return contactInfoVM ?? new ContactInfoVM();
         }
 
         public ContactInfo AddContactInfo(int userId)
