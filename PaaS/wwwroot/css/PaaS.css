@@ -346,6 +346,8 @@ footer {
     font-weight: 600;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    text-decoration: none;
+    text-align: center;
     width: fit-content; /* Make the button fit its content */
     /*padding: 1rem;*/ /* Add padding to the top and bottom */
 }
@@ -358,6 +360,7 @@ footer {
     color: var(--brand-orange);
     text-decoration: none;
     font-weight: 500;
+    align-self: center;
 }
 
 .p-landing-special img {
@@ -370,15 +373,69 @@ footer {
     width: 100%;
 }
 
-    .p-image-container img {
-        width: 100%; /* Make the image fill the container width */
-        height: 100%; /* Make the image fill the container height */
-        object-fit: cover; /* Maintain aspect ratio and cover the container */
-        object-position: center; /* Center the image within the container */
-    }
+.p-image-container img {
+    width: 100%; /* Make the image fill the container width */
+    height: 100%; /* Make the image fill the container height */
+    object-fit: cover; /* Maintain aspect ratio and cover the container */
+    object-position: center; /* Center the image within the container */
+}
 
 .p-grid-split {
     display: grid;
     grid-auto-flow: column;
     justify-content: space-between;
 }
+
+.p-h3-like {
+    margin-top: 0;
+    margin-bottom: .5rem;
+    font-weight: 500;
+    line-height: 1.2;
+    color: var(--bs-heading-color);
+    font-size: calc(1.3rem + .6vw);
+}
+
+/*.p-cart-item-container {
+    display: grid;
+    grid-template-columns: 100px 1fr;
+}
+
+.custom-pizza-details {
+    font-size: 0.9rem;
+    background-color: #f8f9fa;
+    border-radius: 4px;
+    padding: 8px;
+    margin: 5px 0;
+    max-width: 300px;
+}
+
+.pizza-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-bottom: 5px;
+}
+
+.pizza-toppings {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.option-label, .topping-category {
+    font-weight: bold;
+    margin-right: 3px;
+}
+
+.option-value, .topping-list {
+    color: #555;
+}
+
+.topping-category {
+    color: #007bff;
+}
+
+.topping-list {
+    font-style: italic;
+}
+*/
