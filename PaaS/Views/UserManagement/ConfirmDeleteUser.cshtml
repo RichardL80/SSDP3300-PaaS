@@ -5,13 +5,22 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Are you sure you want to delete this user?</h2>
+<div class="p-grid-container">
+    <div class="p-grid-item mb-2">
+        <h1>Confirm User Deletion</h1>
+    </div>
+    <div class="row">
+        <form method="post" action="@Url.Action("DeleteUser", "UserManagement")">
+            @Html.AntiForgeryToken()
+            <div class="p-input-grid mb-2">
+                <div class="p-first">Email</div>
+                <div class="p-second">@Model.Email</div>
+            </div>
 
-<p><strong>Email:</strong> @Model.Email</p>
+            <input type="hidden" name="email" value="@Model.Email" />
 
-<form method="post" action="@Url.Action("DeleteUser", "UserManagement")">
-    @Html.AntiForgeryToken()
-    <input type="hidden" name="email" value="@Model.Email" />
-    <button type="submit" class="btn btn-danger">Yes, Delete</button>
-    <a href="@Url.Action("Index", "UserManagement")" class="btn btn-secondary">Cancel</a>
-</form>
+            <button type="submit" class="btn p-brand mt-2">Delete</button>
+            <a href="@Url.Action("Index", "UserManagement")" class="btn btn-secondary ms-2 mt-2">Back to User list</a>
+        </form>
+    </div>
+</div>
