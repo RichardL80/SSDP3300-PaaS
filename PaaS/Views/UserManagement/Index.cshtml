@@ -12,52 +12,57 @@
     </div>
 }
 
-<h2>User Management</h2>
+<div class="p-grid-container">
+    <div class="p-grid-item mb-2">
+        <h1>User Management</h1>
+    </div>
+    <div class="row">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Email</th>
+                    <th>Roles</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var user in Model)
+                {
+                    <tr>
+                        <td>@user.Email</td>
+                        <td>
+                            @if (ViewBag.UserRoles.ContainsKey(user.Email))
+                            {
+                                foreach (var role in ViewBag.UserRoles[user.Email])
+                                {
+                                    <span class="badge bg-secondary">@role</span>
+                                }
+                            }
+                            else
+                            {
+                                <span class="badge bg-secondary">No Roles</span>
+                            }
+                        </td>
+                        <td>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>Email</th>
-            <th>Roles</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var user in Model)
-        {
-            <tr>
-                <td>@user.Email</td>
-                <td>
-                    @if (ViewBag.UserRoles.ContainsKey(user.Email))
-                    {
-                        foreach (var role in ViewBag.UserRoles[user.Email])
-                        {
-                            <span class="badge bg-primary">@role</span>
-                        }
-                    }
-                    else
-                    {
-                        <span class="badge bg-secondary">No Roles</span>
-                    }
-                </td>
-                <td>
+                            @if (!string.IsNullOrEmpty(user.Email))
+                            {
+                                <a class="btn p-brand" href="@Url.Action("AssignRole", "UserManagement", new { email = user.Email })">
+                                    Assign Role
+                                </a>
+                            }
 
-                    @if (!string.IsNullOrEmpty(user.Email))
-                    {
-                        <a class="btn btn-info" href="@Url.Action("AssignRole", "UserManagement", new { email = user.Email })">
-                            Assign Role
-                        </a>
-                    }
+                            @if (!string.IsNullOrEmpty(user.Email))
+                            {
+                                <a class="btn p-brand ms-2" href="@Url.Action("ConfirmDeleteUser", "UserManagement", new { email = user.Email })">
+                                    Delete User
+                                </a>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
 
-                    @if (!string.IsNullOrEmpty(user.Email))
-                    {
-                        <a href="@Url.Action("ConfirmDeleteUser", "UserManagement", new { email = user.Email })" class="btn btn-danger">
-                            Delete
-                        </a>
-                    }
-                </td>
-            </tr>
-        }
-    </tbody>
-
-</table>
+        </table>
+    </div>
+</div>

@@ -474,3 +474,16 @@ dl::after {
     background-color: var(--brand-orange);
     color: white;
 }
+
+.p-input-grid {
+    display: grid;
+    grid-template-columns: 25% 75%;
+}
+
+.p-input-grid .p-first {
+    grid-column: 1;
+}
+
+.p-input-grid .p-second {
+    grid-column: 2;
+}
