@@ -1,0 +1,70 @@
+﻿.p-cart-item-container {
+    display: grid;
+    grid-template-columns: 1fr;
+}
+
+.p-cart-item-container h3 {
+
+}
+
+.p-cart-item {
+    display: grid;
+    grid-template-columns: 100px calc((100% - 100px) * 0.6) calc((100% - 100px) * 0.2) calc((100% - 100px) * 0.2);
+}
+
+.p-cart-item img {
+    height: 100px;
+    width: 100px;
+}
+
+.p-cart-item .p-cart-item-count {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.p-cart-item .p-cart-item-total {
+    display: flex;
+    align-items: center;
+    justify-content:flex-end;
+    gap: 20px;
+}
+
+.custom-pizza-details {
+    font-size: 0.9rem;
+    background-color: #f8f9fa;
+    border-radius: 4px;
+    padding: 8px;
+    margin: 5px 0;
+    max-width: 300px;
+}
+
+.pizza-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-bottom: 5px;
+}
+
+.pizza-toppings {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.option-label, .topping-category {
+    font-weight: bold;
+    margin-right: 3px;
+}
+
+.option-value, .topping-list {
+    color: #555;
+}
+
+.topping-category {
+    color: #007bff;
+}
+
+.topping-list {
+    font-style: italic;
+}

@@ -6,106 +6,91 @@
     ViewData["Title"] = "Cart";
 }
 
-<div class="cart-container">
-    <h1>My Cart</h1>
-    <a id="cart" class="nav-link" asp-area="" asp-controller="Menu" asp-action="Index">+ Add More</a>
-    <div id="cart-items">
+@section Styles {
+    <link rel="stylesheet" href="~/css/cart.css" asp-append-version="true" />
+}
+
+<div class="p-grid-container">
+    <div class="p-grid-item">
+        <h1>My Cart</h1>
+    </div>
+    <div class="p-grid-split">
+        <h2>Shopping Cart Contents</h2>
+        <a id="cart" class="p-link" asp-area="" asp-controller="Menu" asp-action="Index">+ Add More</a>
+    </div>
+    <div id="cart-items" class="p-cart-item-container">
         @foreach (var item in Model)
         {
-            <div class="cart-item" data-id="@item.Item.ItemId" data-item='@JsonConvert.SerializeObject(item)'>
-                <img src="@item.Item.ImgUrl" alt="@item.Item.Name Image" width="100" height="100">  
-                <h3>@item.Item.Name</h3>
-                <div>@item.Item.Price</div>
-                <div>@item.Size</div>
-                @if (item.Item.IdCategory == 4)
-                {
-                    <div class="custom-pizza-details">
-                        @{
-                            var customization = JsonConvert.DeserializeObject<dynamic>(item.Customization);
-                            if (customization != null)
-                            {
-                                <div class="pizza-options">
-                                    <span class="option-label">Sauce:</span> <span class="option-value">@customization.sauce</span>
-                                    <span class="option-label">Dough:</span> <span class="option-value">@customization.dough</span>
-                                    <span class="option-label">Cheese:</span> <span class="option-value">@customization.cheese</span>
-                                </div>
-                                <div class="pizza-toppings">
-                                    @if (customization.toppings.meats.Count > 0)
-                                    {
-                                        <span class="topping-category">Meats:</span>
-                                        <span class="topping-list">@string.Join(", ", customization.toppings.meats)</span>
-                                    }
-                                    @if (customization.toppings.veggies.Count > 0)
-                                    {
-                                        <span class="topping-category">Veggies:</span>
-                                        <span class="topping-list">@string.Join(", ", customization.toppings.veggies)</span>
-                                    }
-                                    @if (customization.toppings.others.Count > 0)
-                                    {
-                                        <span class="topping-category">Others:</span>
-                                        <span class="topping-list">@string.Join(", ", customization.toppings.others)</span>
-                                    }
-                                </div>
+            <div class="p-cart-item" data-id="@item.Item.ItemId" data-item='@JsonConvert.SerializeObject(item)'>
+                <img src="@item.Item.ImgUrl" alt="@item.Item.Name Image"> 
+                <div>
+                    <h3>@item.Item.Name</h3>
+                    <div>@item.Size</div>
+                    <div>@item.Item.Price.ToString("C") each</div>
+                    @if (item.Item.IdCategory == 4)
+                    {
+                        <div class="custom-pizza-details">
+                            @{
+                                var customization = JsonConvert.DeserializeObject<dynamic>(item.Customization);
+                                if (customization != null)
+                                {
+                                    <div class="pizza-options">
+                                        <span class="option-label">Sauce:</span> <span class="option-value">@customization.sauce</span>
+                                        <span class="option-label">Dough:</span> <span class="option-value">@customization.dough</span>
+                                        <span class="option-label">Cheese:</span> <span class="option-value">@customization.cheese</span>
+                                    </div>
+                                    <div class="pizza-toppings">
+                                        @if (customization.toppings.meats.Count > 0)
+                                        {
+                                            <span class="topping-category">Meats:</span>
+                                            <span class="topping-list">@string.Join(", ", customization.toppings.meats)</span>
+                                        }
+                                        @if (customization.toppings.veggies.Count > 0)
+                                        {
+                                            <span class="topping-category">Veggies:</span>
+                                            <span class="topping-list">@string.Join(", ", customization.toppings.veggies)</span>
+                                        }
+                                        @if (customization.toppings.others.Count > 0)
+                                        {
+                                            <span class="topping-category">Others:</span>
+                                            <span class="topping-list">@string.Join(", ", customization.toppings.others)</span>
+                                        }
+                                    </div>
+                                }
                             }
-                        }
-                    </div>
-                }
-                <button class="btn btn-danger remove-from-cart" data-id="@item.Item.ItemId" data-item='@JsonConvert.SerializeObject(item)'>-</button>
-                <span> @item.Quantity </span>
-                <button class="btn btn-primary add-to-cart" data-id="@item.Item.ItemId" data-item='@JsonConvert.SerializeObject(item)'>+</button>
-                <div>@((item.Quantity*item.Item.Price).ToString("C")) </div>
-                <button class="btn btn-danger delete-from-cart" data-id="@item.Item.ItemId" data-item='@JsonConvert.SerializeObject(item)'>Delete</button>   
+                        </div>
+                    }
+                </div>
+                <div class="p-cart-item-count">
+                    <button class="remove-from-cart" data-id="@item.Item.ItemId" data-item='@JsonConvert.SerializeObject(item)'>
+                        <span class="material-symbols-outlined">remove</span>
+                    </button>
+                    @* <button class="btn btn-danger remove-from-cart" data-id="@item.Item.ItemId" data-item='@JsonConvert.SerializeObject(item)'>-</button> *@
+                    <span> @item.Quantity </span>
+                    <button class="add-to-cart" data-id="@item.Item.ItemId" data-item='@JsonConvert.SerializeObject(item)'>
+                        <span class="material-symbols-outlined">add</span>
+                    </button>
+                </div>
+                <div class="p-cart-item-total">
+                    @* <button class="btn btn-primary add-to-cart" data-id="@item.Item.ItemId" data-item='@JsonConvert.SerializeObject(item)'>+</button> *@
+                    <div>@((item.Quantity*item.Item.Price).ToString("C")) </div>
+                    <button class="delete-from-cart" data-id="@item.Item.ItemId" data-item='@JsonConvert.SerializeObject(item)'>
+                        <span class="material-symbols-outlined">delete</span>
+                    </button>   
+                    @* <button class="btn btn-danger delete-from-cart" data-id="@item.Item.ItemId" data-item='@JsonConvert.SerializeObject(item)'>Delete</button>    *@
+                </div>
             </div>
         }
     </div>
-    <div class="cart-total">
-        <h3>Total: @Model.Sum(x => x.Quantity * x.Item.Price).ToString("C")</h3>
+    <div class="p-grid-split">
+        <h3>Subtotal: </h3>
+        <div class="h3">@Model.Sum(x => x.Quantity * x.Item.Price).ToString("C")</div>
     </div>
-    <a class="checkout" asp-area="" asp-controller="PayPal" asp-action="Index">Checkout</a>
+    <div>
+        <p>Taxes will be calculated at checkout.</p>
+    </div>
+    <a class="checkout w-100 p-cta-button" asp-area="" asp-controller="PayPal" asp-action="Index">Proceed to Checkout</a>
 </div>
-
-@section Styles {
-    <style>
-        .custom-pizza-details {
-            font-size: 0.9rem;
-            background-color: #f8f9fa;
-            border-radius: 4px;
-            padding: 8px;
-            margin: 5px 0;
-            max-width: 300px;
-        }
-        
-        .pizza-options {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 5px;
-            margin-bottom: 5px;
-        }
-        
-        .pizza-toppings {
-            display: flex;
-            flex-direction: column;
-            gap: 3px;
-        }
-        
-        .option-label, .topping-category {
-            font-weight: bold;
-            margin-right: 3px;
-        }
-        
-        .option-value, .topping-list {
-            color: #555;
-        }
-        
-        .topping-category {
-            color: #007bff;
-        }
-        
-        .topping-list {
-            font-style: italic;
-        }
-    </style>
-}
 
 @section Scripts {
     <script>
@@ -118,14 +103,14 @@
                     let total = 0;
                     data.forEach(item => {
                         const cartItem = document.createElement('div');
-                        cartItem.classList.add('cart-item');
+                        cartItem.classList.add('p-cart-item');
                         cartItem.setAttribute('data-id', item.item.itemId);
-                        
+
                         let customizationHtml = '';
                         if (item.item.idCategory === 4 && item.customization) {
                             try {
-                                const customization = typeof item.customization === 'string' 
-                                    ? JSON.parse(item.customization) 
+                                const customization = typeof item.customization === 'string'
+                                    ? JSON.parse(item.customization)
                                     : item.customization;
                                 
                                 customizationHtml = `
@@ -156,29 +141,41 @@
                                 customizationHtml = `<div class="custom-pizza-details">Custom Pizza</div>`;
                             }
                         }
-                        
                         cartItem.innerHTML = `
                             <img src="${item.item.imgUrl}" alt="${item.item.name} Image" width="100" height="100">
-                            <h3>${item.item.name}</h3>
-                            <div>${item.item.price}</div>
-                            <div>${item.size}</div>
-                            ${customizationHtml}
-                            <button class="btn btn-danger remove-from-cart" data-id="${item.item.itemId}" data-item='${JSON.stringify(item)}' >-</button>
-                            <span>${item.quantity}</span>
-                            <button class="btn btn-primary add-to-cart" data-id="${item.item.itemId}" data-item='${JSON.stringify(item)}'>+</button>
-                            <div>${(item.quantity * item.item.price).toFixed(2)}</div>
-                            <button class="btn btn-danger delete-from-cart" data-id="${item.item.itemId}" data-item='${JSON.stringify(item)}'>Delete</button>
+                            <div>
+                                <h3>${item.item.name}</h3>
+                                <div>${item.size}</div>
+                                <div>${item.item.price.toLocaleString('en-CA', { style: 'currency', currency: 'CAD' })} each</div>
+                                ${customizationHtml}
+                            </div>
+                            <div class="p-cart-item-count">
+                                <button class="remove-from-cart" data-id="${item.item.itemId}" data-item='${JSON.stringify(item)}' >
+                                    <span class="material-symbols-outlined">remove</span>
+                                </button>
+                                <span>$${item.quantity}</span>
+                                <button class="add-to-cart" data-id="${item.item.itemId}" data-item='${JSON.stringify(item)}'>
+                                    <span class="material-symbols-outlined">add</span>
+                                </button>
+                            </div>
+                            <div class="p-cart-item-total">
+                                <div>${(item.quantity * item.item.price).toLocaleString('en-CA', { style: 'currency', currency: 'CAD' })}</div>
+                                <button class="delete-from-cart" data-id="${item.item.itemId}" data-item='${JSON.stringify(item)}'>
+                                    <span class="material-symbols-outlined">delete</span>
+                                </button>
+                            </div>
                         `;
                         cartItemsContainer.appendChild(cartItem);
                         total += item.quantity * item.item.price;
                     });
-                    document.querySelector('.cart-total h3').innerText = `Total: ${total.toFixed(2)}`;
+                    document.querySelector('div.h3').innerText = `${total.toLocaleString('en-CA', { style: 'currency', currency: 'CAD' })}`;
                     attachEventListeners();
                 });
         }
 
         function attachEventListeners() {
             document.querySelectorAll('.add-to-cart').forEach(button => {
+                console.log('reattach add');
                 button.addEventListener('click', function() {
                     const itemId = this.getAttribute('data-id');
                     const itemData = JSON.parse(this.getAttribute('data-item'));
@@ -210,6 +207,7 @@
             });
 
             document.querySelectorAll('.delete-from-cart').forEach(button => {
+                console.log('reattach delete');
                 button.addEventListener('click', function() {
                     const itemId = this.getAttribute('data-id');
                     const dataItem = JSON.parse(this.getAttribute('data-item'));
@@ -241,6 +239,7 @@
             });
 
             document.querySelectorAll('.remove-from-cart').forEach(button => {
+                console.log('reattach remove');
                 button.addEventListener('click', function() {
                     const itemId = this.getAttribute('data-id');
                     const dataItem = JSON.parse(this.getAttribute('data-item'));
