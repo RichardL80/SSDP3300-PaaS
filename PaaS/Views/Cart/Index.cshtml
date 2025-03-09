@@ -14,16 +14,16 @@
     <div class="p-grid-item">
         <h1>My Cart</h1>
     </div>
-    <div class="p-grid-split">
+    <div class="p-grid-split mb-3">
         <h2>Shopping Cart Contents</h2>
         <a id="cart" class="p-link" asp-area="" asp-controller="Menu" asp-action="Index">+ Add More</a>
     </div>
     <div id="cart-items" class="p-cart-item-container">
         @foreach (var item in Model)
         {
-            <div class="p-cart-item" data-id="@item.Item.ItemId" data-item='@JsonConvert.SerializeObject(item)'>
+            <div class="p-cart-item mb-4" data-id="@item.Item.ItemId" data-item='@JsonConvert.SerializeObject(item)'>
                 <img src="@item.Item.ImgUrl" alt="@item.Item.Name Image"> 
-                <div>
+                <div class="ms-3">
                     <h3>@item.Item.Name</h3>
                     <div>@item.Size</div>
                     <div>@item.Item.Price.ToString("C") each</div>
@@ -103,7 +103,7 @@
                     let total = 0;
                     data.forEach(item => {
                         const cartItem = document.createElement('div');
-                        cartItem.classList.add('p-cart-item');
+                        cartItem.classList.add('p-cart-item', 'mb-4');
                         cartItem.setAttribute('data-id', item.item.itemId);
 
                         let customizationHtml = '';
@@ -143,7 +143,7 @@
                         }
                         cartItem.innerHTML = `
                             <img src="${item.item.imgUrl}" alt="${item.item.name} Image" width="100" height="100">
-                            <div>
+                            <div class="ms-3">
                                 <h3>${item.item.name}</h3>
                                 <div>${item.size}</div>
                                 <div>${item.item.price.toLocaleString('en-CA', { style: 'currency', currency: 'CAD' })} each</div>
