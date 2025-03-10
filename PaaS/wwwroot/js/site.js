@@ -1,4 +1,15 @@
-﻿// Please see documentation at https://learn.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
+function updateCartCount() {
+    fetch('/Cart/GetCartItems')
+        .then(response => response.json())
+        .then(cart => {
+            const totalQuantity = cart.reduce((total, item) => total + item.quantity, 0);
+            document.getElementById('cart-item-count').textContent = totalQuantity;
+        })
+        .catch(error => {
+            console.error('Error fetching cart count:', error);
+        });
+}
 
-// Write your JavaScript code.
+document.addEventListener('DOMContentLoaded', function() {
+    updateCartCount();
+});
