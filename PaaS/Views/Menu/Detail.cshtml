@@ -49,10 +49,6 @@
                             </select>
                         </div>
                     }
-                    @* else *@
-                    @* { *@
-                    @*     <input type="hidden" id="size-select" value="Regular" /> *@
-                    @* } *@
                     
                     @if (Model.Item.ItemTypeId == 1)
                     {
@@ -101,10 +97,10 @@
                     </div>
                     
                     <div class="item-detail-actions">
-                        <button type="button" id="add-to-cart-btn" class="btn-add-cart-detail" data-id="@Model.Item.ItemId">
+                        <button type="button" id="add-to-cart-btn" class="btn p-brand" data-id="@Model.Item.ItemId">
                             Add to Cart - <span id="total-price">@Model.Item.Price.ToString("C")</span>
                         </button>
-                        <a href="@Url.Action("Index", "Menu")" class="btn-return-menu">Return to Menu</a>
+                        <a href="@Url.Action("Index", "Menu")" class="btn btn-secondary">Return to Menu</a>
                     </div>
                 </div>
             </div>
