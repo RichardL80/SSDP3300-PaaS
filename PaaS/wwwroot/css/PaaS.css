@@ -1,7 +1,6 @@
 /* Variables */
 :root {
     --primary-color: #FF5722;
-    /*    --primary-color: #f97316;*/
 
     --icon-size: 18px;
     --padding-15: 15px;
@@ -515,4 +514,12 @@ dl::after {
     text-align: right;
     font-family: 'Courier New', Courier, monospace; /* Use a monospaced font */
     width: 85px; /* Adjust the width as needed */
+}
+
+/* Adjust scroll position for fixed header */
+:target::before {
+    content: "";
+    display: block;
+    height: 70px; /* Adjust based on your header height */
+    margin-top: -70px; /* Adjust based on your header height */
 }

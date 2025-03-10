@@ -57,7 +57,7 @@
 
 /* Category Headers */
 .category-header {
-  border-bottom: 2px solid #f97316;
+  border-bottom: 2px solid var(--brand-orange);
   padding-bottom: 10px;
   margin-bottom: 25px;
   font-weight: 700;
@@ -85,7 +85,10 @@
 }
 
 .menu-card-body {
-  padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 20px;
 }
 
 .menu-card-title {
@@ -95,7 +98,7 @@
 }
 
 .menu-card-category {
-  color: #f97316;
+  color: var(--brand-orange);
   font-size: 0.9rem;
   text-transform: uppercase;
   letter-spacing: 1px;
@@ -153,7 +156,7 @@
 
 /* Menu Sections */
 .menu-section {
-  margin-bottom: 50px;
+  margin-bottom: 20px;
 }
 
 /* Responsive adjustments */
