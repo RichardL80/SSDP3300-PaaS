@@ -186,9 +186,7 @@
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
-                        const $cartItemCount = $('#cart-item-count');
-                        const currentCount = parseInt($cartItemCount.text() || '0');
-                        $cartItemCount.text(currentCount + quantity);
+                        updateCartCount();
                     } else {
                         alert('Failed to add item to cart: ' + data.message);
                     }

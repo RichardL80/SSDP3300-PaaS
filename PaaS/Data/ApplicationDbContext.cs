@@ -4,6 +4,8 @@ using Microsoft.EntityFrameworkCore;
 using PaaS.Models;
 
 
+
+
 namespace PaaS.Data;
 
 public class ApplicationDbContext : IdentityDbContext
@@ -23,6 +25,15 @@ public class ApplicationDbContext : IdentityDbContext
     public DbSet<Province> Province { get; set; }
     public DbSet<Order> Order { get; set; }
 
+    public DbSet<ContactInfo> ContactInfos { get; set; } = null;
+
+    public DbSet<OrderItem> OrderItem { get; set; }
+
+    public DbSet<City> Cities { get; set; }
+    public DbSet<Province> Provinces { get; set; }
+    public DbSet<Status> Status { get; set; }
+
+
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
@@ -31,6 +42,9 @@ public class ApplicationDbContext : IdentityDbContext
         SeedProvinces(builder);
         SeedCities(builder);
         SeedItemsData(builder);
+        SeedPaymentMethods(builder);
+        SeedDeliveryMethods(builder);
+        SeedOrderStatuses(builder);
     }
 
     private void SeedRoles(ModelBuilder builder)
@@ -101,7 +115,7 @@ public class ApplicationDbContext : IdentityDbContext
                 Price = 12m,
                 ItemTypeId = 1,
                 IdCategory = 4
-            } ,
+            },
             new Item
             {
                 ItemId = 5,
@@ -150,6 +164,31 @@ public class ApplicationDbContext : IdentityDbContext
             new Province { ProvinceId = -1, Name = "" }, // Needed for non-nullable foreign key
             new Province { ProvinceId = 1, Name = "British Columbia" },
             new Province { ProvinceId = 2, Name = "Ontario" }
+        );
+    }
+    
+    private void SeedPaymentMethods(ModelBuilder builder)
+    {
+        builder.Entity<PaymentMethod>().HasData(
+            new PaymentMethod { PaymentMethodId = 1, MethodName = "PayPal" }
+        );
+    }
+    
+    private void SeedDeliveryMethods(ModelBuilder builder)
+    {
+        builder.Entity<DeliveryMethod>().HasData(
+            new DeliveryMethod { DeliveryMethodId = 1, MethodName = "Pickup" },
+            new DeliveryMethod { DeliveryMethodId = 2, MethodName = "Delivery" }
+        );
+    }
+
+    private void SeedOrderStatuses(ModelBuilder builder)
+    {
+        builder.Entity<Status>().HasData(
+            new Status { StatusId = 1, Description = "Pending" },
+            new Status { StatusId = 2, Description = "Processing" },
+            new Status { StatusId = 3, Description = "Completed" },
+            new Status { StatusId = 4, Description = "Cancelled" }
         );
     }
 }

@@ -1,6 +1,225 @@
+@model PaaS.ViewModels.OrderSummaryVM;
+
 @{
     ViewData["Title"] = "Order Summary";
 }
 
+@* PayPal script *@
+<script
+    src="https://www.paypal.com/sdk/js?client-id=AV_6P7OPZwXSofUX2pdD0J1qymbE6k7rESrelqzf_jndK35unvyHtUdYyp5b8NefZA6W5I3QW0qzv5c4&currency=CAD"></script>
+
 <h1>Order Summary</h1>
-<p>Order Date</p>
+<p>Order on: @Model.OrderDate</p>
+<div>
+    @* Order details *@
+    <section id="order-item-detail-section">
+        <h2>Order Details</h2>
+        @foreach (var item in Model.CartItems)
+        {
+            <div class="order-item">
+                <img src="@item.Item.ImgUrl" alt="@item.Item.Name Image" width="100" height="100">
+                <h3>@item.Item.Name</h3>
+                <span>Quantity: @item.Quantity</span>
+                <div>@((item.Quantity * item.Item.Price).ToString("C"))</div>
+            </div>
+        }
+        <h5>Subtotal: @Model.Subtotal</h5>
+    </section>
+
+    @* Total price  *@
+    <section id="total-price-section" class="right-aside-display">
+        <span>GST: @Model.GST</span><br>
+        <span>PST: @Model.PST</span><br>
+        <span>Shipping Fee: @Model.ShippingFee</span><br>
+        @* Price For Paypal*@
+        <div id="totalPrice" data-value="@Model.Total">
+            <h4 id="currency" data-value="CAD">Total: @Model.Total</h4>
+        </div>
+        @* Paypal Button *@
+        <div id="place-order-section">
+            <div id="paypal-button-container">
+            </div>
+            <p>Estimated Delivery Time: @Model.EstimatedDeliveryTime</p>
+        </div>
+    </section>
+
+
+    @* Delivery option *@
+    <section id="delivery-section">
+        <h3>Delivery Method</h3>
+        <div class="delivery-method-option">
+            <input type="radio" id="pickup" name="deliveryMethod" value="pickup" checked>
+            <label for="pickup">Pick-up</label>
+
+            <input type="radio" id="delivery" name="deliveryMethod" value="delivery">
+            <label for="delivery">Delivery</label>
+        </div>
+
+        @* Delivery address hide if user choose pick-up *@
+        <div id="addressSection" style="display: none;">
+            @foreach (var address in Model.ContactInfo)
+            {
+                <ul>
+                    @* Address1 is the default address of delivery *@
+                    <input type="radio" id="selectedAddress" name="address" checked>
+                    <div>
+                        <p>@address.Address1</p>
+                        <p><span>@address.CityName</span>, <span>@address.ProvinceName</span></p>
+                        <p>@address.Phone</p>
+                    </div>
+                    <button type="button" id="editAddressBtn" class="btn btn-sm btn-secondary">Edit</button>
+                </ul>
+            }
+        </div>
+
+        @* Address Selection Modal(shows up when click "Edit") *@
+        <div id="addressModal" class="modal" style="display:none;">
+            <div class="modal-content">
+                <h4>Select Address</h4>
+                @foreach (var address in Model.ContactInfo)
+                {
+                    <label>
+                        <input type="radio" name="addressOption" id="address1" value="@address.Address1" checked>
+                        <div>
+                            <p>@address.Address1</p>
+                            <p><span>@address.CityName</span>, <span>@address.ProvinceName</span></p>
+                            <p>@address.Phone</p>
+                        </div>
+                    </label>
+                    <br>
+                    <label>
+                        <input type="radio" name="addressOption" id="address2" value="@address.Address2">
+                        <div>
+                            <p>@address.Address2</p>
+                            <p><span>@address.CityName</span>, <span>@address.ProvinceName</span></p>
+                            <p>@address.Phone</p>
+                        </div>
+                    </label>
+                    <br>
+
+                }
+                <button id="confirmAddressBtn" class="btn btn-primary">Confirm</button>
+                <button id="closeModalBtn" class="btn btn-secondary">Close</button>
+            </div>
+        </div>
+    </section>
+
+    <section id="payment-section">
+        <h3>Payment Method</h3>
+        <input type="radio" id="paypal" name="paymentMethod" value="paypal" checked>
+        <label for="paypal">PayPal</label>
+    </section>
+</div>
+
+
+
+<script>
+    @* Delivery method script *@
+        document.addEventListener("DOMContentLoaded", function () {
+            const pickupRadio = document.getElementById("pickup");
+            const deliveryRadio = document.getElementById("delivery");
+            const addressSection = document.getElementById("addressSection");
+            const selectedAddressText = document.getElementById("selectedAddressText");
+            const editAddressBtn = document.getElementById("editAddressBtn");
+            const addressModal = document.getElementById("addressModal");
+            const closeModalBtn = document.getElementById("closeModalBtn");
+            const confirmAddressBtn = document.getElementById("confirmAddressBtn");
+            const address1Checkbox = document.getElementById("address1");
+            const address2Checkbox = document.getElementById("address2");
+
+            // Toggle address section based on delivery method
+            pickupRadio.addEventListener("change", function () {
+                if (this.checked) {
+                    addressSection.style.display = "none";
+                }
+            });
+
+            deliveryRadio.addEventListener("change", function () {
+                if (this.checked) {
+                    addressSection.style.display = "block";
+                }
+            });
+
+            // Open the modal
+            editAddressBtn.addEventListener("click", function () {
+                addressModal.style.display = "block";
+            });
+
+            // Close modal
+            closeModalBtn.addEventListener("click", function () {
+                addressModal.style.display = "none";
+            });
+
+            // Handle address selection
+            confirmAddressBtn.addEventListener("click", function () {
+                if (address2Checkbox.checked) {
+                    selectedAddressText.textContent = address2Checkbox.nextSibling.textContent;
+                } else {
+                    selectedAddressText.textContent = address1Checkbox.nextSibling.textContent;
+                }
+                addressModal.style.display = "none";
+            });
+        });
+
+    @* Paypal button script *@
+        paypal.Buttons({
+            fundingSource: paypal.FUNDING.PAYPAL,
+            // Set up the transaction
+            createOrder: function (data, actions) {
+                // Retrieve the price and currency values from the data attributes
+                const price = document.getElementById('totalPrice').getAttribute('data-value');
+                const currency = document.getElementById('currency').getAttribute('data-value');
+
+                return actions.order.create({
+                    purchase_units: [{
+                        amount: {
+                            value: price,
+                            currency_code: currency
+                        }
+                    }]
+                });
+            },
+
+            // Finalize the transaction
+            onApprove: function (data, actions) {
+                return actions.order.capture().then(function (details) {
+                    const deliveryMethodId = document.querySelector('input[name="deliveryMethod"]:checked').value === "pickup" ? 1 : 2;
+                    const paymentMethodId = 1 //JEZS : 1 for PayPal (default method);
+                    const selectedAddress = deliveryMethodId === 2 ? document.querySelector('input[name="addressOption"]:checked').value : "Pickup";
+                    @* update the data of order *@
+                        fetch('/OrderSummary/SaveOrder', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                deliveryMethodId, paymentMethodId, selectedAddress
+                            })
+                        }).then(response => response.json())
+                            .then(data => {
+                                // Redirect to the PayPalConfirmation action method
+                                window.location.href =
+                                    '/PayPal/PayPalConfirmation?TransactionId=' +
+                                    encodeURIComponent(details.id) + '&Amount=' +
+                                    encodeURIComponent(details.purchase_units[0].amount.value) +
+                                    '&PayerName=' +
+                                    encodeURIComponent(details.payer.name.given_name) +
+                                    '&Email=' + encodeURIComponent(details.payer.email_address);
+                            });
+                });
+            },
+            onCancel: function (data) {
+                alert('Transaction was cancelled.');
+            },
+            onError: function (err) {
+                alert('An error occurred during the transaction.');
+            },
+
+            style: {
+                layout: 'vertical',
+                shape: 'rect',
+                label: 'pay',
+                tagline: false,
+            }
+        }).render('#paypal-button-container');
+</script>

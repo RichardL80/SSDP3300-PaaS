@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PaaS.Data;
 
@@ -10,9 +11,11 @@ using PaaS.Data;
 namespace PaaS.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250306180653_UpdateOrderItemForeignKey")]
+    partial class UpdateOrderItemForeignKey
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.1");
@@ -359,18 +362,6 @@ namespace PaaS.Migrations
                     b.HasKey("DeliveryMethodId");
 
                     b.ToTable("DeliveryMethod");
-
-                    b.HasData(
-                        new
-                        {
-                            DeliveryMethodId = 1,
-                            MethodName = "Pickup"
-                        },
-                        new
-                        {
-                            DeliveryMethodId = 2,
-                            MethodName = "Delivery"
-                        });
                 });
 
             modelBuilder.Entity("PaaS.Models.Item", b =>
@@ -620,13 +611,6 @@ namespace PaaS.Migrations
                     b.HasKey("PaymentMethodId");
 
                     b.ToTable("PaymentMethod");
-
-                    b.HasData(
-                        new
-                        {
-                            PaymentMethodId = 1,
-                            MethodName = "PayPal"
-                        });
                 });
 
             modelBuilder.Entity("PaaS.Models.Province", b =>
@@ -706,28 +690,6 @@ namespace PaaS.Migrations
                     b.HasKey("StatusId");
 
                     b.ToTable("Status");
-
-                    b.HasData(
-                        new
-                        {
-                            StatusId = 1,
-                            Description = "Pending"
-                        },
-                        new
-                        {
-                            StatusId = 2,
-                            Description = "Processing"
-                        },
-                        new
-                        {
-                            StatusId = 3,
-                            Description = "Completed"
-                        },
-                        new
-                        {
-                            StatusId = 4,
-                            Description = "Cancelled"
-                        });
                 });
 
             modelBuilder.Entity("PaaS.Models.User", b =>

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.EntityFrameworkCore;
+
 
 namespace PaaS.Models;
 
@@ -26,4 +28,6 @@ public partial class ContactInfo
     public virtual Province Province { get; set; } = null!;
 
     public virtual User User { get; set; } = null!;
+
+    public int Phone { get; set; }
 }

@@ -1,0 +1,23 @@
+@model PaaS.ViewModels.UserRoleVM
+@{
+    ViewData["Title"] = "Remove Role from User";
+}
+
+<h1>Remove Role</h1>
+<h3>Are you sure you want to remove this role from the user?</h3>
+<div>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-3">User Email</dt>
+        <dd class="col-sm-9">@Model.Email</dd>
+        <dt class="col-sm-3">Role Name</dt>
+        <dd class="col-sm-9">@Model.RoleName</dd>
+    </dl>
+
+    <form asp-action="DeleteConfirmed" method="post">
+        <input type="hidden" asp-for="Email" />
+        <input type="hidden" asp-for="RoleName" />
+        <button type="submit" class="btn btn-danger">Remove Role</button>
+        <a asp-action="Detail" asp-route-userName="@Model.Email" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>

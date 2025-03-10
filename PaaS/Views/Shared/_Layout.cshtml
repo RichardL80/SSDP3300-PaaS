@@ -15,117 +15,117 @@
 </head>
 
 <body>
-    <div class="main-container">
-        <header class="fixed-top">
-            <nav class="navbar navbar-expand-sm navbar-toggleable-sm mb-3">
-                <div class="container-fluid">
-                    <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
-                        @* PaaS *@
-                        <img src="~/images/image.png" /> 
-                    </a>
-                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+<div class="main-container">
+    <header class="fixed-top">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm mb-3">
+            <div class="container-fluid">
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
+                    @* PaaS *@
+                    <img src="~/images/image.png" />
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                         data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent" aria-expanded="false"
                         aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-                    <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                        <ul class="navbar-nav">
-                            @* All links must match the controller *@
-                            <li class="nav-item">
-                                <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav">
+                        @* All links must match the controller *@
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-controller="Menu" asp-action="Index">Menu</a>
+                        </li>
+                        <li class="nav-item">
+                            <a id="cart" class="nav-link" asp-area="" asp-controller="Cart"
+                               asp-action="Index">
+                                <span class="material-icons">shopping_cart</span>
+                                <span id="cart-item-count" class="notification-circle">0</span>
+                            </a>
+                        </li>
+                        <partial name="_LoginPartial" />
+                        @* Test for Order Summary page and paypal trasaction page(Admin)*@
+                        @if (User.IsInRole("Admin"))
+                        {
+                            @* <li class="nav-item border-start"> *@
+                            @*     <a class="nav-link" asp-area="" asp-controller="PayPal" asp-action="Index">PayPal</a> *@
+                            @* </li> *@
+                            <li class="nav-item border-start">
+                                <a class="nav-link" asp-area="" asp-controller="PayPal" asp-action="Transaction">Transactions</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" asp-area="" asp-controller="Menu" asp-action="Index">Menu</a>
-                            </li>
-                            <li class="nav-item">
-                                <a id="cart" class="nav-link" asp-area="" asp-controller="Cart"
-                                   asp-action="Index">
-                                   <span class="material-icons">shopping_cart</span>
-                                   <span id="cart-item-count" class="notification-circle">0</span>
+                                <a class="nav-link" asp-area="" asp-controller="UserManagement" asp-action="Index">
+                                    User Management
                                 </a>
                             </li>
-                            <partial name="_LoginPartial" />
-                            @* Test for Order Summary page and paypal trasaction page(Admin)*@
-                            @if (User.IsInRole("Admin"))
-                            {
-                                @* <li class="nav-item border-start"> *@
-                                @*     <a class="nav-link" asp-area="" asp-controller="PayPal" asp-action="Index">PayPal</a> *@
-                                @* </li> *@
-                                <li class="nav-item border-start">
-                                    <a class="nav-link" asp-area="" asp-controller="PayPal" asp-action="Transaction">Transactions</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" asp-area="" asp-controller="UserManagement" asp-action="Index">
-                                        User Management
-                                    </a>
-                                </li>
-                                <li class="nav-item p-grid-vcenter">
-                                    <form asp-controller="Contact" asp-action="AdminUserDetails" method="get">
-                                        <input type="text" name="userEmail" placeholder="Search User Email" aria-label="userEmail">
-                                        <button class="btn p-brand" type="submit">Search</button>
-                                    </form>
-                                </li>
-                            }
-                        </ul>
-                    </div>
-                </div>
-            </nav>
-        </header>
-        <div class="container">
-            <main role="main">
-                @RenderBody()
-            </main>
-        </div>
-
-        @* All the pages share this footer *@
-        <footer>
-            <div class="row">
-                <div class="col-12 col-md-3">
-
-                    <ul>
-                        <h5>Help & Services</h5>
-                        <li>Contact Us</li>
-                        <li>FAQs & Help</li>
-                        <li>Shipping & Return</li>
-                        <li>Careers</li>
-                    </ul>
-                </div>
-                <div class="col-12 col-md-3">
-                    <ul>
-                        <h5>Follow Us</h5>
-                        <div class="social-media">
-                            <li><i class="bi bi-facebook"></i></li>
-                            <li><i class="bi bi-instagram"></i></li>
-                            <li><i class="bi bi-twitter"></i></li>
-                        </div>
-                    </ul>
-                </div>
-                <div class="col-12 col-md-3">
-                    <ul>
-                        <h5>Nutritions</h5>
-                        <li>Nutrition Information</li>
-                        <li>Food Allergen & Sensitives</li>
-                        <li>Ingredient Listing</li>
-                        <li>Gluten Free FAQ</li>
-                    </ul>
-                </div>
-                <div class="col-12 col-md-3">
-                    <ul>
-                        <h5>Our Policies</h5>
-                        <li>Privacy</li>
-                        <li>Terms & Conditions</li>
-                        <li>Responsible Disclosure</li>
-                        <li>Cookies & Ads</li>
+                            <li class="nav-item p-grid-vcenter">
+                                <form asp-controller="Contact" asp-action="AdminUserDetails" method="get">
+                                    <input type="text" name="userEmail" placeholder="Search User Email" aria-label="userEmail">
+                                    <button class="btn p-brand" type="submit">Search</button>
+                                </form>
+                            </li>
+                        }
                     </ul>
                 </div>
             </div>
-        </footer>
-
-        <script src="~/lib/jquery/dist/jquery.min.js"></script>
-        <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-        <script src="~/js/site.js" asp-append-version="true"></script>
-        @await RenderSectionAsync("Scripts", required: false)
+        </nav>
+    </header>
+    <div class="container">
+        <main role="main">
+            @RenderBody()
+        </main>
     </div>
+
+    @* All the pages share this footer *@
+    <footer>
+        <div class="row">
+            <div class="col-12 col-md-3">
+
+                <ul>
+                    <h5>Help & Services</h5>
+                    <li>Contact Us</li>
+                    <li>FAQs & Help</li>
+                    <li>Shipping & Return</li>
+                    <li>Careers</li>
+                </ul>
+            </div>
+            <div class="col-12 col-md-3">
+                <ul>
+                    <h5>Follow Us</h5>
+                    <div class="social-media">
+                        <li><i class="bi bi-facebook"></i></li>
+                        <li><i class="bi bi-instagram"></i></li>
+                        <li><i class="bi bi-twitter"></i></li>
+                    </div>
+                </ul>
+            </div>
+            <div class="col-12 col-md-3">
+                <ul>
+                    <h5>Nutritions</h5>
+                    <li>Nutrition Information</li>
+                    <li>Food Allergen & Sensitives</li>
+                    <li>Ingredient Listing</li>
+                    <li>Gluten Free FAQ</li>
+                </ul>
+            </div>
+            <div class="col-12 col-md-3">
+                <ul>
+                    <h5>Our Policies</h5>
+                    <li>Privacy</li>
+                    <li>Terms & Conditions</li>
+                    <li>Responsible Disclosure</li>
+                    <li>Cookies & Ads</li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</div>
 
 </body>
 

@@ -22,7 +22,7 @@
         @foreach (var item in Model)
         {
             <div class="p-cart-item mb-4" data-id="@item.Item.ItemId" data-item='@JsonConvert.SerializeObject(item)'>
-                <img src="@item.Item.ImgUrl" alt="@item.Item.Name Image"> 
+                <img src="@item.Item.ImgUrl" alt="@item.Item.Name Image">
                 <div class="ms-3">
                     <h3>@item.Item.Name</h3>
                     <div>@item.Size</div>
@@ -76,7 +76,7 @@
                     <div>@((item.Quantity*item.Item.Price).ToString("C")) </div>
                     <button class="delete-from-cart" data-id="@item.Item.ItemId" data-item='@JsonConvert.SerializeObject(item)'>
                         <span class="material-symbols-outlined">delete</span>
-                    </button>   
+                    </button>
                     @* <button class="btn btn-danger delete-from-cart" data-id="@item.Item.ItemId" data-item='@JsonConvert.SerializeObject(item)'>Delete</button>    *@
                 </div>
             </div>
@@ -112,7 +112,7 @@
                                 const customization = typeof item.customization === 'string'
                                     ? JSON.parse(item.customization)
                                     : item.customization;
-                                
+
                                 customizationHtml = `
                                     <div class="custom-pizza-details">
                                         <div class="pizza-options">
@@ -195,14 +195,14 @@
                             }
                         )
                     })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            updateCart();
-                        } else {
-                            console.log('Failed to add item to cart');
-                        }
-                    });
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                updateCart();
+                            } else {
+                                console.log('Failed to add item to cart');
+                            }
+                        });
                 });
             });
 
@@ -212,7 +212,7 @@
                     const itemId = this.getAttribute('data-id');
                     const dataItem = JSON.parse(this.getAttribute('data-item'));
                     const itemSize = dataItem.Size || dataItem.size;
-                    
+
                     fetch('@Url.Action("DeleteFromCartAjax", "Cart")', {
                         method: 'POST',
                         headers: {
@@ -227,14 +227,14 @@
                             }
                         )
                     })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            updateCart();
-                        } else {
-                            console.log('Failed to delete item from cart');
-                        }
-                    });
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                updateCart();
+                            } else {
+                                console.log('Failed to delete item from cart');
+                            }
+                        });
                 });
             });
 
@@ -249,21 +249,21 @@
                         headers: {
                             'Content-Type': 'application/json',
                         },
-                        body: JSON.stringify({ 
+                        body: JSON.stringify({
                             item : {
                                 itemId: parseInt(itemId),
                             },
                             size: itemSize,
                         })
                     })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            updateCart();
-                        } else {
-                            console.log('Failed to remove item from cart');
-                        }
-                    });
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                updateCart();
+                            } else {
+                                console.log('Failed to remove item from cart');
+                            }
+                        });
                 });
             });
         }

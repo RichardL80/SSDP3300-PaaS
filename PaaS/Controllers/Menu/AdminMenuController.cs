@@ -14,6 +14,8 @@ public class AdminMenuController : Controller
 {
     private readonly IMenuRepository _menuRepo;
     private readonly ApplicationDbContext _context;
+    private const int DefaultCategoryId = 3;
+    private const int PizzaItemTypeId = 1; 
 
     public AdminMenuController(IMenuRepository menuRepo, ApplicationDbContext context)
     {
@@ -34,6 +36,11 @@ public class AdminMenuController : Controller
     {
         if (ModelState.IsValid)
         {
+            if (itemVm.ItemTypeId != PizzaItemTypeId)
+            {
+                itemVm.IdCategory = DefaultCategoryId;
+            }
+            
             var item = ToModel(itemVm);
             _menuRepo.Add(item);
             return RedirectToAction("Index", "Menu");
@@ -65,9 +72,13 @@ public class AdminMenuController : Controller
         {
             return NotFound();
         }
-
         if (ModelState.IsValid)
         {
+            if (itemVm.ItemTypeId != PizzaItemTypeId)
+            {
+                itemVm.IdCategory = DefaultCategoryId;
+            }
+            
             var item = ToModel(itemVm);
             _menuRepo.Update(item);
             return RedirectToAction("Index", "Menu");

@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PaaS.Models;
 
 public class Order
 {
     [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)] //JEZS 4 : Added this line to auto increment the OrderId
     public int OrderId { get; set; }
 
     public int UserId { get; set; }
@@ -23,7 +25,7 @@ public class Order
 
     public virtual DeliveryMethod DeliveryMethod { get; set; } = null!;
 
-    public virtual ICollection<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
+    public virtual ICollection<OrderItem> OrderItem { get; set; } = new List<OrderItem>();
 
     public virtual PaymentMethod PaymentMethod { get; set; } = null!;
 
