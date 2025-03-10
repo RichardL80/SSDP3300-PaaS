@@ -10,14 +10,16 @@
     <input type="hidden" asp-for="ItemId" />
     <div class="form-group mb-3">
         <label asp-for="ItemTypeId" class="control-label"></label>
-        <select asp-for="ItemTypeId" class="form-control" asp-items="ViewBag.ItemTypes"></select>
+        <select asp-for="ItemTypeId" class="form-control" asp-items="ViewBag.ItemTypes" id="itemTypeSelect"></select>
         <span asp-validation-for="ItemTypeId" class="text-danger"></span>
     </div>
-    <div class="form-group mb-3">
+    
+    <div class="form-group mb-3" id="categoryDiv">
         <label asp-for="IdCategory" class="control-label"></label>
-        <select asp-for="IdCategory" class="form-control" asp-items="ViewBag.Categories"></select>
+        <select asp-for="IdCategory" asp-items="ViewBag.Categories" id="categorySelect"></select>
         <span asp-validation-for="IdCategory" class="text-danger"></span>
     </div>
+    
     <div class="form-group mb-3">
         <label asp-for="Name" class="control-label"></label>
         <input asp-for="Name" class="form-control"/>
@@ -49,4 +51,24 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        $(document).ready(function() {
+            // Initial setup
+            toggleCategoryVisibility();
+            
+            // Add change event listener
+            $("#itemTypeSelect").on("change", toggleCategoryVisibility);
+            
+            function toggleCategoryVisibility() {
+                var itemTypeValue = $("#itemTypeSelect").val();
+                var isPizza = itemTypeValue === "1";
+                
+                if (isPizza) {
+                    $("#categoryDiv").show();
+                } else {
+                    $("#categoryDiv").hide();
+                }
+            }
+        });
+    </script>
 }
