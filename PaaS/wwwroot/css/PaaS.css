@@ -202,6 +202,13 @@ footer {
     height: 100%;
 }
 
+.p-grid-summary {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    margin: 0 auto; /* Center horizontally */
+    height: 100%;
+}
+
 .p-hero-layout-sm {
     grid-template-rows: 300px 1fr; /* Rows with 0.25fr */
 }
@@ -481,6 +488,10 @@ dl::after {
     grid-template-columns: 25% 75%;
 }
 
+.p-input-grid .p-all {
+    grid-column: 1 / span 2;
+}
+
 .p-input-grid .p-first {
     grid-column: 1;
 }
@@ -497,4 +508,11 @@ dl::after {
 .p-grid-item-center {
     justify-self: center;
     align-self: center;
+}
+
+.p-amount-column {
+    display: inline-block;
+    text-align: right;
+    font-family: 'Courier New', Courier, monospace; /* Use a monospaced font */
+    width: 85px; /* Adjust the width as needed */
 }

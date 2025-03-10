@@ -3,29 +3,36 @@
 @{
     ViewData["Title"] = "Transaction";
 }
-<h1 class="mb-3">PayPal Transacions</h1>
-<table class="table">
-    <thead>
-        <tr>
-            <th>Transaction ID</th>
-            <th>Created Date</th>
-            <th>Amount</th>
-            <th>Name</th>
-            <th>Email</th>
-            <th>MOP</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var detail in Model)
-        {
-            <tr>
-                <td>@detail.TransactionId</td>
-                <td>@detail.CreatedDate</td>
-                <td>@detail.Amount</td>
-                <td>@detail.PayerName</td>
-                <td>@detail.Email</td>
-                <td>@detail.MOP</td>
-            </tr>
-        }
-    </tbody>
-</table>
+
+<div class="p-grid-container">
+    <div class="p-grid-item">
+        <h1>PayPal Transactions</h1>
+    </div>
+    <div class="p-grid-item mb-3">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Transaction ID</th>
+                    <th>Created Date</th>
+                    <th>Amount</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>MOP</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var detail in Model)
+                {
+                    <tr>
+                        <td>@detail.TransactionId</td>
+                        <td>@detail.CreatedDate</td>
+                        <td>@detail.Amount.ToString("C")</td>
+                        <td>@detail.PayerName</td>
+                        <td>@detail.Email</td>
+                        <td>@detail.MOP</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

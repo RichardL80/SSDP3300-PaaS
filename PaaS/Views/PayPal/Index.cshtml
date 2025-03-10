@@ -9,50 +9,88 @@
     decimal total = Math.Round(subtotal + gst + pst + fee, 2);;
 }
 
+@section Styles {
+    <link rel="stylesheet" href="~/css/cart.css" asp-append-version="true" />
+	<link rel="stylesheet" href="~/css/account.css" asp-append-version="true" />
+}
+
 @* PayPal script *@
 <script
-    src="https://www.paypal.com/sdk/js?client-id=AV_6P7OPZwXSofUX2pdD0J1qymbE6k7rESrelqzf_jndK35unvyHtUdYyp5b8NefZA6W5I3QW0qzv5c4&currency=CAD"></script>
+    src="https://www.paypal.com/sdk/js?client-id=AV_6P7OPZwXSofUX2pdD0J1qymbE6k7rESrelqzf_jndK35unvyHtUdYyp5b8NefZA6W5I3QW0qzv5c4&currency=CAD">
+</script>
 
-<h1>Order Summary</h1>
-
-<section class="order-details">
-    <h2>Order Details</h2>
-    @foreach (var item in Model.CartItems)
-    {
-        <div class="order-item">
-            <img src="@item.Item.ImgUrl" alt="@item.Item.Name Image" width="100" height="100">
-            <h3>@item.Item.Name</h3>
-            <span>Quantity: @item.Quantity</span>
-            <div>@((item.Quantity * item.Item.Price).ToString("C"))</div>
+<div class="p-grid-container">
+    <div class="p-grid-item">
+        <h1>Order Summary</h1>
+    </div>
+</div>
+<div class="p-grid-summary">
+    <div>
+        <div class="p-grid-split mb-3">
+            <h2>Delivery Address</h2>
         </div>
-        
-    }
-    <div class="order-total">
-            <span>Subtotal</span> <span>@subtotal.ToString("C")</span>
-            <span>GST</span> <span>@gst.ToString("C")</span>
-            <span>PST</span> <span>@pst.ToString("C")</span>
-            <span>Fee</span> <span>@fee.ToString("C")</span>
+        <div class="addresses-content p-input-grid">
+            @{
+                int index = 1;
+            }
+
+            @foreach (var item in Model.ContactInfo)
+            {
+                <h3 class="fs-5 p-all">Address @index</h3>
+                <div class="p-first ms-2">Address 1</div>
+                <div> @item.Address1</div>
+                <div class="ms-2">Address 2</div>
+                <div> @item.Address2</div>
+                <div class="ms-2">City/Prov</div>
+                <div><span>@item.CityName</span>, <span>@item.ProvinceName</span></div>
+                index++;
+            }
+
+        </div>
+    </div>
+    <div>
+        <div class="p-grid-split mb-3">
+            <h2>Order Details</h2>
+        </div>
+        <div id="cart-items" class="p-cart-item-container">
+            @foreach (var item in Model.CartItems)
+            {
+                <div class="p-cart-item mb-4">
+                    <img src="@item.Item.ImgUrl" alt="@item.Item.Name Image" width="100" height="100">
+                    <div class="ms-3">
+                        <h3>@item.Item.Name</h3>
+                        <span>Quantity: @item.Quantity</span>
+                        <div>@((item.Quantity * item.Item.Price).ToString("C"))</div>
+                    </div>
+                </div>
+            }
+            <div class="p-cart-item">
+                <span>Subtotal</span>
+                <span class="ms-3 p-amount-column">@subtotal.ToString("C")</span>
+            </div>
+            <div class="p-cart-item">
+                <span>GST</span>
+                <span class="ms-3 p-amount-column">@gst.ToString("C")</span>
+            </div>
+            <div class="p-cart-item">
+                <span>PST</span>
+                <span class="ms-3 p-amount-column">@pst.ToString("C")</span>
+            </div>
+            <div class="p-cart-item">
+                <span>Fee</span>
+                <span class="ms-3 p-amount-column">@fee.ToString("C")</span>
+            </div>
             @*For Paypal*@
-            <span>Total</span> <span id="itemPrice" data-value="@total">@total.ToString("C")</span>
+            <div class="p-cart-item mb-4">
+                <span>Total</span>
+                <span class="ms-3 p-amount-column" id="itemPrice" data-value="@total">@total.ToString("C")</span>
+            </div>
             <span id="currency" data-value="CAD"></span>
             <div id="paypal-button-container"></div>
         </div>
-</section>
-
-@* This will need to be modified into a form  where the user selects their address, and delivery method*@
-<div class="address">
-    <h2>Delivery Address</h2>
-    @foreach (var address in Model.ContactInfo) {
-        <ul>
-            <li>@address.Address1</li>
-            <li>@address.Address2</li>
-            <li><span>@address.CityName</span>, <span>@address.ProvinceName</span></li>
-            <li>@address.Phone</li>
-        </ul>
-    }
+    </div>
+    @* This will need to be modified into a form  where the user selects their address, and delivery method*@
 </div>
-
-
 
 <script>
     paypal.Buttons({
@@ -101,5 +139,3 @@
         }
     }).render('#paypal-button-container');
 </script>
-
-
