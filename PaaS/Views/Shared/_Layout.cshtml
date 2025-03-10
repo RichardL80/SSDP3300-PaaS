@@ -48,11 +48,11 @@
                             @* Test for Order Summary page and paypal trasaction page(Admin)*@
                             @if (User.IsInRole("Admin"))
                             {
+                                @* <li class="nav-item border-start"> *@
+                                @*     <a class="nav-link" asp-area="" asp-controller="PayPal" asp-action="Index">PayPal</a> *@
+                                @* </li> *@
                                 <li class="nav-item border-start">
-                                    <a class="nav-link" asp-area="" asp-controller="PayPal" asp-action="Index">PayPal</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" asp-area="" asp-controller="PayPal" asp-action="Transaction">Transaction</a>
+                                    <a class="nav-link" asp-area="" asp-controller="PayPal" asp-action="Transaction">Transactions</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" asp-area="" asp-controller="UserManagement" asp-action="Index">

@@ -3,11 +3,19 @@
     ViewData["Title"] = "Payment Confirmation";
 }
 
-<h2 id="payment-confirmation-title">Payment Confirmation</h2>
-<div id="payment-confirmation-detail">
-    <p>Thank you for your payment!</p>
-    <p>Transaction ID: @Model.TransactionId</p>
-    <p>Amount Paid: @Model.Amount</p>
-    <p>Payer Name: @Model.PayerName</p>
-    <p>Payer Email:@Model.Email</p>
+<div class="p-grid-container">
+    <div class="p-grid-item">
+        <h1>Payment Confirmation</h1>
+    </div>
+    <div class="addresses-content p-input-grid">
+        <h2 class="p-all ms-2 mb-3">Thank you for your payment!</h2>
+        <div class="p-first ms-2">Transaction ID</div>
+        <div>@Model.TransactionId</div>
+        <div class="ms-2">Amount Paid</div>
+        <div>@Model.Amount.ToString("C")</div>
+        <div class="ms-2">Payer Name</div>
+        <div>@Model.PayerName</div>
+        <div class="ms-2">Payer Email</div>
+        <div>@Model.Email</div>
+    </div>
 </div>
